@@ -1,18 +1,15 @@
 package main
 
 import (
+	_ "SpiderWeb/conf"
+	"SpiderWeb/models"
 	"fmt"
-
-	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	fmt.Println(111)
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "hello world",
-		})
-	})
-	r.Run("0.0.0.0:8000")
+	baseDb := models.BaseDB{}
+	results, err := baseDb.Query("select * from course")
+	if err == nil {
+		fmt.Println(string(results[0]["cname"]))
+	}
 }

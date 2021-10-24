@@ -1,0 +1,11 @@
+version: 1.0.0
+service:
+  port: 8000
+models:
+  user:
+    host: 127.0.0.1
+    port: 3306
+    username: ceaqw
+    password: 151437
+    database: spider_web
+    charset: utf8
