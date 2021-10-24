@@ -1,15 +1,13 @@
 package main
 
 import (
-	_ "SpiderWeb/conf"
-	"SpiderWeb/models"
+	"SpiderWeb/conf"
+	"SpiderWeb/router"
 	"fmt"
 )
 
 func main() {
-	baseDb := models.BaseDB{}
-	results, err := baseDb.Query("select * from course")
-	if err == nil {
-		fmt.Println(string(results[0]["cname"]))
-	}
+	appCfg := conf.GetAppCfg()
+	r := router.Init()
+	r.Run(fmt.Sprintf("%s:%s", appCfg.Host, appCfg.Port))
 }
