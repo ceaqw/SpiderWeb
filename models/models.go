@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	MainSqlDb *xorm.Engine
+	MainSqlDb, Db, SpiderDb, DbInternet, DbCn, DbWeb *xorm.Engine
 )
 
 type BaseDB struct {

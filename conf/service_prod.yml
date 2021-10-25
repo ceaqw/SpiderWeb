@@ -9,3 +9,38 @@ models:
     password: 151437
     database: spider_web
     charset: utf8
+  db: 
+    host: 172.30.3.22
+    port: 3306
+    database: spider
+    username: spider
+    password: CrawlerStat2049#
+    charset: utf8
+  spiderdb: 
+    host: 160.16.117.238
+    port: 3306
+    database: spider
+    username: spider
+    password: 0Wjd15QS11FWMFS
+    charset: utf8
+  dbinternet: 
+    host: 52.69.244.9
+    port: 3306
+    database: spider
+    username: spider
+    password: CrawlerStat2049#
+    charset: utf8
+  dbcn: 
+    host: 192.168.3.93
+    port: 3306
+    database: spider_task
+    username: spider_task
+    password: SPI094bt
+    charset: utf8
+  dbweb: 
+    host: 172.30.3.21
+    port: 33306
+    database: spider_task
+    username: spider_task
+    password: SPI094bt
+    charset: utf8
