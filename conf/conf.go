@@ -2,6 +2,7 @@ package conf
 
 import (
 	"os"
+	"time"
 
 	"github.com/spf13/viper"
 )
@@ -38,6 +39,11 @@ type AppCfg struct {
 	Host string //App
 }
 
+type JwtConfig struct {
+	TimeOut time.Duration
+	Issuer  string
+}
+
 func GetMainDbCfg() (mainDbCfg MainDbCfg) {
 	mainDbCfg.UserName = viper.GetString("models.main_db.user_name")
 	mainDbCfg.Password = viper.GetString("models.main_db.password")
@@ -54,4 +60,11 @@ func GetAppCfg() (appCfg AppCfg) {
 	appCfg.Host = viper.GetString("service.host")
 
 	return appCfg
+}
+
+func GetJwtConfig() (jwtConfig JwtConfig) {
+	jwtConfig.TimeOut = viper.GetDuration("jwt.time_out")
+	jwtConfig.Issuer = viper.GetString("jwt.issuer")
+
+	return jwtConfig
 }

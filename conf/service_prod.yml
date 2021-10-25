@@ -1,6 +1,7 @@
 version: 1.0.0
 service:
   port: 8000
+  host: 0.0.0.0
 models:
   user:
     host: 127.0.0.1
@@ -44,3 +45,6 @@ models:
     username: spider_task
     password: SPI094bt
     charset: utf8
+jwt: 
+  time_out: 60
+  issuer: ceaqw

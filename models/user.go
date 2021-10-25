@@ -3,7 +3,7 @@ package models
 import "time"
 
 type User struct {
-	UserId         int64     `xorm:"pk autoincr" json:"userId"`
+	UserId         uint64    `xorm:"pk autoincr" json:"userId"`
 	Name           string    `xorm:"varchar(255)" json:"name"`
 	Password       string    `xorm:"varchar(255)" json:"-"`
 	OriginPassword string    `xorm:"varchar(255)" json:"-"`
@@ -13,13 +13,18 @@ type User struct {
 	Security       string    `xorm:"varchar(255)" json:"security"`
 	Mobile         string    `xorm:"varchar(255)" json:"mobile"`
 	Wechat         string    `xorm:"varchar(255)" json:"wechat"`
-	Statue         int8      `xorm:"tinyint" json:"status"`
+	Statue         uint8     `xorm:"tinyint" json:"status"`
 	Created        time.Time `xorm:"created" json:"created"`
 	Modify         time.Time `json:"modify"`
 	EffectiveTime  time.Time `json:"effectiveTime"`
 	ExpireTime     time.Time `json:"expireTime"`
-	DelFlag        int8      `xorm:"tinyint" json:"delFlag"`
+	DelFlag        uint8     `xorm:"tinyint" json:"delFlag"`
 	LastLoginTime  time.Time `json:"lastLoginTime"`
-	LoginTimes     int64     `json:"loginTimes"`
-	Inviter        int64     `json:"inviter"`
+	LoginTimes     uint64    `json:"loginTimes"`
+	Inviter        uint64    `json:"inviter"`
+	Role           uint8     `json:"role"`
+}
+
+func (User) TableName() string {
+	return "user"
 }

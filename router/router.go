@@ -1,12 +1,14 @@
 package router
 
 import (
+	"SpiderWeb/middleware/jwt"
+
 	"github.com/gin-gonic/gin"
 )
 
 func Init() *gin.Engine {
 	router := gin.New()
-
+	router.Use(jwt.JWTAuth())
 	// vi版本api
 	v1Router := router.Group("/api/v1")
 
