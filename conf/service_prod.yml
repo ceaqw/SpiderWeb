@@ -48,3 +48,6 @@ models:
 jwt: 
   time_out: 60
   issuer: ceaqw
+logger:
+  log_path: /log
+  log_name: log_info
