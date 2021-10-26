@@ -28,6 +28,14 @@ func JWTAuth() gin.HandlerFunc {
 			return
 		}
 		s := strings.Split(token, " ")
+		if len(s) < 2 {
+			c.JSON(http.StatusOK, gin.H{
+				"status": 401,
+				"msg":    "无效的token",
+			})
+			c.Abort()
+			return
+		}
 		j := NewJWT()
 		// parseToken 解析token包含的信息
 		claims, err := j.ParseToken(s[1])
@@ -88,7 +96,7 @@ func (j *JWT) CreateToken(claims CustomClaims) (string, error) {
 }
 
 func (j *JWT) CreateUserToken() (string, error) {
-	jwtConfig := conf.GetJwtConfig()
+	jwtConfig := conf.GetJwtCfg()
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, CustomClaims{
 		StandardClaims: jwt.StandardClaims{
 			//当前配置超时1小时

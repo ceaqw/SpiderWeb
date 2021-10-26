@@ -34,7 +34,15 @@ func init() {
 	// MainSqlDb.ShowSQL(true)
 }
 
-func (baseDB *BaseDB) Query(sql string) ([]map[string][]byte, error) {
+func (BaseDB) Query(sql string) ([]map[string][]byte, error) {
 	results, err := MainSqlDb.Query(sql)
 	return results, err
+}
+
+func (BaseDB) Excute(sql string, arg ...interface{}) {
+	_, err := MainSqlDb.Exec(sql)
+
+	if err != nil {
+
+	}
 }

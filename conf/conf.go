@@ -39,9 +39,14 @@ type AppCfg struct {
 	Host string //App
 }
 
-type JwtConfig struct {
+type JwtCfg struct {
 	TimeOut time.Duration
 	Issuer  string
+}
+
+type LoggerCfg struct {
+	LogPath string
+	LogName string
 }
 
 func GetMainDbCfg() (mainDbCfg MainDbCfg) {
@@ -51,20 +56,23 @@ func GetMainDbCfg() (mainDbCfg MainDbCfg) {
 	mainDbCfg.Host = viper.GetString("models.main_db.host")
 	mainDbCfg.Port = viper.GetString("models.main_db.port")
 	mainDbCfg.Driver = viper.GetString("models.main_db.driver")
-
 	return mainDbCfg
 }
 
 func GetAppCfg() (appCfg AppCfg) {
 	appCfg.Port = viper.GetString("service.port")
 	appCfg.Host = viper.GetString("service.host")
-
 	return appCfg
 }
 
-func GetJwtConfig() (jwtConfig JwtConfig) {
-	jwtConfig.TimeOut = viper.GetDuration("jwt.time_out")
-	jwtConfig.Issuer = viper.GetString("jwt.issuer")
+func GetJwtCfg() (jwtCfg JwtCfg) {
+	jwtCfg.TimeOut = viper.GetDuration("jwt.time_out")
+	jwtCfg.Issuer = viper.GetString("jwt.issuer")
+	return jwtCfg
+}
 
-	return jwtConfig
+func GetLoggerCfg() (loggerCfg LoggerCfg) {
+	loggerCfg.LogPath = viper.GetString("logger.log_path")
+	loggerCfg.LogName = viper.GetString("logger.log_name")
+	return loggerCfg
 }
