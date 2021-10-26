@@ -5,7 +5,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = process.env.VUE_APP_TITLE || '猴酷管理平台' // 网页标题
+const name = process.env.VUE_APP_TITLE || 'Nint spider monitor' // 网页标题
 
 const port = process.env.port || process.env.npm_config_port || 80 // 端口
 
@@ -22,7 +22,7 @@ module.exports = {
   // 用于放置生成的静态资源 (js、css、img、fonts) 的；（项目打包之后，静态资源会放在这个文件夹下）
   assetsDir: 'static',
   // 是否开启eslint保存检测，有效值：ture | false | 'error'
-  // lintOnSave: process.env.NODE_ENV === 'development',
+  lintOnSave: process.env.NODE_ENV === 'development',
   // 如果你不需要生产环境的 source map，可以将其设置为 false 以加速生产环境构建。
   productionSourceMap: false,
   // webpack-dev-server 相关配置
