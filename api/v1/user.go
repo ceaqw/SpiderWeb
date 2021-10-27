@@ -1,11 +1,16 @@
 package v1
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+
+	"github.com/gin-gonic/gin"
+)
 
 type User struct {
 }
 
 func (User) Login(c *gin.Context) {
+	fmt.Println(c.PostForm("username"))
 	c.JSON(200, gin.H{"message": "OK"})
 }
 

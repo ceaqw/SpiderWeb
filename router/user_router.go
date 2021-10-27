@@ -12,7 +12,7 @@ func initUserRouter(router *gin.RouterGroup) {
 	userRouter := router.Group("/user")
 
 	{
-		userRouter.GET("/login", userApi.Login)
+		userRouter.POST("/login", userApi.Login)
 		userRouter.GET("/logout", userApi.LoginOut)
 	}
 }

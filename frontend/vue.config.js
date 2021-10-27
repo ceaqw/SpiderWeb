@@ -1,5 +1,6 @@
 'use strict'
 const path = require('path')
+const proxy = require('http-proxy-middleware');
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -27,23 +28,18 @@ module.exports = {
   productionSourceMap: false,
   // webpack-dev-server 相关配置
   devServer: {
-    host: '0.0.0.0',
-    port: port,
+    // host: '0.0.0.0',
+    // port: port,
     open: true,
     proxy: {
-      // detail: https://cli.vuejs.org/config/#devserver-proxy
-      [process.env.VUE_APP_BASE_API]: {
-        target: `http://localhost:8080`,
+      '/api': {
+        target: 'http://192.168.56.102:8000/api', //对应自己的接口
         changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_BASE_API]: ''
-        }
-      },
-      '^/api': {
-        target: 'http://192.168.56.102:8080',
         ws: true,
-        changeOrigin: true
-      },
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
     },
     disableHostCheck: true
   },

@@ -1,7 +1,6 @@
 package router
 
 import (
-	"SpiderWeb/middleware/jwt"
 	"SpiderWeb/middleware/logger"
 
 	"github.com/gin-gonic/gin"
@@ -10,7 +9,7 @@ import (
 func Init() *gin.Engine {
 	router := gin.New()
 	// 身份验证
-	router.Use(jwt.JWTAuth())
+	// router.Use(jwt.JWTAuth())
 	// 日志记录
 	router.Use(logger.LoggerToFile())
 	// vi版本api

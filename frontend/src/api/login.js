@@ -9,7 +9,7 @@ export function login(username, password, code, uuid) {
     uuid
   }
   return request({
-    url: '/api/v1/login',
+    url: '/api/v1/user/login',
     method: 'post',
     data: data
   })
@@ -18,7 +18,7 @@ export function login(username, password, code, uuid) {
 // 获取用户详细信息
 export function getInfo() {
   return request({
-    url: '/api/v1/getInfo',
+    url: '/api/v1/user/getInfo',
     method: 'get'
   })
 }
@@ -26,7 +26,7 @@ export function getInfo() {
 // 退出方法
 export function logout() {
   return request({
-    url: '/api/v1/logout',
+    url: '/api/v1/user/logout',
     method: 'post'
   })
 }
