@@ -3,13 +3,14 @@ service:
   port: 8000
   host: 0.0.0.0
 models:
-  user:
+  main_db:
     host: 127.0.0.1
     port: 3306
     username: ceaqw
     password: 151437
     database: spider_web
     charset: utf8
+    driver: mysql
   db: 
     host: 172.30.3.22
     port: 3306

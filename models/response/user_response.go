@@ -1,12 +1,11 @@
-package models
+package response
 
 import (
 	"time"
-
-	"github.com/druidcaesa/gotool"
 )
 
-type User struct {
+// UserResponse 用户实体返回结构体
+type UserResponse struct {
 	UserId         uint64    `xorm:"pk autoincr" json:"userId"`
 	Name           string    `xorm:"varchar(255)" json:"name"`
 	Password       string    `xorm:"varchar(255)" json:"-"`
@@ -29,21 +28,12 @@ type User struct {
 	Role           uint8     `json:"role"`
 }
 
-type UserOrm struct {
+// UserInfo 用户整体数据
+type UserInfo struct {
+	User *UserResponse `json:"user,omitempty"` //用户数据
 }
 
-func (User) TableName() string {
-	return "user"
-}
-
-func (UserOrm) GetUserByUserName(user User) *User {
-	row, err := MainSqlDb.Get(&user)
-
-	if err != nil {
-		gotool.Logs.ErrorLog().Println(err)
-	}
-	if row {
-		return &user
-	}
-	return nil
+// IsAdmin 判断当前用户是否是管理员
+func (r UserResponse) IsAdmin() bool {
+	return r.UserId == 1
 }

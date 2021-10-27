@@ -2,6 +2,8 @@ package jwt
 
 import (
 	"SpiderWeb/conf"
+	"SpiderWeb/models"
+	"SpiderWeb/models/response"
 	"errors"
 	"net/http"
 	"strings"
@@ -68,6 +70,7 @@ var (
 
 // 载荷，可以加一些自己需要的信息
 type CustomClaims struct {
+	UserInfo response.UserResponse `json:"userInfo"`
 	jwt.StandardClaims
 }
 
@@ -95,9 +98,10 @@ func (j *JWT) CreateToken(claims CustomClaims) (string, error) {
 	return token.SignedString(j.SigningKey)
 }
 
-func (j *JWT) CreateUserToken() (string, error) {
+func (j *JWT) CreateUserToken(user models.User) (string, error) {
 	jwtConfig := conf.GetJwtCfg()
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, CustomClaims{
+		UserInfo: response.UserResponse(user),
 		StandardClaims: jwt.StandardClaims{
 			//当前配置超时1小时
 			ExpiresAt: time.Now().Add(jwtConfig.TimeOut * time.Minute).Unix(),

@@ -50,7 +50,7 @@ type LoggerCfg struct {
 }
 
 func GetMainDbCfg() (mainDbCfg MainDbCfg) {
-	mainDbCfg.UserName = viper.GetString("models.main_db.user_name")
+	mainDbCfg.UserName = viper.GetString("models.main_db.username")
 	mainDbCfg.Password = viper.GetString("models.main_db.password")
 	mainDbCfg.Database = viper.GetString("models.main_db.database")
 	mainDbCfg.Host = viper.GetString("models.main_db.host")

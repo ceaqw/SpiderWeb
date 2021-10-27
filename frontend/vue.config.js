@@ -33,7 +33,7 @@ module.exports = {
     open: true,
     proxy: {
       '/api': {
-        target: 'http://192.168.56.102:8000/api', //对应自己的接口
+        target: 'http://localhost:8000/api', //对应自己的接口
         changeOrigin: true,
         ws: true,
         pathRewrite: {
