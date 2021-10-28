@@ -2,8 +2,10 @@ package v1
 
 import (
 	"SpiderWeb/models/req"
+	"SpiderWeb/modules/utils"
 	"SpiderWeb/services"
 	"SpiderWeb/services/resp"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -30,6 +32,23 @@ func (h User) Login(c *gin.Context) {
 	}
 }
 
-func (User) LoginOut(c *gin.Context) {
+func (h User) GetInfo(c *gin.Context) {
+	m := make(map[string]interface{})
+	user := h.loginService.LoginUser(c)
+	fmt.Println(user)
+	//查询用户角色集合
+	// roleKeys := a.permissionService.GetRolePermissionByUserId(user)
+	// 权限集合
+	// perms := a.permissionService.GetMenuPermission(user)
+	// m["roles"] = roleKeys
+	// m["permissions"] = perms
+	// m["user"] = user
+	c.JSON(200, resp.Success(m))
+}
 
+func (h User) LoginOut(c *gin.Context) {
+	name := utils.UserUtils.GetUserInfo(utils.UserUtils{}, c).Name
+	fmt.Println(name)
+	// cache.RemoveKey(name)
+	resp.OK(c)
 }

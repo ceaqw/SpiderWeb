@@ -5,6 +5,7 @@ import (
 	"SpiderWeb/models"
 
 	"github.com/druidcaesa/gotool"
+	"github.com/gin-gonic/gin"
 )
 
 type LoginService struct {
@@ -33,4 +34,9 @@ func (s LoginService) Login(name string, password string) (bool, string) {
 	}
 	//数据存储到redis中
 	return true, token
+}
+
+func (s LoginService) LoginUser(c *gin.Context) *models.User {
+	user := &models.User{}
+	return user
 }
