@@ -12,8 +12,12 @@ import '@/style/index.css'
 import App from './App'
 import router from './route'
 
+import Axios from 'axios'
+
 // 创建app
 const app = createApp(App)
+
+app.config.globalProperties.Axios = Axios
 
 // 设置语言
 locale.use(lang)

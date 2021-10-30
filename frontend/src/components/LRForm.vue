@@ -31,8 +31,6 @@
 </template>
 
 <script>
-// import {} from 'vue'
-
 export default {
   data() {
     return {

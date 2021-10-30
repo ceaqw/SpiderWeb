@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <router-view title="Nint Spider Monitor"></router-view>
   </div>
 </template>
 
