@@ -1,35 +1,35 @@
 <template>
-  <div class="dashboard-editor-container">
+    <div class="dashboard-editor-container">
+        <!-- 筛选条件布局 -->
+        <Filter /> 
+        <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
-    <panel-group @handleSetLineChartData="handleSetLineChartData" />
-
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" />
-    </el-row>
-
-    <el-row :gutter="32">
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <raddar-chart />
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <pie-chart />
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <bar-chart />
-        </div>
-      </el-col>
-    </el-row>
-
-    
+        <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+            <line-chart :chart-data="lineChartData" />
+        </el-row>
+        <el-row :gutter="32">
+            <el-col :xs="24" :sm="24" :lg="8">
+                <div class="chart-wrapper">
+                <raddar-chart />
+                </div>
+            </el-col>
+            <el-col :xs="24" :sm="24" :lg="8">
+                <div class="chart-wrapper">
+                <pie-chart />
+                </div>
+            </el-col>
+            <el-col :xs="24" :sm="24" :lg="8">
+                <div class="chart-wrapper">
+                <bar-chart />
+                </div>
+            </el-col>
+        </el-row>
   </div>
 </template>
 
 <script>
+import Filter from '@/components/filter'
+
 import LineChart from './dashboard/LineChart'
 import RaddarChart from './dashboard/RaddarChart'
 import PieChart from './dashboard/PieChart'
@@ -55,41 +55,42 @@ const lineChartData = {
 }
 
 export default {
-  components: {
-    LineChart,
-    RaddarChart,
-    PieChart,
-    BarChart
-  },
-  data() {
-    return {
-      lineChartData: lineChartData.newVisitis
-    }
-  },
-  methods: {
-    handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
-    }
+    components: {
+        Filter,
+        LineChart,
+        RaddarChart,
+        PieChart,
+        BarChart
+    },
+    data() {
+        return {
+        lineChartData: lineChartData.newVisitis
+        }
+    },
+    methods: {
+        handleSetLineChartData(type) {
+        this.lineChartData = lineChartData[type]
+        }
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .dashboard-editor-container {
-  padding: 32px;
-  background-color: rgb(240, 242, 245);
-  position: relative;
+    width: auto;
+    padding: 10px;
+    position: relative;
 
-  .chart-wrapper {
-    background: #fff;
-    padding: 16px 16px 0;
-    margin-bottom: 32px;
-  }
+    .chart-wrapper {
+        background: #fff;
+        padding: 16px 16px 0;
+        margin-bottom: 32px;
+    }
 }
 
 @media (max-width:1024px) {
   .chart-wrapper {
-    padding: 8px;
+      padding: 8px;
   }
 }
 </style>

@@ -11,7 +11,18 @@
                         <el-col :span="20" id="title">{{ title }}</el-col>
                     </el-row>
                 </el-col>
-                <el-col :span="12" style="text-align: right;">
+                <el-col :span="10" style="text-align: right;">
+                    <el-button-group id="time">
+                        <el-button v-for="(rate, index) in rateSelect"
+                            :key="index"
+                            :id="rateFalg[index]"
+                            size="medium"
+                            @click="changeRate(index)" plain>
+                            {{ rate }}
+                        </el-button>
+                    </el-button-group>
+                </el-col>
+                <el-col :span="2" style="text-align: right;">
                     <el-dropdown>
                         <span style="font-size: 18px">{{ user }}</span>
                         <template #dropdown>
@@ -26,12 +37,12 @@
         </el-header>
 
     <el-container>
-      <el-aside>
-          <side-menu></side-menu>
-      </el-aside>
-      <el-main>
-          <router-view></router-view>
-      </el-main>
+        <el-aside>
+            <side-menu></side-menu>
+        </el-aside>
+        <el-main>
+            <router-view></router-view>
+        </el-main>
     </el-container>
   </el-container>
 </div>
@@ -49,7 +60,16 @@ export default {
     data () {
         return {
             url: logo + '?' + +new Date(),
-            user: 'chen.chen'
+            user: 'chen.chen',
+            rateFalg: ['info', 'info', 'info'],
+            rateSelect: ['30S', '60S', 'OFF']
+        }
+    },
+    methods: {
+        changeRate(index) {
+            this.rateFalg[this.rateFalg.indexOf('primary')] = 'info'
+            this.rateFalg[index] = 'primary'
+            // TODO: 更新轮询机制
         }
     }
 }
@@ -74,25 +94,20 @@ export default {
         left: 0;
         top: 60px;
         bottom: 0;
-        width: auto;
+        width: 200px;
     }
 
     .el-main {
+        padding: 5px 5px 0px !important;
         background-color: #e9eef3;
         color: var(--el-text-color-primary);
         text-align: center;
         position: absolute;
-        left: 200px;
         right: 0;
+        left: 200px;
         top: 60px;
         bottom: 0;
         overflow-y: scroll;
-        margin: 0px;
-        width: auto;
-    }
-
-    body > .el-container {
-        margin-bottom: 5px;
     }
 
     .el-container:nth-child(5) .el-aside,
@@ -102,5 +117,15 @@ export default {
 
     .el-container:nth-child(7) .el-aside {
         line-height: 320px;
+    }
+
+    #time .el-button {
+        background-color: #b3c0d1;
+        border: 0px;
+        color: black;
+    }
+
+    #time #primary {
+        background-color: #409EFF;
     }
 </style>
