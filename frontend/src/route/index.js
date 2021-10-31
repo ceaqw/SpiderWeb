@@ -1,4 +1,5 @@
 import { createWebHistory, createRouter } from 'vue-router'
+import Layout from '@/layout'
 
 const history = createWebHistory()
 
@@ -10,87 +11,89 @@ const router = createRouter({
         },
         {
             path: '/home',
-            component: () =>
-                import ('@/views/home'),
-            redirect: '/home/wallet',
-            children: [{
-                    path: '/home/wallet',
-                    component: () =>
-                        import ('@/view/wallet'),
-                    meta: {
-                        title: '系统首页'
-                    }
+            component: Layout,
+            redirect: '/home/dashboard',
+            children: [
+                {
+                    path: 'dashboard',
+                    component: () => import ('@/views/home'),
                 },
                 {
-                    path: '/home/publicity',
-                    component: () =>
-                        import ('@/view/publicity'),
-                    meta: {
-                        title: 'publicity'
-                    }
+                    path: 'project',
+                    component: () => import ('@/views/project'),
+                },
+            ]
+        },
+        {
+            path: '/trend',
+            component: Layout,
+            children: [
+                {
+                    path: 'kpi',
+                    component: () => import ('@/views/trend/kpi'),
                 },
                 {
-                    path: '/home/integral',
-                    component: () =>
-                        import ('@/view/integral'),
-                    meta: {
-                        title: 'integral'
-                    }
+                    path: 'fail',
+                    component: () => import ('@/views/home'),
+                },
+            ]
+        },
+        {
+            path: '/member',
+            component: Layout,
+            children: [
+                {
+                    path: 'list',
+                    component: () => import ('@/views/home'),
                 },
                 {
-                    path: '/home/mine',
-                    component: () =>
-                        import ('@/view/mine'),
-                    meta: {
-                        title: 'mine'
-                    }
-                }
+                    path: 'create',
+                    component: () => import ('@/views/home'),
+                },
+                {
+                    path: 'update',
+                    component: () => import ('@/views/home'),
+                },
+                {
+                    path: 'project',
+                    component: () => import ('@/views/home'),
+                },
             ]
         },
         {
             path: '/login',
             name: 'login',
-            component: () =>
-                import ('@/views/login'),
-            meta: {
-                title: '登录'
-            }
+            component: () => import ('@/views/login'),
+            meta: { title: '登录' }
         },
         {
             path: '/register',
             name: 'register',
-            component: () =>
-                import ('@/views/register'),
-            meta: {
-                title: '注册'
-            }
+            component: () => import ('@/views/register'),
+            meta: { title: '注册' }
+        },
+        {
+            path: '/401',
+            component: () => import ('@/views/error/401'),
+            meta: { title: '权限不足' }
         },
         {
             path: '/403',
             name: '403',
-            component: () =>
-                import ('@/views/error/403'),
-            meta: {
-                title: '权限不足'
-            }
+            component: () => import ('@/views/error/403'),
+            meta: { title: '权限不足' }
         },
         {
             path: '/500',
             name: '500',
-            component: () =>
-                import ('@/views/error/500'),
-            meta: {
-                title: '服务器错误'
-            }
+            component: () => import ('@/views/error/500'),
+            meta: { title: '服务器错误' }
         },
         {
             path: '/404',
             name: '404',
-            component: () =>
-                import ('@/views/error/404'),
-            meta: {
-                title: '页面访问错误'
-            }
+            component: () => import ('@/views/error/404'),
+            meta: { title: '页面访问错误' }
         }
     ]
 })

@@ -1,93 +1,95 @@
 <template>
-  <div class="home">
-    <div class="home-content">
-      <router-view></router-view>
-    </div>
-    <ul class="home-tabs">
-      <li :class="`tabs-li ${isItem == index?'active':''}`"
-          v-for="(item,index) in data"
-          :key="index"
-          @click="switchTab(item,index)">
-        <i :class="item.icon"></i>
-        <span v-text="item.span"></span>
-      </li>
-    </ul>
+  <div class="dashboard-editor-container">
+
+    <panel-group @handleSetLineChartData="handleSetLineChartData" />
+
+    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+      <line-chart :chart-data="lineChartData" />
+    </el-row>
+
+    <el-row :gutter="32">
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="chart-wrapper">
+          <raddar-chart />
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="chart-wrapper">
+          <pie-chart />
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="chart-wrapper">
+          <bar-chart />
+        </div>
+      </el-col>
+    </el-row>
+
+    
   </div>
 </template>
 
 <script>
+import LineChart from './dashboard/LineChart'
+import RaddarChart from './dashboard/RaddarChart'
+import PieChart from './dashboard/PieChart'
+import BarChart from './dashboard/BarChart'
+
+const lineChartData = {
+  newVisitis: {
+    expectedData: [100, 120, 161, 134, 105, 160, 165],
+    actualData: [120, 82, 91, 154, 162, 140, 145]
+  },
+  messages: {
+    expectedData: [200, 192, 120, 144, 160, 130, 140],
+    actualData: [180, 160, 151, 106, 145, 150, 130]
+  },
+  purchases: {
+    expectedData: [80, 100, 121, 104, 105, 90, 100],
+    actualData: [120, 90, 100, 138, 142, 130, 130]
+  },
+  shoppings: {
+    expectedData: [130, 140, 141, 142, 145, 150, 160],
+    actualData: [120, 82, 91, 154, 162, 140, 130]
+  }
+}
+
 export default {
+  components: {
+    LineChart,
+    RaddarChart,
+    PieChart,
+    BarChart
+  },
   data() {
     return {
-      isItem: 0,
-      data: [
-        { span: '钱包', icon: 'el-icon-s-finance', path: '/home/wallet' },
-        {
-          span: '链上公示',
-          icon: 'el-icon-platform-eleme',
-          path: '/home/publicity'
-        },
-        { span: '积分', icon: 'el-icon-coin', path: '/home/integral' },
-        { span: '我的', icon: 'el-icon-s-check', path: '/home/mine' }
-      ]
+      lineChartData: lineChartData.newVisitis
     }
   },
   methods: {
-    switchTab(item, index) {
-      this.isItem = index
-      this.$router.push({ path: item.path })
+    handleSetLineChartData(type) {
+      this.lineChartData = lineChartData[type]
     }
   }
 }
 </script>
 
-<style>
-.home {
-  width: 100%;
-  height: 100%;
+<style lang="scss" scoped>
+.dashboard-editor-container {
+  padding: 32px;
+  background-color: rgb(240, 242, 245);
   position: relative;
+
+  .chart-wrapper {
+    background: #fff;
+    padding: 16px 16px 0;
+    margin-bottom: 32px;
+  }
 }
 
-.home-content {
-  width: 100%;
-  height: calc(100% - 40px);
-  background: #0a0c22;
-}
-
-.home-tabs {
-  width: 100%;
-  height: 40px;
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #0d0f32;
-}
-
-.tabs-li {
-  width: 25%;
-  height: 80%;
-  border-right: 1px solid #747474;
-  color: #aaaaaa;
-  display: flex;
-  flex-flow: column;
-}
-
-.tabs-li:nth-child(4) {
-  border-right: none;
-}
-
-.tabs-li i {
-  font-size: 16px;
-}
-
-.tabs-li span {
-  font-size: 14px;
-}
-
-.active {
-  color: #7d8fe3;
+@media (max-width:1024px) {
+  .chart-wrapper {
+    padding: 8px;
+  }
 }
 </style>

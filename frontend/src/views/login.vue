@@ -1,38 +1,35 @@
 <template>
-  <div class="login-wrap">
-    <div class="ms-login">
-      <div class="ms-title">{{ title }}</div>
-      <el-form :model="form"
-           :rules="rules"
-           ref="login"
-           label-width="0px"
-           class="ms-content">
-      <el-form-item prop="username">
-        <el-input v-model="form.username"
-                  placeholder="username">
-          <el-button icon="el-icon-lx-people"></el-button>
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="password">
-        <el-input type="password"
-                  placeholder="password"
-                  v-model="form.password"
-                  @keyup.enter="submitForm">
-          <el-button icon="el-icon-lx-lock"></el-button>
-        </el-input>
-      </el-form-item>
-      <div class="login-btn">
-        <el-button type="primary"
-                  @click="submitForm">登录</el-button>
-      </div>
-      <p class="login-tips">没有账号？请先注册</p>
-      <div class="login-reg">
-        <el-button type="primary"
-                  @click="registerMethod">注册</el-button>
-      </div>
-    </el-form>
+    <div class="login-wrap">
+        <div class="ms-login">
+            <div class="ms-title">{{ title }}</div>
+            <el-form :model="form"
+                :rules="rules"
+                ref="login"
+                label-width="0px"
+                class="ms-content">
+            <el-form-item prop="username">
+                <el-input v-model="form.username" placeholder="username">
+                    <el-button icon="el-icon-lx-people"></el-button>
+                </el-input>
+            </el-form-item>
+            <el-form-item prop="password">
+                <el-input type="password"
+                        placeholder="password"
+                        v-model="form.password"
+                        @keyup.enter="submitForm">
+                    <el-button icon="el-icon-lx-lock"></el-button>
+                </el-input>
+        </el-form-item>
+        <div class="login-btn">
+            <el-button type="primary" @click="submitForm">登录</el-button>
+        </div>
+        <p class="login-tips">没有账号？请先注册</p>
+        <div class="login-reg">
+            <el-button type="primary" @click="registerMethod">注册</el-button>
+        </div>
+            </el-form>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
