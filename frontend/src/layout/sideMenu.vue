@@ -2,7 +2,7 @@
     <div>
         <el-menu default-active="1-4-1" class="el-menu-vertical-demo" background-color="#D3DCE6">
             <span v-for="(item, index) in sideRoutes" :key="index">
-                <div v-if="item.auth == userAuth">
+                <div v-if="item.auth >= userAuth">
                     <el-menu-item v-if="item.path != 'group'" :index="index" @click="to('/home/'+item.path)">
                         <i :class="item.icon"></i>
                         <template #title>{{ item.path }}</template>   
@@ -12,14 +12,17 @@
                             <i :class="item.icon"></i>
                             <span>{{ item.name }}</span>
                         </template>
-                        <el-menu-item 
-                            v-for="(subItem, subIndex) in item.routes" 
-                            :key="subIndex" 
-                            :index="index+'-'+subIndex"
-                            @click="to('/' + item.name + '/' + subItem.path)">
-                            <i :class="subItem.icon"></i>
-                            <template #title>{{ subItem.path }}</template>
-                        </el-menu-item>
+                        <span
+                            v-for="(subItem, subIndex) in item.routes"
+                            :key="index+'-'+subIndex">
+                            <el-menu-item 
+                                v-if="subItem.auth >= userAuth"
+                                :index="index+'-'+subIndex"
+                                @click="to('/' + item.name + '/' + subItem.path)">
+                                <i :class="subItem.icon" v-if="subItem.auth >= userAuth"></i>
+                                <template #title v-if="subItem.auth >= userAuth">{{ subItem.path }}</template>
+                            </el-menu-item>
+                        </span>
                     </el-sub-menu> 
                 </div>
             </span>
@@ -33,7 +36,7 @@ export default {
     data () {
         return {
             sideRoutes: sideItem.routers,
-            userAuth: 3
+            userAuth: 1
         }
     },
     methods: {

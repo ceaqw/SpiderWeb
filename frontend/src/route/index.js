@@ -34,7 +34,7 @@ const router = createRouter({
                 },
                 {
                     path: 'fail',
-                    component: () => import ('@/views/home'),
+                    component: () => import ('@/views/trend/fail'),
                 },
             ]
         },
@@ -44,19 +44,19 @@ const router = createRouter({
             children: [
                 {
                     path: 'list',
-                    component: () => import ('@/views/home'),
+                    component: () => import ('@/views/member/list'),
                 },
                 {
                     path: 'create',
-                    component: () => import ('@/views/home'),
+                    component: () => import ('@/views/member/create'),
                 },
                 {
                     path: 'update',
-                    component: () => import ('@/views/home'),
+                    component: () => import ('@/views/member/update'),
                 },
                 {
                     path: 'project',
-                    component: () => import ('@/views/home'),
+                    component: () => import ('@/views/member/project'),
                 },
             ]
         },
