@@ -98,7 +98,7 @@ export default {
     }
 
     .el-main {
-        padding: 5px 5px 0px !important;
+        padding: 20px 20px 0px !important;
         background-color: #e9eef3;
         color: var(--el-text-color-primary);
         text-align: center;

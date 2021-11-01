@@ -78,7 +78,6 @@ export default {
 <style lang="scss" scoped>
 .dashboard-editor-container {
     width: auto;
-    padding: 10px;
     position: relative;
 
     .chart-wrapper {

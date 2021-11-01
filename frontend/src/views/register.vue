@@ -24,7 +24,7 @@
         </el-form-item>
         <el-form-item prop="re_password">
           <el-input type="password"
-                    placeholder="重复密码"
+                    placeholder="确认密码"
                     v-model="param.re_password"
                     @keyup.enter="submitForm">
             <el-button icon="el-icon-lx-lock"></el-button>

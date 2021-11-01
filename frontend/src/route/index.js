@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import Layout from '@/layout'
+import { routerAuth } from '@/utils/auth'
 
 const history = createWebHistory()
 
@@ -44,6 +45,7 @@ const router = createRouter({
             children: [
                 {
                     path: 'list',
+                    beforeEnter: routerAuth,
                     component: () => import ('@/views/member/list'),
                 },
                 {
