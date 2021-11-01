@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-menu default-active="1-4-1" class="el-menu-vertical-demo" background-color="#D3DCE6">
+        <el-menu class="el-menu-vertical" background-color="#D3DCE6">
             <span v-for="(item, index) in sideRoutes" :key="index">
                 <div v-if="item.auth >= userAuth">
                     <el-menu-item v-if="item.path != 'group'" :index="index" @click="to('/home/'+item.path)">

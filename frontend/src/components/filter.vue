@@ -14,11 +14,11 @@
             </el-col>
         </el-row>
         <el-row>
-            <el-collapse accordion class="main-color" style="width: 100%">
+            <el-collapse accordion style="width: 100%">
                 <el-collapse-item title="更多筛选" name="1">
                     <el-row>
-                        <el-col :span="7">
-                            <span class="demonstration">Start Date</span>
+                        <el-col :span="6">
+                            <div class="demonstration">Start Date</div>
                             <el-date-picker
                                 v-model="value1"
                                 type="daterange"
@@ -28,18 +28,38 @@
                             >
                             </el-date-picker>
                         </el-col>
-                        <el-col :span="4">
-                            <span class="demonstration">平台</span>
-                            <el-select v-model="componentValue" :placeholder="placeholder" :multiple="multiple" clearable 
-                                :filterable="filterable" :remote="remote" :remote-method="remoteMethod" :loading="loading" @change="changeValueFunction"
-                                @visible-change="visibleChangeFunction" :style="'width:' + width + '!important'">
-                            <el-option v-for="(item,index) in list" :key="item.id + index" :label="item.value || item.name" :value="item.id">
-                            </el-option>
-                        </el-select>
+                        <el-col :span="5">
+                            <div class="demonstration">平台</div>
+                            <el-select v-model="componentValue" :placeholder="placeholder" clearable @change="changeValueFunction">
+                                <el-option v-for="(item, index) in platFormList" :key="index" :label="item.value || item.name" :value="item.value">
+                                </el-option>
+                            </el-select>
                         </el-col>
-                        <!-- <el-col :span="5"></el-col>
-                        <el-col :span="5"></el-col>
-                        <el-col :span="4"></el-col> -->
+                        <el-col :span="4">
+                            <div class="demonstration">项目</div>
+                            <el-select v-model="componentValue" :placeholder="placeholder" clearable @change="changeValueFunction">
+                                <el-option v-for="(item, index) in platFormList" :key="index" :label="item.value || item.name" :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-col>
+                        <el-col :span="3">
+                            <div class="demonstration">显示类型</div>
+                            <el-button-group>
+                                <el-button v-for="(showType, index) in showTypeSelect"
+                                    :key="index"
+                                    :id="showTypeFlag[index]"
+                                    @click="changeShowType(index)">
+                                    {{ showType }}
+                                </el-button>
+                            </el-button-group>
+                        </el-col>
+                        <el-col :span="2">
+                            <div class="demonstration">-</div>
+                            <el-button
+                                type="primary"
+                                @click="search">
+                                搜索</el-button>
+                        </el-col>
                     </el-row>
                 </el-collapse-item>
             </el-collapse>
@@ -55,8 +75,18 @@ export default {
         return {
             rateSelect: ['7天', '3天', '昨天', '当天'],
             rateFalg: ['', '', '', 'primary'],
+            showTypeSelect: ['天', '小时'],
+            showTypeFlag: ['', 'primary'],
             value1: '',
             value2: '',
+            platFormList: [
+                {name: 'all', value: 'all'},
+                {name: 'Rakuten', value: 'rakuten'},
+                {name: 'Amazon', value: 'amazon'},
+                {name: 'Yahoo', value: 'yahoo'},
+                {name: 'Lohaco', value: 'lohaco'},
+                {name: 'smRakuten', value: 'smRakuten'},
+            ]
         }    
     },
     methods: {
@@ -64,6 +94,11 @@ export default {
             this.rateFalg[this.rateFalg.indexOf('primary')] = ''
             this.rateFalg[index] = 'primary'
             // TODO: 更新筛选范围
+        },
+        changeShowType(index) {
+            this.showTypeFlag[this.showTypeFlag.indexOf('primary')] = ''
+            this.showTypeFlag[index] = 'primary'
+            // TODO: 更新时间显示类型
         }
     }
 }
@@ -86,15 +121,18 @@ export default {
     padding-bottom: 5px;
 }
 
-#filter #times #primary {
-    background-color: #409EFF;
-}
-
-.main-color *{
-    background-color: #E9EEF3 !important;
+#filter #primary {
+    background-color: #409EFF !important;
+    color: black;
 }
 
 #filter .demonstration {
     font-size: 130%;
+}
+
+.el-collapse .el-collapse-item, 
+.el-collapse-item .el-collapse-item__header, 
+.el-collapse-item .el-collapse-item__wrap {
+    background-color: #E9EEF3 !important
 }
 </style>
