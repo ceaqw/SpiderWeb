@@ -4,14 +4,14 @@
     <el-container style="height: 100%; border: 0px">
         <el-header>
             <el-row>
-                <el-col :span="12" style="text-align: left;">
+                <el-col :span="15" style="text-align: left;">
                     <el-row>
                         <el-col :span="3" style="text-align: right"><img id="logo" :src="url"></el-col>
                         <el-col :span="1"></el-col>
                         <el-col :span="20" id="title">{{ title }}</el-col>
                     </el-row>
                 </el-col>
-                <el-col :span="10" style="text-align: right;">
+                <el-col :span="6" style="text-align: right;">
                     <el-button-group id="time">
                         <el-button v-for="(rate, index) in rateSelect"
                             :key="index"
@@ -23,16 +23,18 @@
                     </el-button-group>
                 </el-col>
                 <el-col :span="2" style="text-align: right;">
-                    <el-dropdown>
+                    <el-dropdown v-if="user">
                         <span style="font-size: 18px">{{ user }}</span>
                         <template #dropdown>
                             <el-dropdown-menu>
                                 <el-dropdown-item>个人中心</el-dropdown-item>
-                                <el-dropdown-item>登出</el-dropdown-item>
+                                <el-dropdown-item @click="logout">登出</el-dropdown-item>
                             </el-dropdown-menu>
                         </template>
                     </el-dropdown>
+                    <router-link to="/login" style="font-size: 16px;" v-else>登录</router-link>
                 </el-col>
+                <el-col :span="1"></el-col>
             </el-row>
         </el-header>
         <el-container>
@@ -49,7 +51,9 @@
 
 <script>
 import logo from '@/assets/logo.png'
+import userService from '@/service/user'
 import SideMenu from './sideMenu.vue'
+import { getByKey } from '@/utils/cookie'
 
 export default {
     props: ['title'],
@@ -59,7 +63,7 @@ export default {
     data () {
         return {
             url: logo + '?' + +new Date(),
-            user: 'chen.chen',
+            user: getByKey('user'),
             rateFalg: ['info', 'info', 'info'],
             rateSelect: ['30S', '60S', 'OFF']
         }
@@ -69,6 +73,9 @@ export default {
             this.rateFalg[this.rateFalg.indexOf('primary')] = 'info'
             this.rateFalg[index] = 'primary'
             // TODO: 更新轮询机制
+        },
+        logout() {
+            userService.logout()
         }
     }
 }
@@ -80,7 +87,7 @@ export default {
         background-color: #b3c0d1;
         color: var(--el-text-color-primary);
         text-align: center;
-        line-height: 60px;
+        line-height: 50px;
     }
     /* .el-header {
         position: relative;
@@ -93,7 +100,7 @@ export default {
         display: block;
         position: absolute;
         left: 0;
-        top: 60px;
+        top: 50px;
         bottom: 0;
         width: 200px;
     }
@@ -106,7 +113,7 @@ export default {
         position: absolute;
         right: 0;
         left: 200px;
-        top: 60px;
+        top: 50px;
         bottom: 0;
         overflow-y: scroll;
     }

@@ -5,7 +5,8 @@ import { createStore } from 'vuex'
 export default createStore({
     state () {
         return {
-            userAuth: 1
+            // 默认游客权限
+            userAuth: 3
         }
     },
     mutations: {

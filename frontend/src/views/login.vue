@@ -7,34 +7,36 @@
                 ref="login"
                 label-width="0px"
                 class="ms-content">
-            <el-form-item prop="username">
-                <el-input v-model="form.username" placeholder="username">
-                    <el-button icon="el-icon-lx-people"></el-button>
-                </el-input>
-            </el-form-item>
-            <el-form-item prop="password">
-                <el-input type="password"
-                        placeholder="password"
-                        v-model="form.password"
-                        @keyup.enter="submitForm">
-                    <el-button icon="el-icon-lx-lock"></el-button>
-                </el-input>
-        </el-form-item>
-        <div class="login-btn">
-            <el-button type="primary" @click="submitForm">登录</el-button>
-        </div>
-        <p class="login-tips">没有账号？请先注册</p>
-        <div class="login-reg">
-            <el-button type="primary" @click="registerMethod">注册</el-button>
-        </div>
+                <el-form-item prop="username">
+                    <el-input v-model="form.username" placeholder="username">
+                        <el-button icon="el-icon-lx-people"></el-button>
+                    </el-input>
+                </el-form-item>
+                <el-form-item prop="password">
+                    <el-input type="password"
+                            placeholder="password"
+                            v-model="form.password"
+                            @keyup.enter="submitForm">
+                        <el-button icon="el-icon-lx-lock"></el-button>
+                    </el-input>
+                </el-form-item>
+                <div class="login-btn">
+                    <el-button type="primary" @click="submitForm">登录</el-button>
+                </div>
+                <p class="login-tips">没有账号？请先注册</p>
+                <div class="login-reg">
+                    <el-button type="primary" @click="registerMethod">注册</el-button>
+                </div>
+                <router-link to="/">暂不登录，游客预览</router-link>
             </el-form>
         </div>
     </div>
 </template>
 
 <script>
-import { login } from '@/service/user'
+import userService from '@/service/user'
 import { passwordReg } from '@/utils/check'
+import { setByKey } from '@/utils/cookie'
 
 export default {
     props: ['title'],
@@ -42,8 +44,8 @@ export default {
         let reg = passwordReg
         return {
             form: {
-                username: 'admin123',
-                password: 'admin123'
+                username: '',
+                password: ''
             },
             rules: {
                 username: [
@@ -69,8 +71,8 @@ export default {
             this.$refs.login.validate((valid) => {
                 if (valid) {
                     this.loading = true
-                    localStorage.setItem('username', this.form.username)
-                    login(this.form)
+                    userService.login(this.form)
+                    setByKey('user', this.form.username)
                 } else {
                     this.$message.error('请检查输入')
                     return false
@@ -79,7 +81,7 @@ export default {
         },
         // 注册
         registerMethod() {
-            this.$router.push('/Register')
+            this.$router.push('/register')
         }
     }
 }

@@ -1,26 +1,24 @@
-import Cookies from 'js-cookie'
+import { setByKey, getByKey, removeByKey } from './cookie'
 import router from '@/route/index'
 import {sideItem} from '@/store/routerAuth'
-import store from '../store'
+// import store from '../store'
 
 const TokenKey = 'Admin-Token'
 
 export function getToken() {
-    return Cookies.get(TokenKey)
+    return getByKey(TokenKey)
 }
 
 export function setToken(token) {
-    return Cookies.set(TokenKey, token)
+    return setByKey(TokenKey, token)
 }
 
 export function removeToken() {
-    return Cookies.remove(TokenKey)
+    return removeByKey(TokenKey)
 }
 
 export function routerAuth(to, from, next) {
-    // const store = useStore()
-    console.log(1111)
-    console.log(store.state.userAuth)
+    const userAuth = getByKey('userAuth') ? getByKey('userAuth') : 3
     const pathList = to.path.split('/')
     let routerMap = sideItem.routers
     for (let index = 0; index < pathList.length; index++) {
@@ -31,7 +29,7 @@ export function routerAuth(to, from, next) {
             if (!routerMap) {
                 router.push('/404')
                 break
-            } else if (routerMap.auth < store.state.userAuth) {
+            } else if (routerMap.auth < userAuth) {
                 router.push('/401')
                 break
             }

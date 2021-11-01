@@ -3,11 +3,11 @@
 // 权限映射 1=>admin 2=>consumer 数值越低权限越大
 const sideItem = {
     routers: {
-        dashboard: {path: 'dashboard', auth: 2, icon: 'el-icon-s-home'},
-        project: {path: 'project', auth: 2, icon: 'el-icon-s-unfold'},
-        trend: {path: 'group', name: 'trend', auth: 2, icon: 'el-icon-s-order', routes: {
-            kpi: {path: 'kpi', auth: 2, icon: 'el-icon-s-data'},
-            fail: {path: 'fail', auth: 2, icon: 'el-icon-s-release'},
+        dashboard: {path: 'dashboard', auth: 3, icon: 'el-icon-s-home'},
+        project: {path: 'project', auth: 3, icon: 'el-icon-s-unfold'},
+        trend: {path: 'group', name: 'trend', auth: 3, icon: 'el-icon-s-order', routes: {
+            kpi: {path: 'kpi', auth: 3, icon: 'el-icon-s-data'},
+            fail: {path: 'fail', auth: 3, icon: 'el-icon-s-release'},
         }},
         member: {path: 'group', name: 'member', auth: 2, icon: 'el-icon-user-solid', routes: {
             list: {path: 'list', auth: 1, icon: 'el-icon-s-grid'},
@@ -17,7 +17,7 @@ const sideItem = {
         }},
     },
     allowRoutes:[
-        'home', '404', '401', '402', '405', '500'
+        'home', '404', '401', '402', '405', '500', 'login', 'logout', 'register'
     ]
 }
 

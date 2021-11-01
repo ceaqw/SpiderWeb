@@ -32,12 +32,13 @@
 
 <script>
 import { sideItem } from '@/store/routerAuth'
-import store from '@/store'
+import { getByKey } from '@/utils/cookie'
+// import store from '@/store'
 export default {
     data () {
         return {
             sideRoutes: sideItem.routers,
-            userAuth: store.state.userAuth,
+            userAuth: getByKey('userAuth') ? getByKey('userAuth') : 3,
         }
     },
     methods: {

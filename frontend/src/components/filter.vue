@@ -30,14 +30,14 @@
                         </el-col>
                         <el-col :span="5">
                             <div class="demonstration">平台</div>
-                            <el-select v-model="componentValue" :placeholder="placeholder" clearable @change="changeValueFunction">
+                            <el-select>
                                 <el-option v-for="(item, index) in platFormList" :key="index" :label="item.value || item.name" :value="item.value">
                                 </el-option>
                             </el-select>
                         </el-col>
                         <el-col :span="4">
                             <div class="demonstration">项目</div>
-                            <el-select v-model="componentValue" :placeholder="placeholder" clearable @change="changeValueFunction">
+                            <el-select>
                                 <el-option v-for="(item, index) in platFormList" :key="index" :label="item.value || item.name" :value="item.value">
                                 </el-option>
                             </el-select>
