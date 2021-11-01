@@ -1,7 +1,7 @@
 
 <template>
 <div class="common-layout">
-  <el-container style="height: 100%; border: 0px">
+    <el-container style="height: 100%; border: 0px">
         <el-header>
             <el-row>
                 <el-col :span="12" style="text-align: left;">
@@ -35,15 +35,14 @@
                 </el-col>
             </el-row>
         </el-header>
-
-    <el-container>
-        <el-aside>
-            <side-menu></side-menu>
-        </el-aside>
-        <el-main>
-            <router-view></router-view>
-        </el-main>
-    </el-container>
+        <el-container>
+            <el-aside>
+                <side-menu></side-menu>
+            </el-aside>
+            <el-main>
+                <router-view></router-view>
+            </el-main>
+        </el-container>
   </el-container>
 </div>
 </template>
@@ -76,14 +75,16 @@ export default {
 </script>
 
 <style>
-    .el-header {
-        position: relative;
+    .el-header, .el-footer {
         width: 100%;
         background-color: #b3c0d1;
         color: var(--el-text-color-primary);
         text-align: center;
         line-height: 60px;
     }
+    /* .el-header {
+        position: relative;
+    } */
 
     .el-aside {
         background-color: #d3dce6;

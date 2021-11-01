@@ -6,7 +6,8 @@ const history = createWebHistory()
 
 const router = createRouter({
     history,
-    routes: [{
+    routes: [
+        {
             path: '/',
             redirect: '/home'
         },
@@ -45,7 +46,6 @@ const router = createRouter({
             children: [
                 {
                     path: 'list',
-                    beforeEnter: routerAuth,
                     component: () => import ('@/views/member/list'),
                 },
                 {
@@ -97,7 +97,9 @@ const router = createRouter({
             component: () => import ('@/views/error/404'),
             meta: { title: '页面访问错误' }
         }
-    ]
+    ],
 })
+
+router.beforeEach(routerAuth)
 
 export default router

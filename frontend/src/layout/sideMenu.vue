@@ -32,11 +32,12 @@
 
 <script>
 import { sideItem } from '@/store/routerAuth'
+import store from '@/store'
 export default {
     data () {
         return {
             sideRoutes: sideItem.routers,
-            userAuth: 1
+            userAuth: store.state.userAuth,
         }
     },
     methods: {

@@ -15,7 +15,10 @@ const sideItem = {
             update: {path: 'update', auth: 1, icon: 'el-icon-edit'},
             project: {path: 'project', auth: 2, icon: 'el-icon-s-unfold'},
         }},
-    }
+    },
+    allowRoutes:[
+        'home', '404', '401', '402', '405', '500'
+    ]
 }
 
 export {
