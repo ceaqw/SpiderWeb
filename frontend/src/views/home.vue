@@ -2,26 +2,89 @@
     <div class="home">
         <!-- 筛选条件布局 -->
         <Filter /> 
+        <div class="row">
+            <div class="title">总览图表</div>
+            <el-divider></el-divider>
+            <el-row>
+                <el-col :span="10">
+                    <PieChart />
+                </el-col>
+                <!-- <el-col :span="1">
+                    <el-divider direction="vertical" style="height: 100%"></el-divider>
+                </el-col> -->
+                <el-col :span="14">
+                    <BarChart />
+                </el-col>
+            </el-row>
+        </div>
+        <div class="row">
+            <div class="title">Analyse监控</div>
+            <el-divider></el-divider>
+            <el-row>
+                <el-col :span="10">
+                    <PieChart />
+                </el-col>
+                <!-- <el-col :span="1">
+                    <el-divider direction="vertical" style="height: 100%"></el-divider>
+                </el-col> -->
+                <el-col :span="14">
+                    <BarChart />
+                </el-col>
+            </el-row>
+        </div>
         <el-row>
-            <line-chart :chart-data="lineChartData" />
+            <el-col :span="8">
+                <div class="row">
+                    <div class="title">Rakuten</div>
+                    <el-divider></el-divider>
+                    <el-row>
+                        <PieChart />
+                    </el-row>
+                    <el-divider></el-divider>
+                    <el-row>
+                        <BarChart />
+                    </el-row>
+                </div>
+            </el-col>
+            <el-col :span="1"></el-col>
+            <el-col :span="7">
+                <div class="row">
+                    <div class="title">Yahoo</div>
+                    <el-divider></el-divider>
+                    <el-row>
+                        <PieChart />
+                    </el-row>
+                    <el-divider></el-divider>
+                    <el-row>
+                        <BarChart />
+                    </el-row>
+                </div>
+            </el-col>
+            <el-col :span="1"></el-col>
+            <el-col :span="7">
+                <div class="row">
+                    <div class="title">Amazon</div>
+                    <el-divider></el-divider>
+                    <el-row>
+                        <PieChart />
+                    </el-row>
+                    <el-divider></el-divider>
+                    <el-row>
+                        <BarChart />
+                    </el-row>
+                </div>
+            </el-col>
         </el-row>
-        <el-row>
-            <el-col :xs="24" :sm="24" :lg="8">
-                <div class="chart-wrapper">
-                    <raddar-chart />
-                </div>
-            </el-col>
-            <el-col :xs="24" :sm="24" :lg="8">
-                <div class="chart-wrapper">
-                    <pie-chart />
-                </div>
-            </el-col>
-            <el-col :xs="24" :sm="24" :lg="8">
-                <div class="chart-wrapper">
-                    <bar-chart />
-                </div>
-            </el-col>
-        </el-row>
+        <div class="row">
+            <div class="title">TOP ERROR</div>
+            <el-divider></el-divider>
+            <el-row>
+                <el-col :span="10">
+                    <PieChart />
+                </el-col>
+                <el-col :span="14"></el-col>
+            </el-row>
+        </div>
   </div>
 </template>
 
@@ -29,10 +92,8 @@
 import theme from '@/conf/theme'
 import Filter from '@/components/filter'
 
-import LineChart from './dashboard/LineChart'
-import RaddarChart from './dashboard/RaddarChart'
-import PieChart from './dashboard/PieChart'
-import BarChart from './dashboard/BarChart'
+import PieChart from '@/components/charts/common/pieChart'
+import BarChart from '@/components/charts/common/barChart'
 
 const lineChartData = {
   newVisitis: {
@@ -56,15 +117,16 @@ const lineChartData = {
 export default {
     components: {
         Filter,
-        LineChart,
-        RaddarChart,
         PieChart,
-        BarChart
+        BarChart,
     },
     data() {
         return {
             lineChartData: lineChartData.newVisitis,
-            theme
+            theme,
+            commonInfos: {
+                title: ['all_platform', 'all_project']
+            }
         }
     },
     methods: {
@@ -87,11 +149,24 @@ export default {
     }
 }
 
-.home .el-row {
-    padding: 10px;
+.home .row{
+    padding: 0 20px;
     margin-bottom: 15px;
     border-radius: 10px;
     box-shadow: 0px 3px 7px #D3DCE6;
     background-color: #F2F5F5;
+    text-align: center;
+}
+
+.home .title {
+    font-size: 130%;
+    text-align: left;
+    margin: 10px 5px 5px;
+    font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+}
+
+.home .el-divider {
+    margin: 5px;
 }
 </style>
