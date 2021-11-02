@@ -92,52 +92,53 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
-  background: url('../assets/loginBg.gif') no-repeat center center;
-  background-size: 100%;
+  /* background: url('../assets/loginBg.gif') no-repeat center center; */
+  /* background-size: 100%; */
+  background-color: #E9EEF3;
 }
 
 .ms-login {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 350px;
-  margin: -190px 0 0 -175px;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.3);
-  overflow: hidden;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 350px;
+    margin: -190px 0 0 -175px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.7);
+    overflow: hidden;
 }
 
 .ms-title {
-  width: 100%;
-  line-height: 50px;
-  text-align: center;
-  font-size: 20px;
-  color: #fff;
-  border-bottom: 1px solid #ddd;
+    width: 100%;
+    line-height: 50px;
+    text-align: center;
+    font-size: 20px;
+    color: #252526;
+    border-bottom: 1px solid #ddd;
 }
 
 .ms-content {
-  padding: 30px 30px;
+    padding: 30px 30px;
 }
 .login-btn,
 .login-reg {
-  text-align: center;
+    text-align: center;
 }
 .login-btn button,
 .login-reg button {
-  width: 100%;
-  height: 36px;
-  color: black;
-  margin-bottom: 10px;
+    width: 100%;
+    height: 36px;
+    color: black;
+    margin-bottom: 10px;
 }
 .login-tips {
-  text-align: center;
-  font-size: 12px;
-  line-height: 30px;
-  color: rgb(3, 70, 31);
+    text-align: center;
+    font-size: 12px;
+    line-height: 30px;
+    color: rgb(3, 70, 31);
 }
 
 .login-reg button {
-  background-color: deepskyblue;
+    background-color: deepskyblue;
 }
 </style>

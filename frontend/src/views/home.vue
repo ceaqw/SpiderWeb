@@ -1,24 +1,24 @@
 <template>
-    <div class="dashboard-editor-container">
+    <div class="home">
         <!-- 筛选条件布局 -->
         <Filter /> 
-        <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+        <el-row>
             <line-chart :chart-data="lineChartData" />
         </el-row>
-        <el-row :gutter="32">
+        <el-row>
             <el-col :xs="24" :sm="24" :lg="8">
                 <div class="chart-wrapper">
-                <raddar-chart />
+                    <raddar-chart />
                 </div>
             </el-col>
             <el-col :xs="24" :sm="24" :lg="8">
                 <div class="chart-wrapper">
-                <pie-chart />
+                    <pie-chart />
                 </div>
             </el-col>
             <el-col :xs="24" :sm="24" :lg="8">
                 <div class="chart-wrapper">
-                <bar-chart />
+                    <bar-chart />
                 </div>
             </el-col>
         </el-row>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import theme from '@/conf/theme'
 import Filter from '@/components/filter'
 
 import LineChart from './dashboard/LineChart'
@@ -62,7 +63,8 @@ export default {
     },
     data() {
         return {
-        lineChartData: lineChartData.newVisitis
+            lineChartData: lineChartData.newVisitis,
+            theme
         }
     },
     methods: {
@@ -74,20 +76,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.dashboard-editor-container {
+.home {
     width: auto;
     position: relative;
 
     .chart-wrapper {
-        background: #fff;
-        padding: 16px 16px 0;
+        // background: #fff;
+        // padding: 16px 16px 0;
         margin-bottom: 32px;
     }
 }
 
-@media (max-width:1024px) {
-  .chart-wrapper {
-      padding: 8px;
-  }
+.home .el-row {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 3px 7px #D3DCE6;
+    background-color: #F2F5F5;
 }
 </style>
