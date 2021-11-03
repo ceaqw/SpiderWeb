@@ -18,7 +18,7 @@ export default {
         },
         height: {
             type: String,
-            default: '300px'
+            default: '350px'
         }
     },
     data() {
@@ -85,6 +85,7 @@ export default {
     mounted() {
         this.$nextTick(() => {
             this.initChart()
+            window.addEventListener('resize', this.resize)
         })
     },
     beforeDestroy() {
@@ -93,11 +94,15 @@ export default {
         }
         this.chart.dispose()
         this.chart = null
+        window.removeEventListener('resize', this.resize)
     },
     methods: {
         initChart() {
             this.chart = echarts.init(this.$el)
             this.chart.setOption(this.option)
+        },
+        resize() {
+            this.chart.resize()
         }
     }
 }
