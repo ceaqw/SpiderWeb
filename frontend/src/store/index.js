@@ -1,12 +1,18 @@
-// 变量储存共享模块
+// 全局共享变量储存模块
 
 import { createStore } from 'vuex'
 
 export default createStore({
     state () {
         return {
-            // 默认游客权限
-            userAuth: 3
+            pollingInterval: 2,
+            dateRange: 3,
+            filterForm: {
+                dateRange: ['', ''],
+                platForm: 'all',
+                project: 'all',
+                showType: 1
+            }
         }
     },
     mutations: {

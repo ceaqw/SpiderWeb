@@ -64,7 +64,7 @@ export default {
         return {
             url: logo + '?' + +new Date(),
             user: getByKey('user'),
-            rateFalg: ['info', 'info', 'info'],
+            rateFalg: ['', '', 'primary'],
             rateSelect: ['30S', '60S', 'OFF']
         }
     },
@@ -73,6 +73,8 @@ export default {
             this.rateFalg[this.rateFalg.indexOf('primary')] = 'info'
             this.rateFalg[index] = 'primary'
             // TODO: 更新轮询机制
+            this.$store.state.pollingInterval = index
+            alert(this.$store.state.pollingInterval)
         },
         logout() {
             userService.logout()

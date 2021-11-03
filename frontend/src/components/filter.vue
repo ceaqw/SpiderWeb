@@ -17,32 +17,33 @@
             <el-collapse accordion style="width: 100%">
                 <el-collapse-item title="更多筛选" name="1">
                     <el-row>
-                        <el-col :span="6">
+                        <el-col :span="7">
                             <div class="demonstration">Start Date</div>
                             <el-date-picker
-                                v-model="value1"
+                                v-model="filterForm.dateRange"
                                 type="daterange"
                                 range-separator="至"
                                 start-placeholder="开始日期"
                                 end-placeholder="结束日期"
+                                value-format="YYYY-MM-DD"
                             >
                             </el-date-picker>
                         </el-col>
-                        <el-col :span="5">
+                        <el-col :span="6">
                             <div class="demonstration">平台</div>
-                            <el-select>
-                                <el-option v-for="(item, index) in platFormList" :key="index" :label="item.value || item.name" :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </el-col>
-                        <el-col :span="4">
-                            <div class="demonstration">项目</div>
-                            <el-select>
+                            <el-select v-model="filterForm.platForm">
                                 <el-option v-for="(item, index) in platFormList" :key="index" :label="item.value || item.name" :value="item.value">
                                 </el-option>
                             </el-select>
                         </el-col>
                         <el-col :span="3">
+                            <div class="demonstration">项目</div>
+                            <el-select v-model="filterForm.project">
+                                <el-option v-for="(item, index) in platFormList" :key="index" :label="item.value || item.name" :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-col>
+                        <el-col :span="4">
                             <div class="demonstration">显示类型</div>
                             <el-button-group>
                                 <el-button v-for="(showType, index) in showTypeSelect"
@@ -68,7 +69,6 @@
 </template>
 
 <script>
-
 export default {
     name: 'Filter',
     data () {
@@ -77,8 +77,12 @@ export default {
             rateFalg: ['', '', '', 'primary'],
             showTypeSelect: ['天', '小时'],
             showTypeFlag: ['', 'primary'],
-            value1: '',
-            value2: '',
+            filterForm: {
+                dateRange: ['', ''],
+                platForm: 'all',
+                project: 'all',
+                showType: 1
+            },
             platFormList: [
                 {name: 'all', value: 'all'},
                 {name: 'Rakuten', value: 'rakuten'},
@@ -99,7 +103,10 @@ export default {
             this.showTypeFlag[this.showTypeFlag.indexOf('primary')] = ''
             this.showTypeFlag[index] = 'primary'
             // TODO: 更新时间显示类型
-        }
+        },
+        search() {
+            alert(this.filterForm.dateRange)
+        },
     }
 }
 </script>
