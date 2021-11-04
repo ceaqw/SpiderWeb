@@ -65,7 +65,8 @@ export default {
                         type: 'pie',
                         radius: ['40%', '70%'],
                         avoidLabelOverlap: false,
-                        startAngle: 135,
+                        startAngle: 0,
+                        endAngle: 180,
                         label: {
                             show: false,
                             position: 'center'

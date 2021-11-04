@@ -6,9 +6,10 @@ export default createStore({
     state () {
         return {
             pollingInterval: 2,
-            dateRange: 3,
+            dateRangeType: 3,
             filterForm: {
-                dateRange: ['', ''],
+                startDate: '',
+                endDate: '',
                 platForm: 'all',
                 project: 'all',
                 showType: 1
