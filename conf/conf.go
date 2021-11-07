@@ -49,6 +49,11 @@ type LoggerCfg struct {
 	LogName string
 }
 
+type RedisCfg struct {
+	Addr     string
+	Password string
+}
+
 func GetMainDbCfg() (mainDbCfg MainDbCfg) {
 	mainDbCfg.UserName = viper.GetString("models.main_db.username")
 	mainDbCfg.Password = viper.GetString("models.main_db.password")
@@ -75,4 +80,14 @@ func GetLoggerCfg() (loggerCfg LoggerCfg) {
 	loggerCfg.LogPath = viper.GetString("logger.log_path")
 	loggerCfg.LogName = viper.GetString("logger.log_name")
 	return loggerCfg
+}
+
+func GetRedisCfg() (redisCfg RedisCfg) {
+	redisCfg.Addr = viper.GetString("models.redis.addr")
+	redisCfg.Password = viper.GetString("models.redis.password")
+	return redisCfg
+}
+
+func GetPageSize() int {
+	return viper.GetInt("base.page_size")
 }

@@ -13,7 +13,8 @@ export default createStore({
                 platForm: 'all',
                 project: 'all',
                 showType: 1
-            }
+            },
+            roles: [],
         }
     },
     mutations: {

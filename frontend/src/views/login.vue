@@ -21,11 +21,14 @@
                     </el-input>
                 </el-form-item>
                 <div class="login-btn">
-                    <el-button type="primary" @click="submitForm">登录</el-button>
+                    <el-button type="primary" @click="submitForm">
+                        <span v-if="!loading">登 录</span>
+                        <span v-else>登 录 中...</span>
+                    </el-button>
                 </div>
                 <p class="login-tips">没有账号？请先注册</p>
                 <div class="login-reg">
-                    <el-button type="primary" @click="registerMethod">注册</el-button>
+                    <el-button type="primary" @click="registerMethod">注 册</el-button>
                 </div>
                 <router-link to="/">暂不登录，游客预览</router-link>
             </el-form>

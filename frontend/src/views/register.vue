@@ -61,9 +61,9 @@ export default {
         }
         return {
             param: {
-                username: 'admin123',
-                password: 'admin123',
-                re_password: 'admin123'
+                username: '',
+                password: '',
+                re_password: ''
             },
             rules: {
                 username: [

@@ -70,7 +70,7 @@ var (
 
 // 载荷，可以加一些自己需要的信息
 type CustomClaims struct {
-	UserInfo response.UserResponse `json:"userInfo"`
+	UserInfo response.UserAllResponse `json:"userInfo"`
 	jwt.StandardClaims
 }
 
@@ -101,9 +101,9 @@ func (j *JWT) CreateToken(claims CustomClaims) (string, error) {
 func (j *JWT) CreateUserToken(user models.User) (string, error) {
 	jwtConfig := conf.GetJwtCfg()
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, CustomClaims{
-		UserInfo: response.UserResponse(user),
+		UserInfo: response.UserAllResponse(user),
 		StandardClaims: jwt.StandardClaims{
-			//当前配置超时1小时
+			//当前配置超时一周
 			ExpiresAt: time.Now().Add(jwtConfig.TimeOut * time.Minute).Unix(),
 			IssuedAt:  time.Now().Unix(),
 			Issuer:    jwtConfig.Issuer,

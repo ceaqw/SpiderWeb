@@ -1,54 +1,96 @@
 package v1
 
 import (
+	"SpiderWeb/models"
 	"SpiderWeb/models/req"
-	"SpiderWeb/modules/utils"
 	"SpiderWeb/services"
 	"SpiderWeb/services/resp"
-	"fmt"
+	"SpiderWeb/utils/redis_helper"
 
 	"github.com/gin-gonic/gin"
 )
 
 type User struct {
-	loginService services.LoginService
+	userService services.UserService
+	redisHelper redis_helper.RedisHelper
+	userModel   models.UserOrm
+	roleModel   models.RoleOrm
 }
 
 func (h User) Login(c *gin.Context) {
 	loginBody := req.LoginBody{}
 	if c.BindJSON(&loginBody) == nil {
-		m := make(map[string]string)
-		login, s := h.loginService.Login(loginBody.UserName, loginBody.Password)
+		result := make(map[string]interface{})
+		login, token, user := h.userService.Login(loginBody.UserName, loginBody.Password)
 		if login {
 			//将token存入到redis中
-			// user_util.SaveRedisToken(loginBody.UserName, s)
-			m["token"] = s
-			c.JSON(200, resp.Success(m))
+			h.redisHelper.SaveRedisToken(loginBody.UserName, token)
+			result["token"] = token
+			result["userAuth"] = user.Role
+			result["userId"] = user.Mid
+			c.JSON(200, resp.Success(result))
 		} else {
-			c.JSON(200, resp.ErrorResp(s))
+			c.JSON(200, resp.ErrorResp(token))
 		}
 	} else {
 		c.JSON(200, resp.ErrorResp(500, "参数绑定错误"))
 	}
 }
 
-func (h User) GetInfo(c *gin.Context) {
-	m := make(map[string]interface{})
-	user := h.loginService.LoginUser(c)
-	fmt.Println(user)
-	//查询用户角色集合
-	// roleKeys := a.permissionService.GetRolePermissionByUserId(user)
-	// 权限集合
-	// perms := a.permissionService.GetMenuPermission(user)
-	// m["roles"] = roleKeys
-	// m["permissions"] = perms
-	// m["user"] = user
-	c.JSON(200, resp.Success(m))
+func (h User) LoginOut(c *gin.Context) {
+	name, _ := c.Cookie("user")
+	if h.redisHelper.RemoveRedisToken(name) != nil {
+		resp.Error(c)
+	}
+	resp.OK(c)
 }
 
-func (h User) LoginOut(c *gin.Context) {
-	name := utils.UserUtils.GetUserInfo(utils.UserUtils{}, c).Name
-	fmt.Println(name)
-	// cache.RemoveKey(name)
-	resp.OK(c)
+func (h User) UserList(c *gin.Context) {
+	userListBody := req.UserListBody{}
+	if c.BindJSON(&userListBody) == nil {
+		userList, total := h.userModel.GetUserList(userListBody.Page, userListBody.PageSize)
+		result := make(map[string]interface{})
+		result["userList"] = userList
+		result["total"] = total
+		c.JSON(200, resp.Success(result))
+	} else {
+		c.JSON(200, resp.ErrorResp(500, "参数错误"))
+	}
+}
+
+func (h User) Option(c *gin.Context) {
+	optionBody := req.UserOption{}
+	if c.BindJSON(&optionBody) == nil {
+		user := models.User{}
+
+		if optionBody.Option == "del" {
+			user.Status = 1
+			user.DelFlag = 1
+		} else if optionBody.Option == "recover" {
+			user.Status = 0
+			user.DelFlag = 0
+		} else if optionBody.Option == "role" {
+			user.Role = uint8(optionBody.Role)
+		}
+		var err error
+		if optionBody.Option == "role" {
+			_, err = h.userModel.UpdateInfo(uint64(optionBody.Mid), user, "role")
+		} else {
+			_, err = h.userModel.UpdateInfo(uint64(optionBody.Mid), user, "status", "del_flag")
+		}
+		if err != nil {
+			c.JSON(200, resp.ErrorResp(500, "操作执行错误"))
+		} else {
+			resp.OK(c)
+		}
+	} else {
+		c.JSON(200, resp.ErrorResp(500, "参数错误"))
+	}
+}
+
+func (h User) GetRoles(c *gin.Context) {
+	roles := h.roleModel.GetRoles()
+	result := make(map[string]interface{})
+	result["roles"] = roles
+	c.JSON(200, resp.Success(result))
 }

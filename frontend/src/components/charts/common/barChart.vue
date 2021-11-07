@@ -26,10 +26,8 @@ export default {
             chart: null,
             option: {
                 tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'shadow'
-                    }
+                    trigger: 'item',
+                    backgroundColor: 'rgba(255,255,255,0.8)'
                 },
                 legend: {},
                 grid: {

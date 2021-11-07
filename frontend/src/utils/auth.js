@@ -3,7 +3,7 @@ import router from '@/route/index'
 import {sideItem} from '@/store/routerAuth'
 // import store from '../store'
 
-const TokenKey = 'Admin-Token'
+const TokenKey = 'userToken'
 
 export function getToken() {
     return getByKey(TokenKey)

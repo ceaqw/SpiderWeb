@@ -32,6 +32,10 @@ func init() {
 		panic(fmt.Sprintf("db connect error: %#v\n", err.Error()))
 	}
 	// MainSqlDb.ShowSQL(true)
+	err = MainSqlDb.Sync(new(Role), new(User))
+	if err != nil {
+		panic(fmt.Sprintf("db sync error: %#v\n", err.Error()))
+	}
 }
 
 func (BaseDB) Query(sql string) ([]map[string][]byte, error) {
