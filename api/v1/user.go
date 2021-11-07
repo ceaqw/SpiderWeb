@@ -7,6 +7,7 @@ import (
 	"SpiderWeb/services/resp"
 	"SpiderWeb/utils/redis_helper"
 
+	"github.com/druidcaesa/gotool"
 	"github.com/gin-gonic/gin"
 )
 
@@ -93,4 +94,35 @@ func (h User) GetRoles(c *gin.Context) {
 	result := make(map[string]interface{})
 	result["roles"] = roles
 	c.JSON(200, resp.Success(result))
+}
+
+func (h User) Register(c *gin.Context) {
+	user := models.User{}
+	if c.BindJSON(&user) == nil {
+		user.Password = string(gotool.BcryptUtils.Generate(user.Password))
+		if h.userModel.AddUser(user) != nil {
+			c.JSON(200, resp.ErrorResp(500, "新增用户失败"))
+		} else {
+			resp.OK(c)
+		}
+	} else {
+		c.JSON(200, resp.ErrorResp(500, "参数错误"))
+	}
+}
+
+func (h User) Validator(c *gin.Context) {
+	optionTpye := c.Param("type")
+	user := models.User{}
+	user.Name = c.Query("name")
+	if user.Name != "" {
+		if optionTpye == "name" {
+			if h.userModel.GetUserByUserName(user) != nil {
+				c.JSON(200, resp.ErrorResp(200, "exits"))
+			} else {
+				c.JSON(200, resp.ErrorResp(200, "ok"))
+			}
+		}
+	} else {
+		c.JSON(200, resp.ErrorResp(500, "参数错误"))
+	}
 }

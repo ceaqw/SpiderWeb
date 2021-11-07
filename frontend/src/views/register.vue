@@ -7,8 +7,8 @@
                ref="login"
                label-width="0px"
                class="ms-content">
-        <el-form-item prop="username">
-          <el-input v-model="param.username"
+        <el-form-item prop="name">
+          <el-input v-model="param.name"
                     placeholder="用户名"
                     @keyup.enter="submitForm">
             <el-button icon="el-icon-lx-people"></el-button>
@@ -43,15 +43,15 @@
 
 <script>
 // import Cookie from 'js-cookie'
-import { login } from '@/service/user'
-import { passwordReg } from '@/utils/check'
+import userService from '@/service/user'
+import check from '@/utils/check'
 
 export default {
     props: ['title'],
     data() {
-        let reg = passwordReg
+        let regPass = check.passwordReg
         let validateRePwd = (rule, value, callback) => {
-            if (!reg.test(value)) {
+            if (!regPass.test(value)) {
                 callback(new Error('密码应是6-12位数字、字母或字符！'))
             } else if (this.param.password != value) {
                 callback(new Error('两次输入密码不一致！'))
@@ -61,12 +61,13 @@ export default {
         }
         return {
             param: {
-                username: '',
+                name: '',
                 password: '',
-                re_password: ''
+                re_password: '',
+                allow: false
             },
             rules: {
-                username: [
+                name: [
                     { required: true, message: '请输入用户名', trigger: 'blur' },
                     { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' },
                 ],
@@ -75,7 +76,7 @@ export default {
                     { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' },
                     {
                         required: true,
-                        pattern: reg,
+                        pattern: regPass,
                         message: '密码应是6-12位数字、字母或字符！',
                         trigger: 'blur'
                     }
@@ -90,16 +91,21 @@ export default {
     },
     methods: {
         submitForm() {
-            this.$refs.login.validate((valid) => {
-                if (valid) {
-                    this.loading = true
-                    localStorage.setItem('username', this.param.username)
-                    login(this.param)
-                } else {
-                    this.$message.error('请检查输入')
-                    return false
-                }
-            })
+            if (this.param.allow == false) {
+                check.validateName(this.param)
+            }
+            if (this.param.allow) {
+                this.$refs.login.validate((valid) => {
+                    if (valid) {
+                        this.loading = true
+                        userService.register(this.param)
+                        this.$router.replace('/login')
+                    } else {
+                        this.$message.error('请检查输入')
+                        return false
+                    }
+                })
+            }
         }
     }
 }
@@ -110,7 +116,8 @@ export default {
   position:absolute;
   width: 100%;
   height: 100%;
-  background: url('../assets/loginBg.gif') no-repeat center center;
+  /* background: url('../assets/loginBg.gif') no-repeat center center; */
+  background-color: #E9EEF3;
   background-size: 100%;
 }
 .ms-title {
@@ -119,7 +126,7 @@ export default {
   text-align: center;
   font-size: 20px;
   /* color: rgb(55, 66, 59); */
-  color: #fff;
+  color: #252526;
   border-bottom: 1px solid #ddd;
 }
 .ms-login {
@@ -129,7 +136,7 @@ export default {
   width: 350px;
   margin: -190px 0 0 -175px;
   border-radius: 5px;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.7);
   overflow: hidden;
 }
 .ms-content {

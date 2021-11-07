@@ -17,5 +17,7 @@ func initUserRouter(router *gin.RouterGroup) {
 		userRouter.POST("/userList", userApi.UserList)
 		userRouter.POST("/option", userApi.Option)
 		userRouter.POST("/getRoles", userApi.GetRoles)
+		userRouter.POST("/register", userApi.Register)
+		userRouter.GET("/validator/:type", userApi.Validator)
 	}
 }

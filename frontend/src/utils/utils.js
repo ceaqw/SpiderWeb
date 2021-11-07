@@ -7,7 +7,7 @@ const utils = {
         // 监测是否需要刷新
         if (store.state.roles.length == 0) {
             userApi.getRoles().then((result) => {
-                const roles = result.roles
+                const roles = result.data.roles
                 for (const index in roles) {
                     store.state.roles.push(roles[index])
                 }

@@ -38,13 +38,13 @@
 
 <script>
 import userService from '@/service/user'
-import { passwordReg } from '@/utils/check'
+import reg from '@/utils/check'
 import { setByKey } from '@/utils/cookie'
 
 export default {
     props: ['title'],
     data() {
-        let reg = passwordReg
+        let regPass = reg.passwordReg
         return {
             form: {
                 username: '',
@@ -60,7 +60,7 @@ export default {
                     { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' },
                     {
                         required: true,
-                        pattern: reg,
+                        pattern: regPass,
                         message: '密码应是6-12位数字、字母或字符！',
                         trigger: 'blur'
                     }

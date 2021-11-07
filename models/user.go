@@ -10,7 +10,7 @@ import (
 
 type User struct {
 	Mid            uint64    `xorm:"pk autoincr" json:"mid"`
-	Name           string    `xorm:"varchar(255)" json:"name"`
+	Name           string    `xorm:"varchar(255) notnull unique" json:"name"`
 	Password       string    `xorm:"varchar(255)" json:"-"`
 	OriginPassword string    `xorm:"varchar(255)" json:"-"`
 	Data           string    `xorm:"text" json:"data"`
@@ -62,4 +62,9 @@ func (m UserOrm) GetUserList(page int, pageSize int) ([]response.UserListRespons
 	total, _ := MainSqlDb.Where("1=1").Count(new(User))
 	MainSqlDb.Cols("mid", "name", "status", "role").Where("1=1").Limit(pageSize, pageSize*(page-1)).Find(&users)
 	return users, total
+}
+
+func (m UserOrm) AddUser(user User) error {
+	_, err := MainSqlDb.InsertOne(user)
+	return err
 }

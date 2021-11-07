@@ -1,9 +1,13 @@
-import { post } from '@/utils/request'
+import { post, get } from '@/utils/request'
 
 const preUrl = '/api/v1/user'
 
 const basePost = (router, data) => {
     return post(preUrl + router, data)
+}
+
+const baseGet = (router, data) => {
+    return get(preUrl + router, data)
 }
 
 const userApi = {
@@ -22,6 +26,12 @@ const userApi = {
     getRoles: (data) => {
         return basePost('/getRoles', data)
     },
+    register: (data) => {
+        return basePost('/register', data)
+    },
+    validator: (data) => {
+        return baseGet('/validator/' + data.type, data)
+    }
 }
 
 export default userApi

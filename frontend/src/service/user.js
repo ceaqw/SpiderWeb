@@ -10,16 +10,12 @@ import { ElMessage } from 'element-plus'
 const userService = {
     login: (data) => {
         userApi.login(data).then((result) => {
-            setToken(result['token'])
+            setToken(result.data.token)
             // TODO: 更新用户权限值
-            setByKey('userAuth', result['userAuth'])
-            setByKey('userId', result['userId'])
+            setByKey('userAuth', result.data.userAuth)
+            setByKey('userId', result.data.userId)
             router.push('/')
         }).catch((err) => {
-            // ElMessage({
-            //     message: '登录处理异常，请稍后重试',
-            //     type: 'error'
-            // })
             console.log(err)
         })
     },
@@ -40,17 +36,17 @@ const userService = {
     userList: (data, resp) => {
         userApi.userList(data).then((result) => {
             resp.datas = []
-            const userList = result['userList']
+            const userList = result.data.userList
             for (const index in userList) {
                 resp.datas.push(userList[index])
             }
-            resp.totalNumber = result['total']
+            resp.totalNumber = result.data.total
         }).catch((err) => {
             console.log(err)
         })
     },
     option: (data, resp) => {
-        userApi.option(data).then(() => {
+        userApi.option(data).then((result) => {
             if (data.option != 'role') {
                 for (const index in resp.datas) {
                     if (resp.datas[index].mid == data.mid) {
@@ -63,13 +59,42 @@ const userService = {
                     setByKey('userAuth', data.role)
                 }
             }
-            ElMessage({
-                message: '操作成功',
-                type: 'success'
-            })
+            if (result.status == 200) {
+                ElMessage({
+                    message: '操作成功',
+                    type: 'success'
+                })
+            }
         }).catch((err) => {
             console.log(err)
         })
+    },
+    register: (data) => {
+        userApi.register(data).then((result) => {
+            if (result.status == 200) {
+                ElMessage({
+                    message: '注册成功',
+                    type: 'success'
+                })
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+    },
+    validateName: (data) => {
+        userApi.validator({name: data.name, type: 'name'}).then((result) => {
+            if (result.status == 200 && result.msg == 'ok') {
+                data.allow = true
+            } else if (result.msg == 'exits') {
+                ElMessage({
+                    message: '用户名已存在',
+                    type: 'error'
+                })
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+        console.log(data)
     }
 }
 

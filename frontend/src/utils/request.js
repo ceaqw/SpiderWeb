@@ -72,7 +72,7 @@ axios.interceptors.response.use(
             })
             return 'error'
         } else {
-            return res.data
+            return res
         }  
     }, 
     error => {
