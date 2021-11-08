@@ -32,7 +32,7 @@
         </el-form-item>
         <div class="login-reg">
           <el-button type="primary" @click="submitForm">
-                <span v-if="!loading">注 册</span>
+                <span v-if="!param.loading">注 册</span>
                 <span v-else>注 册 中...</span>
           </el-button>
         </div>
@@ -64,7 +64,8 @@ export default {
                 name: '',
                 password: '',
                 re_password: '',
-                allow: false
+                login: true,
+                loading: false
             },
             rules: {
                 name: [
@@ -86,26 +87,19 @@ export default {
                     { validator: validateRePwd, trigger: 'blur' }
                 ]
             },
-            loading: false
         }
     },
     methods: {
         submitForm() {
-            if (this.param.allow == false) {
-                check.validateName(this.param)
-            }
-            if (this.param.allow) {
-                this.$refs.login.validate((valid) => {
-                    if (valid) {
-                        this.loading = true
-                        userService.register(this.param)
-                        this.$router.replace('/login')
-                    } else {
-                        this.$message.error('请检查输入')
-                        return false
-                    }
-                })
-            }
+            this.$refs.login.validate((valid) => {
+                if (valid) {
+                    this.param.loading = true
+                    userService.register(this.param)
+                } else {
+                    this.$message.error('请检查输入')
+                    return false
+                }
+            })
         }
     }
 }

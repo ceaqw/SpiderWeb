@@ -11,7 +11,7 @@ import (
 type User struct {
 	Mid            uint64    `xorm:"pk autoincr" json:"mid"`
 	Name           string    `xorm:"varchar(255) notnull unique" json:"name"`
-	Password       string    `xorm:"varchar(255)" json:"-"`
+	Password       string    `xorm:"varchar(255)" json:"password"`
 	OriginPassword string    `xorm:"varchar(255)" json:"-"`
 	Data           string    `xorm:"text" json:"data"`
 	Sessions       string    `xorm:"varchar(1000)" json:"sessions"`
@@ -38,8 +38,9 @@ func (User) TableName() string {
 	return "member"
 }
 
-func (m UserOrm) GetUserByUserName(user User) *User {
-	row, err := MainSqlDb.Get(&user)
+func (m UserOrm) GetUserByUserName(userName string) *User {
+	user := User{}
+	row, err := MainSqlDb.Where("name = ?", userName).Get(&user)
 
 	if err != nil {
 		gotool.Logs.ErrorLog().Println(err)
@@ -65,6 +66,9 @@ func (m UserOrm) GetUserList(page int, pageSize int) ([]response.UserListRespons
 }
 
 func (m UserOrm) AddUser(user User) error {
+	if user.Role == 0 {
+		user.Role = 2
+	}
 	_, err := MainSqlDb.InsertOne(user)
 	return err
 }

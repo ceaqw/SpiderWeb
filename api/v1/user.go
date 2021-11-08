@@ -99,11 +99,15 @@ func (h User) GetRoles(c *gin.Context) {
 func (h User) Register(c *gin.Context) {
 	user := models.User{}
 	if c.BindJSON(&user) == nil {
-		user.Password = string(gotool.BcryptUtils.Generate(user.Password))
-		if h.userModel.AddUser(user) != nil {
-			c.JSON(200, resp.ErrorResp(500, "新增用户失败"))
+		if h.userModel.GetUserByUserName(user.Name) != nil {
+			c.JSON(200, resp.ErrorResp(500, "用户已存在"))
 		} else {
-			resp.OK(c)
+			user.Password = string(gotool.BcryptUtils.Generate(user.Password))
+			if h.userModel.AddUser(user) != nil {
+				c.JSON(200, resp.ErrorResp(500, "新增用户失败"))
+			} else {
+				resp.OK(c)
+			}
 		}
 	} else {
 		c.JSON(200, resp.ErrorResp(500, "参数错误"))
@@ -116,7 +120,7 @@ func (h User) Validator(c *gin.Context) {
 	user.Name = c.Query("name")
 	if user.Name != "" {
 		if optionTpye == "name" {
-			if h.userModel.GetUserByUserName(user) != nil {
+			if h.userModel.GetUserByUserName(user.Name) != nil {
 				c.JSON(200, resp.ErrorResp(200, "exits"))
 			} else {
 				c.JSON(200, resp.ErrorResp(200, "ok"))

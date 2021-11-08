@@ -17,7 +17,7 @@ type UserService struct {
 func (s UserService) GetUserByUserName(name string) *models.User {
 	user := models.User{}
 	user.Name = name
-	return s.userModel.GetUserByUserName(user)
+	return s.userModel.GetUserByUserName(user.Name)
 }
 
 func (s UserService) Login(name string, password string) (bool, string, models.User) {

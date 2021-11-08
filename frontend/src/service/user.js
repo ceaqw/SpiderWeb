@@ -76,8 +76,12 @@ const userService = {
                     message: '注册成功',
                     type: 'success'
                 })
+                if (data.login) {
+                    router.replace('/login')
+                } 
             }
         }).catch((err) => {
+            data.loading = false
             console.log(err)
         })
     },
