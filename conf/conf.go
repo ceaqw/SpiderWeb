@@ -54,6 +54,10 @@ type RedisCfg struct {
 	Password string
 }
 
+func GetApiVersion() string {
+	return viper.GetString("service.api_version")
+}
+
 func GetMainDbCfg() (mainDbCfg MainDbCfg) {
 	mainDbCfg.UserName = viper.GetString("models.main_db.username")
 	mainDbCfg.Password = viper.GetString("models.main_db.password")

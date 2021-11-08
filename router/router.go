@@ -1,7 +1,9 @@
 package router
 
 import (
+	"SpiderWeb/conf"
 	"SpiderWeb/middleware/logger"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,8 +14,9 @@ func Init() *gin.Engine {
 	// router.Use(jwt.JWTAuth())
 	// 日志记录
 	router.Use(logger.LoggerToFile())
-	// vi版本api
-	v1Router := router.Group("/api/v1")
+	// 版本api
+	apiVersion := conf.GetApiVersion()
+	v1Router := router.Group(fmt.Sprintf("/api/%s", apiVersion))
 
 	{
 		initUserRouter(v1Router)

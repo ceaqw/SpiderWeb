@@ -2,6 +2,7 @@ version: 1.0.0
 service:
   port: 8000
   host: 0.0.0.0
+  api_vsersion: v1
 models:
   main_db:
     host: 127.0.0.1
