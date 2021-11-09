@@ -22,8 +22,8 @@
                 </el-form-item>
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm">
-                        <span v-if="!loading">登 录</span>
-                        <span v-else>登 录 中...</span>
+                        <span>登 录 <i class="el-icon-loading" v-if="form.loading"></i></span>
+                        <!-- <span v-else>登 录 中...</span> -->
                     </el-button>
                 </div>
                 <p class="login-tips">没有账号？请先注册</p>
@@ -48,7 +48,8 @@ export default {
         return {
             form: {
                 username: '',
-                password: ''
+                password: '',
+                loading: false
             },
             rules: {
                 username: [
@@ -66,16 +67,14 @@ export default {
                     }
                 ]
             },
-            loading: false
         }
     },
     methods: {
         submitForm() {
             this.$refs.login.validate((valid) => {
                 if (valid) {
-                    this.loading = true
+                    this.form.loading = true
                     userService.login(this.form)
-                    setByKey('user', this.form.username)
                 } else {
                     this.$message.error('请检查输入')
                     return false

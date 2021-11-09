@@ -11,11 +11,12 @@ const userService = {
     login: (data) => {
         userApi.login(data).then((result) => {
             setToken(result.data.token)
-            // TODO: 更新用户权限值
             setByKey('userAuth', result.data.userAuth)
             setByKey('userId', result.data.userId)
+            setByKey('user', data.username)
             router.push('/')
         }).catch((err) => {
+            data.loading = false
             console.log(err)
         })
     },

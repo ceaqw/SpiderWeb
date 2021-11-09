@@ -20,10 +20,10 @@ func (s UserService) GetUserByUserName(name string) *models.User {
 	return s.userModel.GetUserByUserName(user.Name)
 }
 
-func (s UserService) Login(name string, password string) (bool, string, models.User) {
+func (s UserService) Login(name string, password string) (bool, string, *models.User) {
 	user := s.GetUserByUserName(name)
 	if user == nil || !gotool.BcryptUtils.CompareHash(user.Password, password) {
-		return false, "用户名或密码错误", *user
+		return false, "用户名或密码错误", user
 	}
 	// 更新登陆信息
 	user.LoginTimes += 1
@@ -33,8 +33,8 @@ func (s UserService) Login(name string, password string) (bool, string, models.U
 	token, err := jwt.NewJWT().CreateUserToken(*user)
 	if err != nil {
 		gotool.Logs.ErrorLog().Println(err)
-		return false, "", *user
+		return false, "", user
 	}
 	//数据存储到redis中
-	return true, token, *user
+	return true, token, user
 }

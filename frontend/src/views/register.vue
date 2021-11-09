@@ -32,8 +32,7 @@
         </el-form-item>
         <div class="login-reg">
           <el-button type="primary" @click="submitForm">
-                <span v-if="!param.loading">注 册</span>
-                <span v-else>注 册 中...</span>
+                <span>注 册 <i class="el-icon-loading" v-if="param.loading"></span>
           </el-button>
         </div>
       </el-form>
