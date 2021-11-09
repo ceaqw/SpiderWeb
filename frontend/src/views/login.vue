@@ -23,7 +23,6 @@
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm">
                         <span>登 录 <i class="el-icon-loading" v-if="form.loading"></i></span>
-                        <!-- <span v-else>登 录 中...</span> -->
                     </el-button>
                 </div>
                 <p class="login-tips">没有账号？请先注册</p>
@@ -39,7 +38,6 @@
 <script>
 import userService from '@/service/user'
 import reg from '@/utils/check'
-import { setByKey } from '@/utils/cookie'
 
 export default {
     props: ['title'],
