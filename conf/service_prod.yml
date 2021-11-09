@@ -4,6 +4,16 @@ service:
   host: 0.0.0.0
   api_version: v1
 models:
+  # redis集群master主机列表
+  redis:
+    addrs: 
+      - 127.0.0.1:6379
+      - host:port
+    password: ''
+    cluster_mode: true
+    dial_timeout: 100
+    read_timeout: 100
+    write_timeout: 100
   main_db:
     host: 127.0.0.1
     port: 3306

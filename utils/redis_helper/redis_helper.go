@@ -13,25 +13,47 @@ type RedisHelper struct {
 }
 
 var (
-	Redis *redis.Client
+	Redis        *redis.Client
+	RedisCluster *redis.ClusterClient
 )
 
 func init() {
-	Redis = NewRedisHelper()
+	redisCfg := conf.GetRedisCfg()
+	if redisCfg.ClusterMode == true {
+		RedisCluster = NewRedisClusterHelper(redisCfg)
+	} else {
+		Redis = NewRedisHelper(redisCfg)
+	}
 }
 
-func NewRedisHelper() *redis.Client {
-	addr := conf.GetRedisCfg()
+func NewRedisHelper(redisCfg conf.RedisCfg) *redis.Client {
 	client := redis.NewClient(&redis.Options{
-		Addr:     addr.Addr,
-		Password: addr.Password,
-		DB:       0,
+		Addr:         redisCfg.Addrs[0],
+		Password:     redisCfg.Password,
+		DB:           0,
+		DialTimeout:  redisCfg.DialTimeout,
+		ReadTimeout:  redisCfg.ReadTimeout,
+		WriteTimeout: redisCfg.WriteTimeout,
 	})
 	_, err := client.Ping().Result()
 	if err != nil {
 		panic(fmt.Sprintf("redis connect error: %#v\n", err.Error()))
 	}
 	return client
+}
+
+func NewRedisClusterHelper(redisCfg conf.RedisCfg) *redis.ClusterClient {
+	clusterClient := redis.NewClusterClient(&redis.ClusterOptions{
+		Addrs:        redisCfg.Addrs,
+		Password:     redisCfg.Password,
+		DialTimeout:  redisCfg.DialTimeout,
+		ReadTimeout:  redisCfg.ReadTimeout,
+		WriteTimeout: redisCfg.WriteTimeout,
+	})
+	if _, err := clusterClient.Ping().Result(); err != nil {
+		panic(fmt.Sprintf("redis connect error: %#v\n", err.Error()))
+	}
+	return clusterClient
 }
 
 func (h RedisHelper) SaveRedisToken(user string, token string) error {

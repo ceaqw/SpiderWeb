@@ -4,7 +4,6 @@
 
 <script>
 import * as echarts from 'echarts'
-import theme from '@/conf/theme'
 
 export default {
     props: {
@@ -19,11 +18,14 @@ export default {
         height: {
             type: String,
             default: '350px'
-        }
+        },
+        options: {
+            type: Object
+        },
     },
     data() {
         return {
-            chart: null
+            chart: null,
         }
     },
     mounted() {
@@ -44,66 +46,7 @@ export default {
         initChart() {
             this.chart = echarts.init(this.$el)
 
-            this.chart.setOption({
-                title: {
-                    text: 'Access From',
-                    left: 'center',
-                    textStyle: {
-                        color: theme.color.black
-                    }
-                },
-                tooltip: {
-                    trigger: 'item',
-                    backgroundColor: 'rgba(255,255,255,0.8)'
-                },
-                legend: {
-                    orient: 'vertical',
-                    left: 'left'
-                },
-                series: [
-                    {
-                        type: 'pie',
-                        radius: ['40%', '70%'],
-                        avoidLabelOverlap: false,
-                        startAngle: 0,
-                        endAngle: 180,
-                        label: {
-                            show: false,
-                            position: 'center'
-                        },
-                        labelLine: {
-                            show: false
-                        },
-                        emphasis: {
-                            label: {
-                                show: true,
-                                fontSize: '40',
-                                fontWeight: 'bold'
-                            }
-                        },
-                        data: [
-                            { 
-                                value: 1048, name: 'success',
-                                itemStyle: {
-                                    color: theme.color.success
-                                },
-                            },
-                            { 
-                                value: 735, name: 'fail',
-                                itemStyle: {
-                                    color: theme.color.danger
-                                },
-                            },
-                            {
-                                value: 580, name: 'undone',
-                                itemStyle: {
-                                    color: theme.color.undone
-                                },
-                            }
-                        ]
-                    }
-                ]
-            })
+            this.chart.setOption(this.options)
         },
         resize() {
             this.chart.resize()
