@@ -13,39 +13,39 @@ models:
     charset: utf8
     driver: mysql
   db: 
-    host: 172.30.3.22
+    host: 0.0.0.0
     port: 3306
     database: spider
     username: spider
-    password: CrawlerStat2049#
+    password: xxx
     charset: utf8
   spiderdb: 
-    host: 160.16.117.238
+    host: 0.0.0.0
     port: 3306
     database: spider
     username: spider
-    password: 0Wjd15QS11FWMFS
+    password: xxx
     charset: utf8
   dbinternet: 
-    host: 52.69.244.9
+    host: 0.0.0.0
     port: 3306
     database: spider
     username: spider
-    password: CrawlerStat2049#
+    password: xxx
     charset: utf8
   dbcn: 
-    host: 192.168.3.93
+    host: 0.0.0.0
     port: 3306
     database: spider_task
     username: spider_task
-    password: SPI094bt
+    password: xxx
     charset: utf8
   dbweb: 
-    host: 172.30.3.21
-    port: 33306
+    host: 0.0.0.0
+    port: 3306
     database: spider_task
     username: spider_task
-    password: SPI094bt
+    password: xxx
     charset: utf8
 jwt: 
   time_out: 60
