@@ -85,6 +85,24 @@
                 <el-col :span="14"></el-col>
             </el-row>
         </div>
+        <div class="row">
+            <div class="title">关键 KPI</div>
+            <el-divider></el-divider>
+            <el-table :data="kpiDatas.datas" stripe style="width: 100%">
+                <el-table-column prop="project" label="项目"> </el-table-column>
+                <el-table-column prop="kpi" label="Kpi"> </el-table-column>
+                <el-table-column label="占比">
+                    <template #default="scope">
+                        <span>{{ scope.row.rate }}%</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="查看">
+                    <template #default="scope">
+                        <el-button icon="el-icon-view" size="medium" type="primary" title="查看" @click.prevent="view(scope.row)"></el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
   </div>
 </template>
 
@@ -126,12 +144,24 @@ export default {
             theme,
             commonInfos: {
                 title: ['all_platform', 'all_project']
+            },
+            kpiDatas: {
+                datas: [
+                    {project: 'item_category', kpi: 'content_empty', rate: '55.37'},
+                    {project: 'lohaco_item', kpi: 'single_tax', rate: '100'},
+                    {project: 'lohaco_item', kpi: '	single_price', rate: '100'},
+                    {project: 'lohaco_item', kpi: 'coupon', rate: '100'},
+                    {project: 'lohaco_item', kpi: 'rank_cid', rate: '100'},
+                ]
             }
         }
     },
     methods: {
         handleSetLineChartData(type) {
-        this.lineChartData = lineChartData[type]
+            this.lineChartData = lineChartData[type]
+        },
+        view(rowData) {
+            alert(rowData.project)
         }
   }
 }
