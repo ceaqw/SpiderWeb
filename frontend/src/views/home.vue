@@ -7,13 +7,13 @@
             <el-divider></el-divider>
             <el-row>
                 <el-col :span="10">
-                    <PieChart :options="this.options.allPlatForm.pieOption" />
+                    <PieChart :chartDatas="this.chartDatas.allPlatFormDatas" />
                 </el-col>
                 <!-- <el-col :span="1">
                     <el-divider direction="vertical" style="height: 100%"></el-divider>
                 </el-col> -->
                 <el-col :span="14">
-                    <BarChart :options="this.options.allPlatForm.barOption" />
+                    <BarChart :chartDatas="this.chartDatas.allPlatFormDatas" />
                 </el-col>
             </el-row>
         </div>
@@ -22,13 +22,13 @@
             <el-divider></el-divider>
             <el-row>
                 <el-col :span="10">
-                    <PieChart :options="this.options.allPlatForm.pieOption" />
+                    <PieChart :chartDatas="this.chartDatas.allPlatFormDatas" />
                 </el-col>
                 <!-- <el-col :span="1">
                     <el-divider direction="vertical" style="height: 100%"></el-divider>
                 </el-col> -->
                 <el-col :span="14">
-                    <BarChart :options="this.options.allPlatForm.barOption" />
+                    <BarChart :chartDatas="this.chartDatas.allPlatFormDatas" />
                 </el-col>
             </el-row>
         </div>
@@ -38,11 +38,11 @@
                     <div class="title">Rakuten</div>
                     <el-divider></el-divider>
                     <el-row>
-                        <PieChart :options="this.options.allPlatForm.pieOption" />
+                        <PieChart :chartDatas="this.chartDatas.allPlatFormDatas" />
                     </el-row>
                     <el-divider></el-divider>
                     <el-row>
-                        <BarChart :options="this.options.allPlatForm.barOption" />
+                        <BarChart :chartDatas="this.chartDatas.allPlatFormDatas" />
                     </el-row>
                 </div>
             </el-col>
@@ -52,11 +52,11 @@
                     <div class="title">Yahoo</div>
                     <el-divider></el-divider>
                     <el-row>
-                        <PieChart :options="this.options.allPlatForm.pieOption" />
+                        <PieChart :chartDatas="this.chartDatas.allPlatFormDatas" />
                     </el-row>
                     <el-divider></el-divider>
                     <el-row>
-                        <BarChart :options="this.options.allPlatForm.barOption" />
+                        <BarChart :chartDatas="this.chartDatas.allPlatFormDatas" />
                     </el-row>
                 </div>
             </el-col>
@@ -66,11 +66,11 @@
                     <div class="title">Amazon</div>
                     <el-divider></el-divider>
                     <el-row>
-                        <PieChart :options="this.options.allPlatForm.pieOption" />
+                        <PieChart :chartDatas="this.chartDatas.allPlatFormDatas" />
                     </el-row>
                     <el-divider></el-divider>
                     <el-row>
-                        <BarChart :options="this.options.allPlatForm.barOption" />
+                        <BarChart :chartDatas="this.chartDatas.allPlatFormDatas" />
                     </el-row>
                 </div>
             </el-col>
@@ -80,7 +80,7 @@
             <el-divider></el-divider>
             <el-row>
                 <el-col :span="10">
-                    <PieChart :options="this.options.allPlatForm.pieOption" />
+                    <PieChart :chartDatas="this.chartDatas.allPlatFormDatas" />
                 </el-col>
                 <el-col :span="14"></el-col>
             </el-row>
@@ -113,8 +113,7 @@ import Filter from '@/components/filter'
 import PieChart from '@/components/charts/common/pieChart'
 import BarChart from '@/components/charts/common/barChart'
 
-import { allPlatFormOption } from './chart/options'
-import { allPlatFormDatas } from './datas/home'
+import { allPlatFormDatas } from '../service/datas/home'
 
 export default {
     components: {
@@ -137,18 +136,8 @@ export default {
                     {project: 'lohaco_item', kpi: 'rank_cid', rate: '100'},
                 ]
             },
-            options: {
-                allPlatForm: (() => {
-                    const datas = allPlatFormDatas()
-                    let pieOption = allPlatFormOption.pieOption
-                    pieOption.series[0].data = datas.pieDatas
-                    let barOption = allPlatFormOption.barOption
-                    barOption.xAxis[0].data = datas.barDatas.xData
-                    for (const index in datas.barDatas.yData) {
-                        barOption.series[index].data = datas.barDatas.yData[index]
-                    }
-                    return {pieOption, barOption}
-                })()
+            chartDatas: {
+                allPlatFormDatas
             }
         }
     },

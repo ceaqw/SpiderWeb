@@ -21,8 +21,57 @@ export default {
             default: '350px'
         },
         options: {
-            type: Object
+            type: Object,
+            default: {
+                tooltip: {
+                    trigger: 'item',
+                    backgroundColor: 'rgba(255,255,255,0.8)'
+                },
+                legend: {},
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: [{type: 'category', data: []}],
+                yAxis: [{type: 'value'}],
+                series: 
+                [
+                    {
+                        name: 'Success',
+                        type: 'bar',
+                        stack: 'Task',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: []
+                    },
+                    {
+                        name: 'Fail',
+                        type: 'bar',
+                        stack: 'Task',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: []
+                    },
+                    {
+                        name: 'Undone',
+                        type: 'bar',
+                        stack: 'Task',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: []
+                    }
+                ]
+            }
         },
+        chartDatas: {
+            type: Function,
+            required: true
+        }
     },
     data() {
         return {
@@ -46,10 +95,15 @@ export default {
     methods: {
         initChart() {
             this.chart = echarts.init(this.$el)
+            this.chartDatas(this.options, 'bar')
             this.chart.setOption(this.options)
         },
         resize() {
             this.chart.resize()
+        },
+        refreshDatas() {
+            this.chartDatas(this.options, 'bar')
+            this.chart.setOption(this.options)
         }
     }
 }

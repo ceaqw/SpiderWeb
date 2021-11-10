@@ -32,7 +32,11 @@ func init() {
 		panic(fmt.Sprintf("db connect error: %#v\n", err.Error()))
 	}
 	// MainSqlDb.ShowSQL(true)
-	err = MainSqlDb.Sync(new(Role), new(User))
+	err = MainSqlDb.Sync(
+		new(Role),
+		new(User),
+		new(CrawlerInformation),
+	)
 	if err != nil {
 		panic(fmt.Sprintf("db sync error: %#v\n", err.Error()))
 	}
