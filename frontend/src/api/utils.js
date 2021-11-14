@@ -1,14 +1,19 @@
-import { post } from '@/utils/request'
+import { get } from '@/utils/request'
+import baseConf from '@/conf/baseConf'
 
-const preUrl = '/api/v1/user'
+const preUrl = baseConf.apiVersion
 
-const basePost = (router, data) => {
-    return post(preUrl + router, data)
+// const basePost = (router, data) => {
+//     return post(preUrl + router, data)
+// }
+
+const baseGet = (router, data) => {
+    return get(preUrl + router, data)
 }
 
 const utilsApi = {
-    login: (data) => {
-        return basePost('/login', data)
+    projectList: (data) => {
+        return baseGet('/base/projectList', data)
     },
 }
 

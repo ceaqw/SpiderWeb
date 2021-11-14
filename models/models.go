@@ -36,6 +36,8 @@ func init() {
 		new(Role),
 		new(User),
 		new(CrawlerInformation),
+		new(CrawlerStat),
+		new(Project),
 	)
 	if err != nil {
 		panic(fmt.Sprintf("db sync error: %#v\n", err.Error()))
@@ -47,10 +49,7 @@ func (BaseDB) Query(sql string) ([]map[string][]byte, error) {
 	return results, err
 }
 
-func (BaseDB) Excute(sql string, arg ...interface{}) {
+func (BaseDB) Excute(sql string, arg ...interface{}) error {
 	_, err := MainSqlDb.Exec(sql)
-
-	if err != nil {
-
-	}
+	return err
 }

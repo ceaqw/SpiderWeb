@@ -32,6 +32,7 @@ type User struct {
 }
 
 type UserOrm struct {
+	BaseDB
 }
 
 func (User) TableName() string {

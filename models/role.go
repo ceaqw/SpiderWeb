@@ -10,6 +10,7 @@ func (Role) TableName() string {
 }
 
 type RoleOrm struct {
+	BaseDB
 }
 
 func (RoleOrm) GetRoles() []Role {

@@ -1,19 +1,19 @@
 <template>
     <div class="home">
         <!-- 筛选条件布局 -->
-        <Filter /> 
+        <Filter :filter="filterForm" parentName="dashboard"/> 
         <div class="row">
             <div class="title">总览图表</div>
             <el-divider></el-divider>
             <el-row>
                 <el-col :span="10">
-                    <PieChart :chartDatas="this.chartDatas.allPlatFormDatas" />
+                    <PieChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
                 </el-col>
                 <!-- <el-col :span="1">
                     <el-divider direction="vertical" style="height: 100%"></el-divider>
                 </el-col> -->
                 <el-col :span="14">
-                    <BarChart :chartDatas="this.chartDatas.allPlatFormDatas" />
+                    <BarChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
                 </el-col>
             </el-row>
         </div>
@@ -22,13 +22,13 @@
             <el-divider></el-divider>
             <el-row>
                 <el-col :span="10">
-                    <PieChart :chartDatas="this.chartDatas.allPlatFormDatas" />
+                    <PieChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
                 </el-col>
                 <!-- <el-col :span="1">
                     <el-divider direction="vertical" style="height: 100%"></el-divider>
                 </el-col> -->
                 <el-col :span="14">
-                    <BarChart :chartDatas="this.chartDatas.allPlatFormDatas" />
+                    <BarChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
                 </el-col>
             </el-row>
         </div>
@@ -38,11 +38,11 @@
                     <div class="title">Rakuten</div>
                     <el-divider></el-divider>
                     <el-row>
-                        <PieChart :chartDatas="this.chartDatas.allPlatFormDatas" />
+                        <PieChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
                     </el-row>
                     <el-divider></el-divider>
                     <el-row>
-                        <BarChart :chartDatas="this.chartDatas.allPlatFormDatas" />
+                        <BarChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
                     </el-row>
                 </div>
             </el-col>
@@ -52,11 +52,11 @@
                     <div class="title">Yahoo</div>
                     <el-divider></el-divider>
                     <el-row>
-                        <PieChart :chartDatas="this.chartDatas.allPlatFormDatas" />
+                        <PieChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
                     </el-row>
                     <el-divider></el-divider>
                     <el-row>
-                        <BarChart :chartDatas="this.chartDatas.allPlatFormDatas" />
+                        <BarChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
                     </el-row>
                 </div>
             </el-col>
@@ -66,11 +66,11 @@
                     <div class="title">Amazon</div>
                     <el-divider></el-divider>
                     <el-row>
-                        <PieChart :chartDatas="this.chartDatas.allPlatFormDatas" />
+                        <PieChart :chartDatas="this.chartDatas.allChartDatas"  :filter="filterForm" parentName="dashboard"/>
                     </el-row>
                     <el-divider></el-divider>
                     <el-row>
-                        <BarChart :chartDatas="this.chartDatas.allPlatFormDatas" />
+                        <BarChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
                     </el-row>
                 </div>
             </el-col>
@@ -80,7 +80,7 @@
             <el-divider></el-divider>
             <el-row>
                 <el-col :span="10">
-                    <PieChart :chartDatas="this.chartDatas.allPlatFormDatas" />
+                    <PieChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
                 </el-col>
                 <el-col :span="14"></el-col>
             </el-row>
@@ -113,9 +113,16 @@ import Filter from '@/components/filter'
 import PieChart from '@/components/charts/common/pieChart'
 import BarChart from '@/components/charts/common/barChart'
 
-import { allPlatFormDatas } from '../service/datas/home'
+import { allChartDatas } from '@/service/datas/chart'
 
 export default {
+    beforeRouteLeave(to, form, next) {
+        // 清空刷新队列
+        if (this.$store.state.flushQueue['dashboard'].length) {
+            this.$store.state.flushQueue['dashboard'] = []
+        }
+        next()
+    },
     components: {
         Filter,
         PieChart,
@@ -124,9 +131,6 @@ export default {
     data() {
         return {
             theme,
-            commonInfos: {
-                title: ['all_platform', 'all_project']
-            },
             kpiDatas: {
                 datas: [
                     {project: 'item_category', kpi: 'content_empty', rate: '55.37'},
@@ -137,11 +141,21 @@ export default {
                 ]
             },
             chartDatas: {
-                allPlatFormDatas
-            }
+                allChartDatas
+            },
+            filterForm: this.$store.state.FilterSharing ? this.$store.state.shareFilter : this.$store.state.dashboardFilter,
+        }
+    },
+    mouted() {
+        // 清空刷新队列
+        if (this.$store.state.flushQueue['dashboard'].length) {
+            this.$store.state.flushQueue['dashboard'] = []
         }
     },
     methods: {
+        getKpiData() {
+
+        },
         view(rowData) {
             alert(rowData.project)
         }

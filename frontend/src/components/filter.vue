@@ -1,16 +1,19 @@
 <template>
     <div id="filter">
         <el-row>
-            <el-col id="times">
+            <el-col id="times" :span="19">
                 <el-button-group>
                     <el-button v-for="(rate, index) in rateSelect"
                         :key="index"
-                        :id="rateFalg[index]"
+                        :id="index == filterForm.dateRangeType ? 'primary' : ''"
                         size="medium"
-                        @click="changeRate(index)" plain>
+                        @click="changeFilter('rate', index)" plain>
                         {{ rate }}
                     </el-button>
                 </el-button-group>
+                <span id="filter-shareing">
+                    <el-switch v-model="$store.state.FilterSharing" active-text="共享筛选条件" @change="changeFilter('filter', 1)"></el-switch>
+                </span>
             </el-col>
         </el-row>
         <el-row>
@@ -27,15 +30,15 @@
                         </el-col>
                         <el-col :span="5">
                             <div class="demonstration">平台</div>
-                            <el-select v-model="filterForm.platForm">
-                                <el-option v-for="(item, index) in platFormList" :key="index" :label="item.value || item.name" :value="item.value">
+                            <el-select v-model="filterForm.platForm" @focus="freshFilterData" @change="changeFilter('platform', 1)">
+                                <el-option v-for="(item, index) in platFormList" :key="index" :label="item" :value="item">
                                 </el-option>
                             </el-select>
                         </el-col>
                         <el-col :span="4">
                             <div class="demonstration">项目</div>
-                            <el-select v-model="filterForm.project">
-                                <el-option v-for="(item, index) in platFormList" :key="index" :label="item.value || item.name" :value="item.value">
+                            <el-select v-model="filterForm.project" @focus="freshFilterData">
+                                <el-option v-for="(item, index) in projectList" :key="index" :label="item" :value="item">
                                 </el-option>
                             </el-select>
                         </el-col>
@@ -44,8 +47,8 @@
                             <el-button-group>
                                 <el-button v-for="(showType, index) in showTypeSelect"
                                     :key="index"
-                                    :id="showTypeFlag[index]"
-                                    @click="changeShowType(index)">
+                                    :id="index == filterForm.showType ? 'primary' : ''"
+                                    @click="changeFilter('showType', index)">
                                     {{ showType }}
                                 </el-button>
                             </el-button-group>
@@ -65,42 +68,69 @@
 </template>
 
 <script>
+import { getFilterData } from '@/service/datas/base.js'
+import { ElMessage } from 'element-plus'
+// import baseConf from '@/conf/baseConf'
 export default {
-    name: 'Filter',
+    props: {
+        filter: {type: Object},
+        parentName: {type: String}
+    },
     data () {
         return {
             rateSelect: ['7天', '3天', '昨天', '当天'],
-            rateFalg: ['', '', '', 'primary'],
             showTypeSelect: ['天', '小时'],
-            showTypeFlag: ['', 'primary'],
-            filterForm: this.$store.state.filterForm,
-            platFormList: [
-                {name: 'all', value: 'all'},
-                {name: 'Rakuten', value: 'rakuten'},
-                {name: 'Amazon', value: 'amazon'},
-                {name: 'Yahoo', value: 'yahoo'},
-                {name: 'Lohaco', value: 'lohaco'},
-                {name: 'smRakuten', value: 'smRakuten'},
-            ]
+            filterForm: this.filter,
+            platFormList: ['all'],
+            projectList: ['all'],
         }    
     },
+    beforeMount() {
+        getFilterData()
+    },
+    mounted() {
+        console.log(this.$store.state.projectList)
+    },
     methods: {
-        changeRate(index) {
-            this.rateFalg[this.rateFalg.indexOf('primary')] = ''
-            this.rateFalg[index] = 'primary'
-            this.$store.state.dateRangeType = index
-            // TODO: 更新筛选范围
-        },
-        changeShowType(index) {
-            this.showTypeFlag[this.showTypeFlag.indexOf('primary')] = ''
-            this.showTypeFlag[index] = 'primary'
-            this.$store.state.filterForm.showType = index
-            // TODO: 更新时间显示类型
+        changeFilter(type, index) {
+            if (type == 'rate') {
+                this.filterForm.dateRangeType = index
+                this.$store.state.shareFilter.dateRangeType = index
+            } else if (type == 'showType') {
+                this.filterForm.showType = index
+                this.$store.state.shareFilter.showType = index    
+            } else if (type == 'platform') {
+                this.filterForm.project = 'all'
+            } else if (type == 'filter') {
+                // 重置共享筛选
+                this.$store.state.shareFilter.dateRangeType = 3
+                this.$store.state.shareFilter.startDate = ''
+                this.$store.state.shareFilter.endDate = ''
+                this.$store.state.shareFilter.platForm = 'all'
+                this.$store.state.shareFilter.project = 'all'
+                this.$store.state.shareFilter.showType = 1
+                this.filterForm = this.$store.state.FilterSharing ? this.$store.state.shareFilter : this.filter
+            }
         },
         search() {
             // alert(this.$store.state.filterForm)
-            console.log(this.$store.state.filterForm)
+            const flushQueue = this.$store.state.flushQueue[this.parentName]
+            console.log(flushQueue)
+            // 异步更新
+            for (const index in flushQueue) {
+                new Promise(() => {
+                    flushQueue[index]()
+                })
+            }
+            ElMessage({
+                message: '同步完成',
+                type: 'success'
+            })
         },
+        freshFilterData() {
+            this.platFormList = Object.keys(this.$store.state.projectList)
+            this.projectList = this.$store.state.projectList[this.filterForm.platForm]
+        }
     }
 }
 </script>
@@ -135,5 +165,9 @@ export default {
 .el-collapse-item .el-collapse-item__header, 
 .el-collapse-item .el-collapse-item__wrap {
     background-color: #E9EEF3 !important
+}
+
+#filter #filter-shareing {
+    padding-left: 20px;
 }
 </style>

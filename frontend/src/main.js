@@ -8,9 +8,14 @@ import Axios from 'axios'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import './style/index.css'
+import theme from '@/conf/theme'
+import * as echarts from 'echarts'
+
 
 const app = createApp(App)
 app.config.globalProperties.Axios = Axios
+app.config.globalProperties.$echarts = echarts
+app.config.globalProperties.$theme = theme
 app.use(router)
 app.use(ElementPlus)
 app.use(store)

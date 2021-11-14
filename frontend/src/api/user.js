@@ -1,6 +1,7 @@
 import { post, get } from '@/utils/request'
+import baseConf from '@/conf/baseConf'
 
-const preUrl = '/api/v1/user'
+const preUrl = baseConf.apiVersion + '/user'
 
 const basePost = (router, data) => {
     return post(preUrl + router, data)

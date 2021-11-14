@@ -15,5 +15,6 @@ func initDashBoardRouter(router *gin.RouterGroup) {
 
 	{
 		dashBoardRouter.GET("list", dashBoardApi.List)
+		dashBoardRouter.GET("projectList", dashBoardApi.ProjectList)
 	}
 }

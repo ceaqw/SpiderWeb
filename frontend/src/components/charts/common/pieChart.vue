@@ -3,8 +3,47 @@
 </template>
 
 <script>
-import * as echarts from 'echarts'
 import theme from '@/conf/theme'
+let options = {
+    title: {
+        text: '',
+        left: 'center',
+        textStyle: {
+            color: theme.color.black
+        }
+    },
+    tooltip: {
+        trigger: 'item',
+        backgroundColor: 'rgba(255,255,255,0.8)'
+    },
+    legend: {
+        orient: 'vertical',
+        left: 'left'
+    },
+    series: [
+        {
+            type: 'pie',
+            radius: ['40%', '70%'],
+            avoidLabelOverlap: false,
+            startAngle: 0,
+            label: {
+                show: false,
+                position: 'center'
+            },
+            labelLine: {
+                show: false
+            },
+            emphasis: {
+                label: {
+                    show: true,
+                    fontSize: '40',
+                    fontWeight: 'bold'
+                }
+            },
+            data: []
+        }
+    ]
+}
 
 export default {
     props: {
@@ -20,52 +59,12 @@ export default {
             type: String,
             default: '350px'
         },
-        options: {
-            type: Object,
-            default: {
-                title: {
-                    text: '',
-                    left: 'center',
-                    textStyle: {
-                        color: theme.color.black
-                    }
-                },
-                tooltip: {
-                    trigger: 'item',
-                    backgroundColor: 'rgba(255,255,255,0.8)'
-                },
-                legend: {
-                    orient: 'vertical',
-                    left: 'left'
-                },
-                series: [
-                    {
-                        type: 'pie',
-                        radius: ['40%', '70%'],
-                        avoidLabelOverlap: false,
-                        startAngle: 0,
-                        endAngle: 180,
-                        label: {
-                            show: false,
-                            position: 'center'
-                        },
-                        labelLine: {
-                            show: false
-                        },
-                        emphasis: {
-                            label: {
-                                show: true,
-                                fontSize: '40',
-                                fontWeight: 'bold'
-                            }
-                        },
-                        data: []
-                    }
-                ]
-            }
-        },
+        parentName: {type: String},
         chartDatas: {
             type: Function
+        },
+        filter: {
+            type: Object
         }
     },
     data() {
@@ -74,31 +73,39 @@ export default {
         }
     },
     mounted() {
-        this.$nextTick(() => {
-            this.initChart()
-            // window.addEventListener('resize', this.resize)
-        })
+        new Promise(()=>{this.initChart()})
+        // window.addEventListener('resize', this.resize)
     },
     beforeDestroy() {
-        if (!this.chart) {
-            return
-        }
-        this.chart.dispose()
-        this.chart = null
+        this.destroy()
         // window.removeEventListener('resize', this.resize)
     },
     methods: {
         initChart() {
-            this.chart = echarts.init(this.$el)
-            this.chartDatas(this.options, 'pie')
-            this.chart.setOption(this.options)
+            this.destroy()
+            this.chart = this.$echarts.init(this.$el)
+            this.chartDatas(options, 'pie', this.filter, this.reRender)
+            this.$store.state.flushQueue[this.parentName].unshift(this.refreshDatas)
+            this.chart.on('click', (params)=>{
+                // 点击图标处理事件
+                console.log(params)
+            })
         },
         resize() {
             this.chart.resize()
         },
         refreshDatas() {
-            this.chartDatas(this.options, 'pie')
-            this.chart.setOption(this.options)
+            this.chartDatas(options, 'pie', this.filter, this.reRender)
+        },
+        reRender() {
+            this.chart.setOption(options)
+        },
+        destroy() {
+            if (!this.chart) {
+                return
+            }
+            this.chart.dispose()
+            this.chart = null
         }
     }
 }

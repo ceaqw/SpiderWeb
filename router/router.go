@@ -16,14 +16,16 @@ func Init() *gin.Engine {
 	router.Use(logger.LoggerToFile())
 	// 版本api
 	apiVersion := conf.GetApiVersion()
-	v1Router := router.Group(fmt.Sprintf("/api/%s", apiVersion))
+	baseRouter := router.Group(fmt.Sprintf("/api/%s", apiVersion))
 
 	{
-		initUserRouter(v1Router)
-		initDashBoardRouter(v1Router)
-		initProjectRouter(v1Router)
-		initTrendRouter(v1Router)
-		initMemberRouter(v1Router)
+		initUserRouter(baseRouter)
+		initDashBoardRouter(baseRouter)
+		initProjectRouter(baseRouter)
+		initTrendRouter(baseRouter)
+		initMemberRouter(baseRouter)
+		initBaseRouter(baseRouter)
+		initChartRouter(baseRouter)
 	}
 	return router
 }

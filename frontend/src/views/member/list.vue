@@ -3,7 +3,7 @@
         <el-row>
             <span class="title">用户列表</span>
             <el-divider></el-divider>
-            <el-table :data="tableData.datas" stripe style="width: 100%">
+            <el-table :data="tableData.datas" stripe>
                 <el-table-column prop="mid" label="Mid"> </el-table-column>
                 <el-table-column prop="name" label="Name"> </el-table-column>
                 <el-table-column label="Status">
@@ -90,5 +90,10 @@ export default {
 }
 .member-list .title {
     font-size: 140%;
+}
+
+.member-list .el-table {
+    border-radius: 5px;
+    width: 100%;
 }
 </style>

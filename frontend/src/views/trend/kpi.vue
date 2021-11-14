@@ -1,6 +1,6 @@
 <template>
     <div id="trend-kpi">
-        <Filter />
+        <Filter :filter="filterForm"/> 
         <h2>Kpi</h2>
     </div>
 </template>
@@ -12,8 +12,10 @@ export default {
     components: {
         Filter,
     },
-    setup() {
-               
+    data() {
+        return {
+            filterForm: this.$store.state.FilterSharing ? this.$store.state.shareFilter : this.$store.state.kpiFilter,
+        }
     },
 }
 </script>
