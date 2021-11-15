@@ -10,7 +10,7 @@ const baseConf = {
         endDate: '',
         platForm: 'all',
         project: 'all',
-        showType: 1
+        showType: 0
     },
 }
 

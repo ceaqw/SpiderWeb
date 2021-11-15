@@ -69,7 +69,6 @@
 
 <script>
 import { getFilterData } from '@/service/datas/base.js'
-import { ElMessage } from 'element-plus'
 // import baseConf from '@/conf/baseConf'
 export default {
     props: {
@@ -87,9 +86,6 @@ export default {
     },
     beforeMount() {
         getFilterData()
-    },
-    mounted() {
-        console.log(this.$store.state.projectList)
     },
     methods: {
         changeFilter(type, index) {
@@ -115,17 +111,12 @@ export default {
         search() {
             // alert(this.$store.state.filterForm)
             const flushQueue = this.$store.state.flushQueue[this.parentName]
-            console.log(flushQueue)
             // 异步更新
             for (const index in flushQueue) {
                 new Promise(() => {
                     flushQueue[index]()
                 })
             }
-            ElMessage({
-                message: '同步完成',
-                type: 'success'
-            })
         },
         freshFilterData() {
             this.platFormList = Object.keys(this.$store.state.projectList)

@@ -22,13 +22,13 @@
             <el-divider></el-divider>
             <el-row>
                 <el-col :span="10">
-                    <PieChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
+                    <!-- <PieChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/> -->
                 </el-col>
                 <!-- <el-col :span="1">
                     <el-divider direction="vertical" style="height: 100%"></el-divider>
                 </el-col> -->
                 <el-col :span="14">
-                    <BarChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
+                    <!-- <BarChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/> -->
                 </el-col>
             </el-row>
         </div>
@@ -38,11 +38,11 @@
                     <div class="title">Rakuten</div>
                     <el-divider></el-divider>
                     <el-row>
-                        <PieChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
+                        <!-- <PieChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/> -->
                     </el-row>
                     <el-divider></el-divider>
                     <el-row>
-                        <BarChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
+                        <!-- <BarChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/> -->
                     </el-row>
                 </div>
             </el-col>
@@ -52,11 +52,11 @@
                     <div class="title">Yahoo</div>
                     <el-divider></el-divider>
                     <el-row>
-                        <PieChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
+                        <!-- <PieChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/> -->
                     </el-row>
                     <el-divider></el-divider>
                     <el-row>
-                        <BarChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
+                        <!-- <BarChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/> -->
                     </el-row>
                 </div>
             </el-col>
@@ -66,11 +66,11 @@
                     <div class="title">Amazon</div>
                     <el-divider></el-divider>
                     <el-row>
-                        <PieChart :chartDatas="this.chartDatas.allChartDatas"  :filter="filterForm" parentName="dashboard"/>
+                        <!-- <PieChart :chartDatas="this.chartDatas.allChartDatas"  :filter="filterForm" parentName="dashboard"/> -->
                     </el-row>
                     <el-divider></el-divider>
                     <el-row>
-                        <BarChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
+                        <!-- <BarChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/> -->
                     </el-row>
                 </div>
             </el-col>
@@ -80,7 +80,7 @@
             <el-divider></el-divider>
             <el-row>
                 <el-col :span="10">
-                    <PieChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
+                    <!-- <PieChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/> -->
                 </el-col>
                 <el-col :span="14"></el-col>
             </el-row>
