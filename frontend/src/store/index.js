@@ -18,7 +18,7 @@ export default createStore({
             projectList: {},
             flushQueue: {dashboard: [], project: [], kpi: [], fail: []},
             count: 1,
-            pageCache: {},
+            pageTaskQueue: {},
         }
     }
 })

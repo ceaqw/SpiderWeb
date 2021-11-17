@@ -1,6 +1,6 @@
 import theme from '@/conf/theme'
 import chartApi from '@/api/chart'
-import store from '../../store'
+import store from '@/store'
 import { ElMessage } from 'element-plus'
 
 function resetChartDatas(datas, type_, options, render) {
@@ -57,20 +57,20 @@ function resetChartDatas(datas, type_, options, render) {
 }
 
 function getDataMiddleware(api, options, type_, filter, render) {
-    // 先从缓存拿数据
-    if (store.state.pageCache[api]) {
-        store.state.pageCache[api].push({options, type_, render})
+    // 先入当前页面任务队列
+    if (store.state.pageTaskQueue[api]) {
+        store.state.pageTaskQueue[api].push({options, type_, render})
     } else {
-        store.state.pageCache[api] = [{options, type_, render}]
+        store.state.pageTaskQueue[api] = [{options, type_, render}]
     }
 
     // 队列满，符合发送任务条件
-    if (store.state.pageCache[api].length == 2) {
+    if (store.state.pageTaskQueue[api].length == 2) {
         chartApi[api](filter, type_).then((result)=> {
-            for (let chart of store.state.pageCache[api]) {
+            for (let chart of store.state.pageTaskQueue[api]) {
                 resetChartDatas(result.data, chart.type_, chart.options, chart.render)
             }
-            store.state.pageCache[api] = null
+            store.state.pageTaskQueue[api] = null
             ElMessage({
                 message: api + '-同步完成',
                 type: 'success'

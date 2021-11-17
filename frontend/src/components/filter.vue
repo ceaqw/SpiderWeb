@@ -69,7 +69,7 @@
 
 <script>
 import { getFilterData } from '@/service/datas/base.js'
-// import baseConf from '@/conf/baseConf'
+import { ElMessage } from 'element-plus'    
 export default {
     props: {
         filter: {type: Object},
@@ -87,19 +87,27 @@ export default {
     beforeMount() {
         getFilterData()
     },
+    watch: {
+        'filterForm.startDate': {
+            handler () {
+                this.verifyDataRange()
+            }
+        },
+        'filterForm.endDate': {
+            handler () {
+                this.verifyDataRange()
+            }
+        }
+    },
     methods: {
         changeFilter(type, index) {
             if (type == 'rate') {
                 this.filterForm.dateRangeType = index
                 this.$store.state.shareFilter.dateRangeType = index
-                // 查过三天，强制展示单位为天
-                if (index < 2) {
-                    this.filterForm.showType = 0
-                    this.$store.state.shareFilter.showType = 0
-                }
             } else if (type == 'showType') {
                 this.filterForm.showType = index
-                this.$store.state.shareFilter.showType = index    
+                this.$store.state.shareFilter.showType = index
+                this.verifyDataRange()
             } else if (type == 'platform') {
                 this.filterForm.project = 'all'
             } else if (type == 'filter') {
@@ -128,8 +136,16 @@ export default {
             this.projectList = this.$store.state.projectList[this.filterForm.platForm]
         },
         verifyDataRange() {
-            // if 
-            return True
+            if (this.filterForm.startDate != '' && this.filterForm.endDate != '') {
+                if ((new Date(this.filterForm.endDate) - new Date(this.filterForm.startDate))/(24*3600*1000) > this.$conf.showTypeLimitCount) {
+                    ElMessage({
+                        message: '时间跨度较大，已禁止小时单位',
+                        type: 'warning'
+                    })
+                    this.filterForm.dateRangeType = 0
+                    this.$store.state.shareFilter.showType = 0
+                }
+            }
         }
     }
 }

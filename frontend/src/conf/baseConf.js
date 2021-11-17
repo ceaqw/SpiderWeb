@@ -12,6 +12,8 @@ const baseConf = {
         project: 'all',
         showType: 0
     },
+    showTypeLimitIndex: 1,
+    showTypeLimitCount: 7,
 }
 
 export default baseConf
