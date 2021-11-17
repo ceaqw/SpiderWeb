@@ -92,6 +92,11 @@ export default {
             if (type == 'rate') {
                 this.filterForm.dateRangeType = index
                 this.$store.state.shareFilter.dateRangeType = index
+                // 查过三天，强制展示单位为天
+                if (index < 2) {
+                    this.filterForm.showType = 0
+                    this.$store.state.shareFilter.showType = 0
+                }
             } else if (type == 'showType') {
                 this.filterForm.showType = index
                 this.$store.state.shareFilter.showType = index    
@@ -121,6 +126,10 @@ export default {
         freshFilterData() {
             this.platFormList = Object.keys(this.$store.state.projectList)
             this.projectList = this.$store.state.projectList[this.filterForm.platForm]
+        },
+        verifyDataRange() {
+            // if 
+            return True
         }
     }
 }

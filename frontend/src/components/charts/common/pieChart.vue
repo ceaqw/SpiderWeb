@@ -14,7 +14,8 @@ let options = {
     },
     tooltip: {
         trigger: 'item',
-        backgroundColor: 'rgba(255,255,255,0.8)'
+        backgroundColor: 'rgba(255,255,255,0.8)',
+        // formatter: '{b}: {c} ({d}%)',
     },
     legend: {
         orient: 'vertical',
@@ -23,15 +24,20 @@ let options = {
     series: [
         {
             type: 'pie',
-            radius: ['40%', '70%'],
+            // radius: ['40%', '70%'],
             avoidLabelOverlap: false,
-            startAngle: 0,
-            label: {
-                show: false,
-                position: 'center'
-            },
+            startAngle: -180,
+            // label: {
+            //     show: false,
+            //     position: 'center'
+            // },
             labelLine: {
                 show: false
+            },
+            label: {
+                position: 'inside',
+                fontSize: 14,
+                formatter: '{d}%',
             },
             emphasis: {
                 label: {
