@@ -77,7 +77,7 @@ export default {
     },
     data () {
         return {
-            rateSelect: ['7天', '3天', '昨天', '当天'],
+            rateSelect: ['7天', '3天', '2天', '当天'],
             showTypeSelect: ['天', '小时'],
             filterForm: this.filter,
             platFormList: ['all'],
@@ -136,7 +136,7 @@ export default {
             this.projectList = this.$store.state.projectList[this.filterForm.platForm]
         },
         verifyDataRange() {
-            if (this.filterForm.startDate != '' && this.filterForm.endDate != '') {
+            if (this.filterForm.startDate && this.filterForm.endDate) {
                 if ((new Date(this.filterForm.endDate) - new Date(this.filterForm.startDate))/(24*3600*1000) > this.$conf.showTypeLimitCount) {
                     ElMessage({
                         message: '时间跨度较大，已禁止小时单位',

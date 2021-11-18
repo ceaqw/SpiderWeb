@@ -96,26 +96,7 @@ func (m CrawlerStatOrm) GetAllDatas(filter req.Filter) ([]map[string][]byte, err
 	}
 
 	// 时间特殊处理
-	baseLayout := "2006-01-02"
-	if filter.StartDate == "" {
-		if filter.EndDate == "" {
-			filter.EndDate = time.Now().Format(baseLayout)
-		}
-		endDate, _ := time.Parse(baseLayout, filter.EndDate)
-		// [7, 3, 2, 1]
-		switch filter.DateRangeType {
-		case 0:
-			filter.StartDate = endDate.AddDate(0, 0, -7).Format(baseLayout)
-		case 1:
-			filter.StartDate = endDate.AddDate(0, 0, -3).Format(baseLayout)
-		case 2:
-			filter.StartDate = endDate.AddDate(0, 0, -1).Format(baseLayout)
-		case 3:
-			filter.StartDate = time.Now().Format(baseLayout)
-		}
-	} else if filter.EndDate == "" {
-		filter.EndDate = time.Now().Format(baseLayout)
-	}
+	req.FilterVerify(&filter)
 	sql = fmt.Sprintf("%s and cs.date >= '%s' and cs.date <= '%s' ", sql, filter.StartDate, filter.EndDate)
 	// [天， 小时]
 	if filter.ShowType == 0 {
@@ -129,6 +110,6 @@ func (m CrawlerStatOrm) GetAllDatas(filter req.Filter) ([]map[string][]byte, err
 	return result, err
 }
 
-func (m CrawlerStatOrm) GetAlanyseDatas(filter req.Filter) ([]map[string][]byte, error) {
+// func (m CrawlerStatOrm) GetAlanyseDatas(filter req.Filter) ([]map[string][]byte, error) {
 
-}
+// }

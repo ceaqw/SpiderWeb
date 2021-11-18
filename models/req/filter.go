@@ -1,6 +1,8 @@
 package req
 
-import "time"
+import (
+	"time"
+)
 
 type Filter struct {
 	DateRangeType uint8  `json:"dateRangeType"`
@@ -16,7 +18,10 @@ func FilterVerify(filter *Filter) {
 	baseLayout := "2006-01-02"
 	// 没有开始时间
 	if filter.StartDate == "" {
-		endDate, _ := time.Parse(baseLayout, filter.EndDate)
+		endDate := time.Now()
+		if filter.EndDate != "" {
+			endDate, _ = time.Parse(baseLayout, filter.EndDate)
+		}
 		dateRangeCount := []int{-7, -3, -1}
 		if filter.DateRangeType < 3 {
 			filter.StartDate = endDate.AddDate(0, 0, dateRangeCount[filter.DateRangeType]).Format(baseLayout)
@@ -26,8 +31,8 @@ func FilterVerify(filter *Filter) {
 	}
 	// 没有结束时间
 	if filter.EndDate == "" {
+		dateRangeCount := []int{7, 3, 1}
 		startDate, _ := time.Parse(baseLayout, filter.StartDate)
-		dateRangeCount := []int{-7, -3, -1}
 		if filter.DateRangeType < 3 {
 			filter.EndDate = startDate.AddDate(0, 0, dateRangeCount[filter.DateRangeType]).Format(baseLayout)
 		} else {
