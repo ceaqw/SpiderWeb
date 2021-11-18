@@ -128,3 +128,7 @@ func (m CrawlerStatOrm) GetAllDatas(filter req.Filter) ([]map[string][]byte, err
 	result, err := m.Query(sql)
 	return result, err
 }
+
+func (m CrawlerStatOrm) GetAlanyseDatas(filter req.Filter) ([]map[string][]byte, error) {
+
+}
