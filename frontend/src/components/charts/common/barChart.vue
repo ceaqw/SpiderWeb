@@ -1,12 +1,10 @@
 <template>
-  <div :id="chartId" :style="{height:height, width:width}" />
+  <div :style="{height:height, width:width}" />
 </template>
 
 <script>
 import theme from '@/conf/theme'
 
-// chart不由组件托管，防止chart属性冲突
-let chart = null
 
 let options = {
     title: {
@@ -38,9 +36,9 @@ let options = {
             emphasis: {
                 focus: 'series'
             },
-            itemStyle: {
-                color: '#FAC858'
-            },
+            // itemStyle: {
+            //     color: '#5470C6'
+            // },
             data: []
         },
         {
@@ -50,9 +48,9 @@ let options = {
             emphasis: {
                 focus: 'series'
             },
-            itemStyle: {
-                color: '#5470C6'
-            },
+            // itemStyle: {
+            //     color: '#EE6666'
+            // },
             data: []
         },
         {
@@ -62,9 +60,31 @@ let options = {
             emphasis: {
                 focus: 'series'
             },
-            itemStyle: {
-                color: '#91CC75'
+            // itemStyle: {
+            //     color: '#91CC75'
+            // },
+            data: []
+        },
+        {
+            name: 'Total',
+            type: 'bar',
+            emphasis: {
+                focus: 'series'
             },
+            // itemStyle: {
+            //     color: '#12B8C5'
+            // },
+            data: []
+        },
+        {
+            name: 'Retry',
+            type: 'bar',
+            emphasis: {
+                focus: 'series'
+            },
+            // itemStyle: {
+            //     color: '#FAC858'
+            // },
             data: []
         }
     ]
@@ -72,10 +92,6 @@ let options = {
 
 export default {
     props: {
-        chartId: {
-            type: String,
-            required: true,
-        },
         width: {
             type: String,
             default: '100%'
@@ -94,6 +110,9 @@ export default {
         }
     },
     data() {
+        return {
+            chart: null
+        }
     },
     mounted() {
         new Promise(()=>{this.initChart()})
@@ -104,10 +123,10 @@ export default {
     methods: {
         initChart() {
             this.destroy()
-            chart = this.$echarts.init(document.getElementById(this.chartId))
+            this.chart = this.$echarts.init(this.$el)
             this.chartDatas(options, 'bar', this.filter, this.reRender)
-            this.$store.state.flushQueue[this.parentName].push(this.refreshDatas)
-            chart.on('click', (params)=>{
+            this.$store.state.flushQueue[this.parentName].unshift(this.refreshDatas)
+            this.chart.on('click', (params)=>{
                 // 点击图标处理事件
                 console.log(params)
             })
@@ -116,15 +135,15 @@ export default {
             this.chartDatas(options, 'bar', this.filter, this.reRender)
         },
         reRender() {
-            chart.resize()
-            chart.setOption(options)
+            // this.chart.resize()
+            this.chart.setOption(options)
         },
         destroy() {
-            if (!chart) {
+            if (!this.chart) {
                 return
             }
-            chart.dispose()
-            chart = null
+            this.chart.dispose()
+            this.chart = null
         }
     }
 }

@@ -33,8 +33,8 @@ function resetChartDatas(datas, type_, options, render) {
     } else if (type_ == 'bar') {
         let barDatas = {
             xData: [],
-            yData: {'undone': [], 'fail': [], 'success': []},
-            yLabel: ['undone', 'fail', 'success']
+            yData: {'undone': [], 'fail': [], 'success': [], 'total': [], 'retry': []},
+            yLabel: ['undone', 'fail', 'success', 'total', 'retry']
         }
         const data = datas.barDatas
         if (data) {
@@ -67,7 +67,6 @@ function getDataMiddleware(api, options, type_, filter, render) {
     if (store.state.pageTaskQueue[api].length == 2) {
         chartApi[api](filter).then((result)=> {
             for (let chart of store.state.pageTaskQueue[api]) {
-                console.log(render)
                 resetChartDatas(result.data, chart.type_, chart.options, chart.render)
             }
             store.state.pageTaskQueue[api] = null
@@ -81,15 +80,36 @@ function getDataMiddleware(api, options, type_, filter, render) {
     }
 }
 
-const allChartDatas = (options, type_, filter, render, chartId) => {
-    getDataMiddleware('all', options, type_, filter, render, chartId)
+const allChartDatas = (options, type_, filter, render) => {
+    getDataMiddleware('all', options, type_, filter, render)
 }
 
-const analyseDatas = (options, type_, filter, render, chartId) => {
-    getDataMiddleware('analyse', options, type_, filter, render, chartId)
+const analyseDatas = (options, type_, filter, render) => {
+    getDataMiddleware('analyse', options, type_, filter, render)
+}
+
+const platformDatas = (platform, options, type_, filter, render) => {
+    let tmpFilter = Object.assign({}, filter)
+    tmpFilter.platForm = platform
+    tmpFilter.project = 'all'
+    getDataMiddleware('all', options, type_, tmpFilter, render)
+}
+const rakutenDatas = (options, type_, filter, render) => {
+    platformDatas('rakuten', options, type_, filter, render)
+}
+
+const yahooDatas = (options, type_, filter, render) => {
+    platformDatas('yahoo', options, type_, filter, render)
+}
+
+const amazonDatas = (options, type_, filter, render) => {
+    platformDatas('amazon', options, type_, filter, render)
 }
 
 export {
     allChartDatas,
-    analyseDatas
+    analyseDatas,
+    rakutenDatas,
+    yahooDatas,
+    amazonDatas,
 }

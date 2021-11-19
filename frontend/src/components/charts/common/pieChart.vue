@@ -1,11 +1,9 @@
 <template>
-  <div :id="chartId" :style="{height:height, width:width}" />
+  <div :style="{height:height, width:width}" />
 </template>
 
 <script>
 import theme from '@/conf/theme'
-
-let chart = null
 
 let options = {
     title: {
@@ -27,18 +25,15 @@ let options = {
     series: [
         {
             type: 'pie',
-            // radius: ['40%', '70%'],
+            // radius: ['40%', '65%'],
             avoidLabelOverlap: false,
             startAngle: -180,
-            // label: {
-            //     show: false,
-            //     position: 'center'
-            // },
+            radius: '60%',
             labelLine: {
-                show: false
+                show: true
             },
             label: {
-                position: 'inside',
+                // position: 'inside',
                 fontSize: 14,
                 formatter: '{d}%',
             },
@@ -49,6 +44,7 @@ let options = {
                     fontWeight: 'bold'
                 }
             },
+            minAngle: 15,
             data: []
         }
     ]
@@ -56,10 +52,6 @@ let options = {
 
 export default {
     props: {
-        chartId: {
-            type: String,
-            required: true,
-        },
         width: {
             type: String,
             default: '100%'
@@ -77,6 +69,9 @@ export default {
         }
     },
     data() {
+        return {
+            chart: null,
+        }
     },
     mounted() {
         new Promise(()=>{this.initChart()})
@@ -87,10 +82,10 @@ export default {
     methods: {
         initChart() {
             this.destroy()
-            chart = this.$echarts.init(document.getElementById(this.chartId))
+            this.chart = this.$echarts.init(this.$el)
             this.chartDatas(options, 'pie', this.filter, this.reRender)
-            this.$store.state.flushQueue[this.parentName].push(this.refreshDatas)
-            chart.on('click', (params)=>{
+            this.$store.state.flushQueue[this.parentName].unshift(this.refreshDatas)
+            this.chart.on('click', (params)=>{
                 // 点击图标处理事件
                 console.log(params)
             })
@@ -99,15 +94,15 @@ export default {
             this.chartDatas(options, 'pie', this.filter, this.reRender)
         },
         reRender() {
-            chart.resize()
-            chart.setOption(options)
+            // this.chart.resize()
+            this.chart.setOption(options)
         },
         destroy() {
-            if (!chart) {
+            if (!this.chart) {
                 return
             }
-            chart.dispose()
-            chart = null
+            this.chart.dispose()
+            this.chart = null
         }
     }
 }
