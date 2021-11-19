@@ -104,6 +104,7 @@ export default {
             if (type == 'rate') {
                 this.filterForm.dateRangeType = index
                 this.$store.state.shareFilter.dateRangeType = index
+                this.search()
             } else if (type == 'showType') {
                 this.filterForm.showType = index
                 this.$store.state.shareFilter.showType = index

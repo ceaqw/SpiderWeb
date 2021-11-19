@@ -39,7 +39,34 @@ func (a ChartData) AllChartData(c *gin.Context) {
 			response["barDatas"] = barDatas
 			c.JSON(200, resp.Success(response))
 		} else {
-			c.JSON(200, resp.ErrorResp(500, "查询出错"))
+			resp.Error(c, "查询出错")
+		}
+	} else {
+		c.JSON(200, resp.ErrorResp(400, "参数错误"))
+	}
+}
+
+func (a ChartData) AnalyseDatas(c *gin.Context) {
+	filter := req.Filter{}
+	if err := c.BindJSON(&filter); err == nil {
+		result, err := a.GetAnalyseDatas(filter)
+		if err == nil {
+			response := make(map[string]interface{})
+			response["title"] = filter.PlatForm + "_" + filter.Project
+			response["pieDatas"] = []int{1, 2, 3}
+			barDatas := make([]map[string]interface{}, 0)
+			sub := make(map[string]interface{})
+			sub["date"] = "2021-11-12日"
+			sub["fail"] = 35575306
+			sub["retry"] = 7612716
+			sub["success"] = 190741941
+			sub["total"] = 3162624
+			sub["undone"] = 26902616
+			barDatas = append(barDatas, sub)
+			response["barDatas"] = barDatas
+			c.JSON(200, resp.Success(response))
+		} else {
+			resp.Error(c, "查询出错")
 		}
 	} else {
 		c.JSON(200, resp.ErrorResp(400, "参数错误"))

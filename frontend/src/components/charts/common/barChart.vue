@@ -1,9 +1,12 @@
 <template>
-  <div :class="className" :style="{height:height, width:width}" />
+  <div :id="chartId" :style="{height:height, width:width}" />
 </template>
 
 <script>
 import theme from '@/conf/theme'
+
+// chart不由组件托管，防止chart属性冲突
+let chart = null
 
 let options = {
     title: {
@@ -69,9 +72,9 @@ let options = {
 
 export default {
     props: {
-        className: {
+        chartId: {
             type: String,
-            default: 'chart'
+            required: true,
         },
         width: {
             type: String,
@@ -91,44 +94,37 @@ export default {
         }
     },
     data() {
-        return {
-            chart: null,
-        }
     },
     mounted() {
         new Promise(()=>{this.initChart()})
-        // window.addEventListener('resize', this.resize)
     },
     beforeDestroy() {
         this.destroy()
-        // window.removeEventListener('resize', this.resize)
     },
     methods: {
         initChart() {
             this.destroy()
-            this.chart = this.$echarts.init(this.$el)
+            chart = this.$echarts.init(document.getElementById(this.chartId))
             this.chartDatas(options, 'bar', this.filter, this.reRender)
-            this.$store.state.flushQueue[this.parentName].unshift(this.refreshDatas)
-            this.chart.on('click', (params)=>{
+            this.$store.state.flushQueue[this.parentName].push(this.refreshDatas)
+            chart.on('click', (params)=>{
                 // 点击图标处理事件
                 console.log(params)
             })
-        },
-        resize() {
-            this.chart.resize()
         },
         refreshDatas() {
             this.chartDatas(options, 'bar', this.filter, this.reRender)
         },
         reRender() {
-            this.chart.setOption(options)
+            chart.resize()
+            chart.setOption(options)
         },
         destroy() {
-            if (!this.chart) {
+            if (!chart) {
                 return
             }
-            this.chart.dispose()
-            this.chart = null
+            chart.dispose()
+            chart = null
         }
     }
 }

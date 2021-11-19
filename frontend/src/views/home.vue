@@ -7,13 +7,13 @@
             <el-divider></el-divider>
             <el-row>
                 <el-col :span="10">
-                    <PieChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
+                    <PieChart :chartDatas="this.chartDatas.allChartDatas" chartId="home-all-pie" :filter="filterForm" parentName="dashboard"/>
                 </el-col>
                 <!-- <el-col :span="1">
                     <el-divider direction="vertical" style="height: 100%"></el-divider>
                 </el-col> -->
                 <el-col :span="14">
-                    <BarChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
+                    <BarChart :chartDatas="this.chartDatas.allChartDatas" chartId="home-all-bar" :filter="filterForm" parentName="dashboard"/>
                 </el-col>
             </el-row>
         </div>
@@ -22,13 +22,13 @@
             <el-divider></el-divider>
             <el-row>
                 <el-col :span="10">
-                    <!-- <PieChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/> -->
+                    <PieChart :chartDatas="this.chartDatas.analyseDatas" chartId="home-analyse-pie" :filter="filterForm" parentName="dashboard"/>
                 </el-col>
                 <!-- <el-col :span="1">
                     <el-divider direction="vertical" style="height: 100%"></el-divider>
                 </el-col> -->
                 <el-col :span="14">
-                    <!-- <BarChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/> -->
+                    <BarChart :chartDatas="this.chartDatas.analyseDatas" chartId="home-analyse-bar" :filter="filterForm" parentName="dashboard"/>
                 </el-col>
             </el-row>
         </div>
@@ -113,7 +113,7 @@ import Filter from '@/components/filter'
 import PieChart from '@/components/charts/common/pieChart'
 import BarChart from '@/components/charts/common/barChart'
 
-import { allChartDatas } from '@/service/datas/chart'
+import { allChartDatas, analyseDatas } from '@/service/datas/chart'
 
 export default {
     beforeRouteLeave(to, form, next) {
@@ -141,7 +141,8 @@ export default {
                 ]
             },
             chartDatas: {
-                allChartDatas
+                allChartDatas,
+                analyseDatas
             },
             filterForm: this.$store.state.FilterSharing ? this.$store.state.shareFilter : this.$store.state.dashboardFilter,
         }
@@ -153,9 +154,6 @@ export default {
         }
     },
     methods: {
-        getKpiData() {
-
-        },
         view(rowData) {
             alert(rowData.project)
         }

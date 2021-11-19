@@ -14,6 +14,7 @@ func initChartRouter(router *gin.RouterGroup) {
 	dashBoardRouter := router.Group("/chart")
 
 	{
-		dashBoardRouter.POST("all/:type", chartDataApi.AllChartData)
+		dashBoardRouter.POST("all", chartDataApi.AllChartData)
+		dashBoardRouter.POST("analyse", chartDataApi.AnalyseDatas)
 	}
 }

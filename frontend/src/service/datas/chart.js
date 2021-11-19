@@ -63,11 +63,11 @@ function getDataMiddleware(api, options, type_, filter, render) {
     } else {
         store.state.pageTaskQueue[api] = [{options, type_, render}]
     }
-
     // 队列满，符合发送任务条件
     if (store.state.pageTaskQueue[api].length == 2) {
-        chartApi[api](filter, type_).then((result)=> {
+        chartApi[api](filter).then((result)=> {
             for (let chart of store.state.pageTaskQueue[api]) {
+                console.log(render)
                 resetChartDatas(result.data, chart.type_, chart.options, chart.render)
             }
             store.state.pageTaskQueue[api] = null
@@ -81,10 +81,15 @@ function getDataMiddleware(api, options, type_, filter, render) {
     }
 }
 
-const allChartDatas = (options, type_, filter, render) => {
-    getDataMiddleware('all', options, type_, filter, render)
+const allChartDatas = (options, type_, filter, render, chartId) => {
+    getDataMiddleware('all', options, type_, filter, render, chartId)
+}
+
+const analyseDatas = (options, type_, filter, render, chartId) => {
+    getDataMiddleware('analyse', options, type_, filter, render, chartId)
 }
 
 export {
-    allChartDatas
+    allChartDatas,
+    analyseDatas
 }

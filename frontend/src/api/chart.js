@@ -13,8 +13,11 @@ const basePost = (router, data) => {
 // }
 
 const chartApi = {
-    all: (data, type_) => {
-        return basePost('/all/' + type_, data)
+    all: (data) => {
+        return basePost('/all', data)
+    },
+    analyse: (data) => {
+        return basePost('/analyse', data)
     },
 }
 

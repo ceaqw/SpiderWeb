@@ -110,6 +110,25 @@ func (m CrawlerStatOrm) GetAllDatas(filter req.Filter) ([]map[string][]byte, err
 	return result, err
 }
 
-// func (m CrawlerStatOrm) GetAlanyseDatas(filter req.Filter) ([]map[string][]byte, error) {
-
-// }
+func (m CrawlerStatOrm) GetAnalyseDatas(filter req.Filter) ([]map[string][]byte, error) {
+	sql := `select 
+			%s
+			sum(all_count) as total, 
+			sum(finish_count) as success, 
+			sum(undo_count) as undone, 
+			sum(fail_count) as fail 
+			FROM job_monitor 
+			where platform = 'spider_raw'`
+	// 添加筛选条件
+	req.FilterVerify(&filter)
+	sql = fmt.Sprintf("%s and date >= '%s' and date <= '%s' ", sql, filter.StartDate, filter.EndDate)
+	if filter.ShowType == 1 {
+		sql = fmt.Sprintf(sql, "date, hour,")
+		sql = fmt.Sprintf("%s group by date,hour ORDER BY date,hour", sql)
+	} else if filter.ShowType == 0 {
+		sql = fmt.Sprintf(sql, "date,")
+		sql = fmt.Sprintf("%s group by date ORDER BY date", sql)
+	}
+	result, err := m.Query(sql)
+	return result, err
+}
