@@ -13,7 +13,7 @@ type Base struct {
 
 func (a Base) ProjectList(c *gin.Context) {
 	respDatas := make(map[string][]string)
-	result, err := a.GetProjectListWithPlatform()
+	result, _, err := a.GetProjectListWithPlatform()
 	if err != nil {
 		c.JSON(200, resp.ErrorResp(500, "获取project错误"))
 	} else {

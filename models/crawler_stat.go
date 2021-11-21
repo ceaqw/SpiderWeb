@@ -2,6 +2,8 @@ package models
 
 import (
 	"SpiderWeb/models/req"
+	"SpiderWeb/modules/utils"
+	"errors"
 	"fmt"
 	"time"
 )
@@ -68,11 +70,20 @@ type CrawlerStatOrm struct {
 	Project
 	CrawlerStat
 	CrawlerInformation
+	ArrayUtil utils.Array
 }
 
-func (m CrawlerInformationOrm) GetProjectListWithPlatform() ([]map[string][]byte, error) {
-	result, err := m.Query("select platform, project from crawler_information where del_flag <> 1 order by platform, project")
-	return result, err
+func (m CrawlerInformationOrm) GetProjectListWithPlatform(offset ...int) ([]map[string][]byte, int, error) {
+	var count int64
+	sql := "select platform, project from crawler_information where del_flag <> 1 order by platform, project"
+	if len(offset) == 1 {
+		sql = fmt.Sprintf("%s and limit %d", sql, offset[0])
+	} else if len(offset) > 1 {
+		sql = fmt.Sprintf("%s and limit %d, %d", sql, offset[0], offset[1])
+	}
+	count, _ = MainSqlDb.Where("del_flag <> 1").Count(new(CrawlerInformation))
+	result, err := m.Query(sql)
+	return result, int(count), err
 }
 
 func (m CrawlerStatOrm) GetAllDatas(filter req.Filter) ([]map[string][]byte, error) {
@@ -104,7 +115,7 @@ func (m CrawlerStatOrm) GetAllDatas(filter req.Filter) ([]map[string][]byte, err
 		sql = fmt.Sprintf(sql, "concat(cs.date, '日') as date ")
 	} else if filter.ShowType == 1 {
 		sql = fmt.Sprintf("%s group by cs.date, cs.hour order by cs.date, cs.hour", sql)
-		sql = fmt.Sprintf(sql, "concat(cs.date, '日', cs.hour, '时') as date ")
+		sql = fmt.Sprintf(sql, "concat(cs.date, ' ', cs.hour) as date ")
 	}
 	result, err := m.Query(sql)
 	return result, err
@@ -123,12 +134,49 @@ func (m CrawlerStatOrm) GetAnalyseDatas(filter req.Filter) ([]map[string][]byte,
 	req.FilterVerify(&filter)
 	sql = fmt.Sprintf("%s and date >= '%s' and date <= '%s' ", sql, filter.StartDate, filter.EndDate)
 	if filter.ShowType == 1 {
-		sql = fmt.Sprintf(sql, "date, hour,")
+		sql = fmt.Sprintf(sql, "concat(date, ' ', hour) as date,")
 		sql = fmt.Sprintf("%s group by date,hour ORDER BY date,hour", sql)
 	} else if filter.ShowType == 0 {
-		sql = fmt.Sprintf(sql, "date,")
+		sql = fmt.Sprintf(sql, "concat(date, '日') as date,")
 		sql = fmt.Sprintf("%s group by date ORDER BY date", sql)
 	}
+	result, err := m.Query(sql)
+	return result, err
+}
+
+func (m CrawlerStatOrm) GetPRojectInfo(filter req.Filter, cols string) ([]map[string][]byte, error) {
+	sql := `select 
+			%s
+			from crawler_information ci 
+			left join project p on ci.project = p.name 
+			where ci.del_flag = 0`
+	sql = fmt.Sprintf(sql, cols)
+	if filter.PlatForm != "all" {
+		sql = fmt.Sprintf("%s and ci.platform = '%s'", sql, filter.PlatForm)
+	}
+	if filter.Project != "all" {
+		sql = fmt.Sprintf("%s and ci.project = '%s'", sql, filter.Project)
+	}
+	projectInfo, err := m.Query(sql)
+	return projectInfo, err
+}
+
+func (m CrawlerStatOrm) GetCrawlerInfoByProject(projectList [][]byte, cols string, filter req.Filter) ([]map[string][]byte, error) {
+	sql := `select 
+			%s
+			from crawler_stat
+			where project in ('%s')`
+	sql = fmt.Sprintf(sql, cols, m.ArrayUtil.Join(projectList, "','"))
+	sql = fmt.Sprintf("%s and date >= '%s' and date <= '%s'", sql, filter.StartDate, filter.EndDate)
+	result := make([]map[string][]byte, 0)
+	if filter.ShowType == 0 {
+		sql = fmt.Sprintf("%s group by project,date", sql)
+	} else if filter.ShowType == 1 {
+		sql = fmt.Sprintf("%s group by project,date,hour", sql)
+	} else {
+		return result, errors.New("invalid showType")
+	}
+	sql = fmt.Sprintf("%s order by fail desc", sql)
 	result, err := m.Query(sql)
 	return result, err
 }

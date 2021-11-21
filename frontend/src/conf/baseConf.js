@@ -14,6 +14,7 @@ const baseConf = {
     },
     showTypeLimitIndex: 1,
     showTypeLimitCount: 7,
+    minAngle: 15,
 }
 
 export default baseConf

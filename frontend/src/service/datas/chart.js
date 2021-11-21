@@ -1,7 +1,9 @@
 import theme from '@/conf/theme'
 import chartApi from '@/api/chart'
 import store from '@/store'
+import baseConf from '@/conf/baseConf'
 import { ElMessage } from 'element-plus'
+import { topError } from '../datas/localChart'
 
 function resetChartDatas(datas, type_, options, render) {
     if (type_ == 'pie') {
@@ -29,6 +31,12 @@ function resetChartDatas(datas, type_, options, render) {
         for (const index in data) {
             pieDatas[index].value = data[index]
         }
+        options.series[0].radius = '75%'
+        options.legend = {
+            orient: 'vertical',
+            left: 'left'
+        },
+        options.series[0].minAngle = baseConf.minAngle
         options.series[0].data = pieDatas
     } else if (type_ == 'bar') {
         let barDatas = {
@@ -54,6 +62,7 @@ function resetChartDatas(datas, type_, options, render) {
     options.title.text = datas.title
     // 异步渲染
     render()
+
 }
 
 function getDataMiddleware(api, options, type_, filter, render) {
@@ -88,11 +97,33 @@ const analyseDatas = (options, type_, filter, render) => {
     getDataMiddleware('analyse', options, type_, filter, render)
 }
 
-const platformDatas = (platform, options, type_, filter, render) => {
+const topErrorDatas = (options, filter, render) => {
+    chartApi.topError(filter).then((result)=> {
+        let tableDatas = Object.values(result.data.tableDatas)
+        tableDatas.sort((a, b)=>{return b.fail - a.fail})
+        render.splice(0)
+        render.push(...tableDatas)
+        if (render.length > 0) {
+            options.data = render.slice(0, baseConf.pageSize/2)
+            // 更新左侧饼图，默认未返回结果第一个
+            topError(render[0])
+        }
+        options.totalNumber = result.data.count
+        ElMessage({
+            message: 'topError' + '-同步完成',
+            type: 'success'
+        })
+    }).catch((err)=> {
+        console.log(err)
+    })
+}
+
+function platformDatas (platform, options, type_, filter, render) {
     let tmpFilter = Object.assign({}, filter)
     tmpFilter.platForm = platform
     tmpFilter.project = 'all'
-    getDataMiddleware('all', options, type_, tmpFilter, render)
+    if (type_ == 'bar') options.grid.bottom = '13%'
+    getDataMiddleware(platform, options, type_, tmpFilter, render)
 }
 const rakutenDatas = (options, type_, filter, render) => {
     platformDatas('rakuten', options, type_, filter, render)
@@ -112,4 +143,5 @@ export {
     rakutenDatas,
     yahooDatas,
     amazonDatas,
+    topErrorDatas,
 }

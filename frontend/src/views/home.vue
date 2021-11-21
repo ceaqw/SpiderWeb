@@ -79,10 +79,13 @@
             <div class="title">TOP ERROR</div>
             <el-divider></el-divider>
             <el-row>
-                <el-col :span="10">
-                    <!-- <PieChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/> -->
+                <el-col :span="9">
+                    <PieChart :filter="filterForm" cacheChartKey="topError" parentName="dashboard"/>
                 </el-col>
-                <el-col :span="14"></el-col>
+                <el-col :span="15">
+                    <!-- <PieChart :chartDatas="this.chartDatas.topErrorDatas" :filter="filterForm" parentName="dashboard"/> -->
+                    <ErrorTable :tableDatas="this.chartDatas.topErrorDatas" :filter="filterForm" parentName="dashboard"/>
+                </el-col>
             </el-row>
         </div>
         <div class="row">
@@ -112,9 +115,10 @@ import Filter from '@/components/filter'
 
 import PieChart from '@/components/charts/common/pieChart'
 import BarChart from '@/components/charts/common/barChart'
+import ErrorTable from '@/components/tables/errorTable.vue'
 
 import { 
-        allChartDatas, analyseDatas, rakutenDatas, yahooDatas, amazonDatas
+        allChartDatas, analyseDatas, rakutenDatas, yahooDatas, amazonDatas, topErrorDatas
     } from '@/service/datas/chart'
 
 export default {
@@ -129,6 +133,7 @@ export default {
         Filter,
         PieChart,
         BarChart,
+        ErrorTable
     },
     data() {
         return {
@@ -147,7 +152,8 @@ export default {
                 analyseDatas,
                 rakutenDatas,
                 yahooDatas,
-                amazonDatas
+                amazonDatas,
+                topErrorDatas
             },
             filterForm: this.$store.state.FilterSharing ? this.$store.state.shareFilter : this.$store.state.dashboardFilter,
         }

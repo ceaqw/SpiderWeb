@@ -19,6 +19,7 @@ export default createStore({
             flushQueue: {dashboard: [], project: [], kpi: [], fail: []},
             count: 1,
             pageTaskQueue: {},
+            cacheChart: {},
         }
     }
 })

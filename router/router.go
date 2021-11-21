@@ -20,7 +20,6 @@ func Init() *gin.Engine {
 
 	{
 		initUserRouter(baseRouter)
-		initDashBoardRouter(baseRouter)
 		initProjectRouter(baseRouter)
 		initTrendRouter(baseRouter)
 		initMemberRouter(baseRouter)

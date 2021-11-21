@@ -12,12 +12,25 @@ const basePost = (router, data) => {
 //     return get(preUrl + router, data)
 // }
 
+
 const chartApi = {
     all: (data) => {
         return basePost('/all', data)
     },
     analyse: (data) => {
         return basePost('/analyse', data)
+    },
+    rakuten: (data) => {
+        return basePost('/all/rakuten', data)
+    },
+    yahoo: (data) => {
+        return basePost('/all/yahoo', data)
+    },
+    amazon: (data) => {
+        return basePost('/all/amazon', data)
+    },
+    topError: (data) => {
+        return basePost('/topError', data)
     },
 }
 

@@ -6,10 +6,10 @@
 import theme from '@/conf/theme'
 
 
-let options = {
+let barOptions = {
     title: {
         text: '',
-        left: 'left',
+        left: 'center',
         textStyle: {
             color: theme.color.black
         }
@@ -18,15 +18,34 @@ let options = {
         trigger: 'item',
         backgroundColor: 'rgba(255,255,255,0.8)'
     },
-    legend: {},
+    textStyle: {
+        fontFamily: 'Microsoft YaHei',
+        fontStyle: 'normal',
+        fontWeight: 'normal'
+    },
+    legend: {
+        top: 'bottom'
+    },
     grid: {
         left: '3%',
         right: '4%',
-        bottom: '3%',
+        bottom: '7%',
         containLabel: true
     },
     xAxis: [{type: 'category', data: []}],
-    yAxis: [{type: 'value'}],
+    yAxis: [{
+        type: 'value',
+        axisLabel: {
+            formatter: function(value){
+                if(value >= 1000000){
+                    value = value/1000000+'M'
+                } else if (value >= 1000) {
+                    value = value/1000+'k'
+                }
+                return value
+            }
+        }
+    }],
     series: 
     [
         {
@@ -124,7 +143,7 @@ export default {
         initChart() {
             this.destroy()
             this.chart = this.$echarts.init(this.$el)
-            this.chartDatas(options, 'bar', this.filter, this.reRender)
+            this.chartDatas(barOptions, 'bar', this.filter, this.reRender)
             this.$store.state.flushQueue[this.parentName].unshift(this.refreshDatas)
             this.chart.on('click', (params)=>{
                 // 点击图标处理事件
@@ -132,11 +151,11 @@ export default {
             })
         },
         refreshDatas() {
-            this.chartDatas(options, 'bar', this.filter, this.reRender)
+            this.chartDatas(barOptions, 'bar', this.filter, this.reRender)
         },
         reRender() {
             // this.chart.resize()
-            this.chart.setOption(options)
+            this.chart.setOption(barOptions)
         },
         destroy() {
             if (!this.chart) {
