@@ -3,6 +3,7 @@ package models
 import (
 	"SpiderWeb/conf"
 	"SpiderWeb/models/response"
+	"fmt"
 	"time"
 
 	"github.com/druidcaesa/gotool"
@@ -54,6 +55,10 @@ func (m UserOrm) GetUserByUserName(userName string) *User {
 
 func (m UserOrm) UpdateInfo(id uint64, user User, cols ...string) (int64, error) {
 	return MainSqlDb.ID(id).Cols(cols...).Update(&user)
+}
+
+func (m UserOrm) GetUserInfo(name string, cols string) ([]map[string][]byte, error) {
+	return MainSqlDb.Query(fmt.Sprintf("select %s from member where name = ? limit 1", cols), name)
 }
 
 func (m UserOrm) GetUserList(page int, pageSize int) ([]response.UserListResponse, int64) {

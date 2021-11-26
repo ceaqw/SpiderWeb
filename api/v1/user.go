@@ -6,6 +6,7 @@ import (
 	"SpiderWeb/modules/redis_helper"
 	"SpiderWeb/services"
 	"SpiderWeb/services/resp"
+	"strconv"
 
 	"github.com/druidcaesa/gotool"
 	"github.com/gin-gonic/gin"
@@ -56,6 +57,28 @@ func (h User) UserList(c *gin.Context) {
 		c.JSON(200, resp.Success(result))
 	} else {
 		c.JSON(200, resp.ErrorResp(500, "参数错误"))
+	}
+}
+
+func (h User) GetUserInfo(c *gin.Context) {
+	user, ok := c.GetQuery("user")
+	if ok {
+		userInfo, err := h.userModel.GetUserInfo(user, "mid,email,mobile,wechat")
+		if err == nil {
+			response := make(map[string]interface{})
+			response["name"] = user
+			if len(userInfo) > 0 {
+				response["mid"], _ = strconv.Atoi(string(userInfo[0]["mid"]))
+				response["email"] = string(userInfo[0]["email"])
+				response["mobile"] = string(userInfo[0]["mobile"])
+				response["wechat"] = string(userInfo[0]["wechat"])
+			}
+			c.JSON(200, resp.Success(response))
+		} else {
+			resp.Error(c, "查询错误")
+		}
+	} else {
+		resp.Error(c, "错误参数")
 	}
 }
 

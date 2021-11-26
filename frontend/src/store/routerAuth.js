@@ -5,14 +5,14 @@ const sideItem = {
     routers: {
         dashboard: {path: 'dashboard', auth: 3, icon: 'el-icon-s-home'},
         project: {path: 'project', auth: 3, icon: 'el-icon-s-unfold'},
-        trend: {path: 'group', name: 'trend', auth: 3, icon: 'el-icon-s-order', routes: {
-            kpi: {path: 'kpi', auth: 3, icon: 'el-icon-s-data'},
-            fail: {path: 'fail', auth: 3, icon: 'el-icon-s-release'},
+        mongoMonitor: {path: 'group', name: 'mongoMonitor', auth: 3, icon: 'el-icon-s-order', routes: {
+            do: {path: 'do', auth: 3, icon: 'el-icon-s-data'},
+            analyse: {path: 'analyse', auth: 3, icon: 'el-icon-s-release'},
         }},
         member: {path: 'group', name: 'member', auth: 2, icon: 'el-icon-user-solid', routes: {
             list: {path: 'list', auth: 1, icon: 'el-icon-s-grid'},
             create: {path: 'create', auth: 1, icon: 'el-icon-circle-plus'},
-            update: {path: 'update', auth: 1, icon: 'el-icon-edit'},
+            profile: {path: 'profile', auth: 1, icon: 'el-icon-edit'},
             project: {path: 'project', auth: 2, icon: 'el-icon-s-unfold'},
         }},
     },

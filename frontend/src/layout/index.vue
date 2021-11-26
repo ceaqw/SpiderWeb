@@ -27,7 +27,9 @@
                         <span style="font-size: 18px">{{ user }}</span>
                         <template #dropdown>
                             <el-dropdown-menu>
-                                <el-dropdown-item>个人中心</el-dropdown-item>
+                                <el-dropdown-item>
+                                    <router-link to="/member/profile" >个人中心</router-link>
+                                </el-dropdown-item>
                                 <el-dropdown-item @click="logout">登出</el-dropdown-item>
                             </el-dropdown-menu>
                         </template>

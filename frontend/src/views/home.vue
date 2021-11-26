@@ -13,7 +13,7 @@
                     <el-divider direction="vertical" style="height: 100%"></el-divider>
                 </el-col> -->
                 <el-col :span="14">
-                    <BarChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" parentName="dashboard"/>
+                    <BarChart :chartDatas="this.chartDatas.allChartDatas" :filter="filterForm" Id="dashboard-com" parentName="dashboard"/>
                 </el-col>
             </el-row>
         </div>
@@ -28,7 +28,7 @@
                     <el-divider direction="vertical" style="height: 100%"></el-divider>
                 </el-col> -->
                 <el-col :span="14">
-                    <BarChart :chartDatas="this.chartDatas.analyseDatas" :filter="filterForm" parentName="dashboard"/>
+                    <BarChart :chartDatas="this.chartDatas.analyseDatas" :filter="filterForm" Id="dashboard-anlyse" parentName="dashboard"/>
                 </el-col>
             </el-row>
         </div>
@@ -42,7 +42,7 @@
                     </el-row>
                     <el-divider></el-divider>
                     <el-row>
-                        <BarChart :chartDatas="this.chartDatas.rakutenDatas" :filter="filterForm" parentName="dashboard"/>
+                        <BarChart :chartDatas="this.chartDatas.rakutenDatas" :filter="filterForm" Id="dashboard-rakuten" parentName="dashboard"/>
                     </el-row>
                 </div>
             </el-col>
@@ -56,7 +56,7 @@
                     </el-row>
                     <el-divider></el-divider>
                     <el-row>
-                        <BarChart :chartDatas="this.chartDatas.yahooDatas" :filter="filterForm" parentName="dashboard"/>
+                        <BarChart :chartDatas="this.chartDatas.yahooDatas" :filter="filterForm" Id="dashboard-yahoo" parentName="dashboard"/>
                     </el-row>
                 </div>
             </el-col>
@@ -70,7 +70,7 @@
                     </el-row>
                     <el-divider></el-divider>
                     <el-row>
-                        <BarChart :chartDatas="this.chartDatas.amazonDatas" :filter="filterForm" parentName="dashboard"/>
+                        <BarChart :chartDatas="this.chartDatas.amazonDatas" :filter="filterForm" Id="dashboard-amazon" parentName="dashboard"/>
                     </el-row>
                 </div>
             </el-col>
@@ -133,7 +133,7 @@ export default {
         Filter,
         PieChart,
         BarChart,
-        ErrorTable
+        ErrorTable,
     },
     data() {
         return {

@@ -46,6 +46,23 @@ const userService = {
             console.log(err)
         })
     },
+    getUserInfo: (data, resp) => {
+        userApi.getUserInfo(data).then((result) => {
+            if ('mid' in result.data) {
+                resp.mid = result.data.mid
+                resp.email = result.data.email
+                resp.mobile = result.data.mobile
+                resp.wechat = result.data.wechat
+            } else {
+                ElMessage({
+                    message: '获取用户数据无效',
+                    type: 'warning'
+                })
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+    },
     option: (data, resp) => {
         userApi.option(data).then((result) => {
             if (data.option != 'role') {

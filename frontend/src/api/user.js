@@ -21,6 +21,9 @@ const userApi = {
     userList: (data) => {
         return basePost('/userList', data)
     },
+    getUserInfo: (data) => {
+        return baseGet('/user', data)
+    },
     option: (data) => {
         return basePost('/option', data)
     },

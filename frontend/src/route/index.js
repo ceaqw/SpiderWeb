@@ -27,16 +27,16 @@ const router = createRouter({
             ]
         },
         {
-            path: '/trend',
+            path: '/mongoMonitor',
             component: Layout,
             children: [
                 {
-                    path: 'kpi',
-                    component: () => import ('@/views/trend/kpi'),
+                    path: 'do',
+                    component: () => import ('@/views/mongoMonitor/do'),
                 },
                 {
-                    path: 'fail',
-                    component: () => import ('@/views/trend/fail'),
+                    path: 'analyse',
+                    component: () => import ('@/views/mongoMonitor/analyse'),
                 },
             ]
         },
@@ -53,8 +53,8 @@ const router = createRouter({
                     component: () => import ('@/views/member/create'),
                 },
                 {
-                    path: 'update',
-                    component: () => import ('@/views/member/update'),
+                    path: 'profile',
+                    component: () => import ('@/views/member/profile'),
                 },
                 {
                     path: 'project',

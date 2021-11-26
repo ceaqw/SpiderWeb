@@ -1,10 +1,17 @@
-<template>
-  <div :style="{height:height, width:width}" />
+<template> 
+    <div style="width: 100%;">
+        <div :id="Id" :style="{height:height, width:width}" />
+        <div>
+            <el-dialog title="详细数据" v-model="dialogTableVisible" destroy-on-close @opened="renderDialog">
+                <div :id="'dialog-barChart-' + Id" style="height:350px;width:100%;"/>
+            </el-dialog>
+        </div>
+    </div>
 </template>
 
 <script>
 import theme from '@/conf/theme'
-
+import { ElMessage } from 'element-plus'
 
 let barOptions = {
     title: {
@@ -111,6 +118,10 @@ let barOptions = {
 
 export default {
     props: {
+        Id: {
+            type: String,
+            required: true
+        },
         width: {
             type: String,
             default: '100%'
@@ -130,7 +141,9 @@ export default {
     },
     data() {
         return {
-            chart: null
+            chart: null,
+            dialogTableVisible: false,
+            rectData: null,
         }
     },
     mounted() {
@@ -142,13 +155,33 @@ export default {
     methods: {
         initChart() {
             this.destroy()
-            this.chart = this.$echarts.init(this.$el)
+            this.chart = this.$echarts.init(document.getElementById(this.Id))
             this.chartDatas(barOptions, 'bar', this.filter, this.reRender)
             this.$store.state.flushQueue[this.parentName].unshift(this.refreshDatas)
             this.chart.on('click', (params)=>{
-                // 点击图标处理事件
-                console.log(params)
+                name = params.name
+                if (name[name.length-1] != '日') {
+                    ElMessage({
+                        message: '当前已是最小单位，无法展开',
+                        type: 'warning'
+                    })
+                } else {
+                    this.rectData = params
+                    this.dialogTableVisible = true
+                    // 点击图标处理事件
+                    console.log(params)
+                }
             })
+        },
+        renderDialog() {
+            let tmpChart = this.$echarts.init(document.getElementById('dialog-barChart-' + this.Id))
+            barOptions.xAxis[0].data = ['test']
+            for (let index = 0; index < barOptions.series.length; index++) {
+                barOptions.series[index].data = []
+                barOptions.series[index].data.push(index+1)
+            }
+            tmpChart.setOption(barOptions)
+            tmpChart = null
         },
         refreshDatas() {
             this.chartDatas(barOptions, 'bar', this.filter, this.reRender)
