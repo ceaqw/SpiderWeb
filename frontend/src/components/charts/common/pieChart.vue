@@ -58,6 +58,10 @@ export default {
             type: String,
             default: '350px'
         },
+        type_: {
+            type: String,
+            default: 'pie'
+        },
         parentName: {type: String},
         chartDatas: {type: Function},
         cacheChartKey: {type: String},
@@ -80,13 +84,13 @@ export default {
             this.chart = this.$echarts.init(this.$el)
             // 外部托管
             if (this.chartDatas) {
-                this.chartDatas(pieOptions, 'pie', this.filter, this.reRender)
+                this.chartDatas(pieOptions, this.type_, this.filter, this.reRender)
                 this.$store.state.flushQueue[this.parentName].unshift(this.refreshDatas)
             } else {
                 // 缓存托管
                 this.$store.state.cacheChart[this.cacheChartKey] = {
                     options: pieOptions, 
-                    type_: 'pie',
+                    type_: this.type_,
                     render: this.reRender
                 }
             }
@@ -96,7 +100,7 @@ export default {
             })
         },
         refreshDatas() {
-            this.chartDatas(pieOptions, 'pie', this.filter, this.reRender)
+            this.chartDatas(pieOptions, this.type_, this.filter, this.reRender)
         },
         reRender() {
             // this.chart.resize()

@@ -36,7 +36,7 @@ func FilterVerify(filter *Filter) {
 		if filter.DateRangeType < 3 {
 			filter.EndDate = startDate.AddDate(0, 0, dateRangeCount[filter.DateRangeType]).Format(baseLayout)
 		} else {
-			filter.EndDate = time.Now().Format(baseLayout)
+			filter.EndDate = startDate.Format(baseLayout)
 		}
 	}
 }

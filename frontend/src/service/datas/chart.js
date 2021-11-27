@@ -6,6 +6,7 @@ import { ElMessage } from 'element-plus'
 import { topError } from '../datas/localChart'
 
 function resetChartDatas(datas, type_, options, render) {
+    if (type_.indexOf('single') > -1) type_ = type_.split('-')[0]
     if (type_ == 'pie') {
         const data = datas.pieDatas
         let pieDatas = [
@@ -73,7 +74,7 @@ function getDataMiddleware(api, options, type_, filter, render) {
         store.state.pageTaskQueue[api] = [{options, type_, render}]
     }
     // 队列满，符合发送任务条件
-    if (store.state.pageTaskQueue[api].length == 2) {
+    if (store.state.pageTaskQueue[api].length == 2 || type_.indexOf('single') > -1) {
         chartApi[api](filter).then((result)=> {
             for (let chart of store.state.pageTaskQueue[api]) {
                 resetChartDatas(result.data, chart.type_, chart.options, chart.render)
@@ -122,6 +123,7 @@ function platformDatas (platform, options, type_, filter, render) {
     let tmpFilter = Object.assign({}, filter)
     tmpFilter.platForm = platform
     tmpFilter.project = 'all'
+    // 各平台bar图表高度对齐
     if (type_ == 'bar') options.grid.bottom = '13%'
     getDataMiddleware(platform, options, type_, tmpFilter, render)
 }

@@ -143,7 +143,7 @@ export default {
         return {
             chart: null,
             dialogTableVisible: false,
-            rectData: null,
+            xKey: null,
         }
     },
     mounted() {
@@ -159,29 +159,26 @@ export default {
             this.chartDatas(barOptions, 'bar', this.filter, this.reRender)
             this.$store.state.flushQueue[this.parentName].unshift(this.refreshDatas)
             this.chart.on('click', (params)=>{
-                name = params.name
+                const name = params.name
                 if (name[name.length-1] != '日') {
                     ElMessage({
                         message: '当前已是最小单位，无法展开',
                         type: 'warning'
                     })
                 } else {
-                    this.rectData = params
+                    this.xKey = params.name
                     this.dialogTableVisible = true
-                    // 点击图标处理事件
-                    console.log(params)
                 }
             })
         },
         renderDialog() {
             let tmpChart = this.$echarts.init(document.getElementById('dialog-barChart-' + this.Id))
-            barOptions.xAxis[0].data = ['test']
-            for (let index = 0; index < barOptions.series.length; index++) {
-                barOptions.series[index].data = []
-                barOptions.series[index].data.push(index+1)
-            }
-            tmpChart.setOption(barOptions)
-            tmpChart = null
+            let tmpFilter = Object.assign({}, this.filter)
+            tmpFilter.showType = 1
+            tmpFilter.startDate = this.xKey.slice(0, 10)
+            tmpFilter.endDate = this.xKey.slice(0, 10)
+            this.chartDatas(barOptions, 'bar-single', tmpFilter, () => {tmpChart.setOption(barOptions)})
+            // tmpChart = null
         },
         refreshDatas() {
             this.chartDatas(barOptions, 'bar', this.filter, this.reRender)
