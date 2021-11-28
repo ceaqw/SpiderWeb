@@ -71,3 +71,18 @@ func (a ChartData) TopErrorDatas(c *gin.Context) {
 		c.JSON(200, resp.ErrorResp(400, "参数错误"))
 	}
 }
+
+func (a ChartData) ProjectDatas(c *gin.Context) {
+	filter := req.Filter{}
+	if err := c.BindJSON(&filter); err == nil {
+		result, err := a.GetAnalyseDatas(filter)
+		if err == nil {
+			response := a.PackChartDatas(result)
+			c.JSON(200, resp.Success(response))
+		} else {
+			resp.Error(c, "查询出错")
+		}
+	} else {
+		c.JSON(200, resp.ErrorResp(400, "参数错误"))
+	}
+}

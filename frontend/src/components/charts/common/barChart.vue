@@ -130,6 +130,10 @@ export default {
             type: String,
             default: '350px'
         },
+        type_: {
+            type: String,
+            default: 'bar'
+        },
         parentName: {type: String},
         chartDatas: {
             type: Function,
@@ -156,8 +160,8 @@ export default {
         initChart() {
             this.destroy()
             this.chart = this.$echarts.init(document.getElementById(this.Id))
-            this.chartDatas(barOptions, 'bar', this.filter, this.reRender)
-            this.$store.state.flushQueue[this.parentName].unshift(this.refreshDatas)
+            this.chartDatas(barOptions, this.type_, this.filter, this.reRender)
+            this.$store.state.flushQueue[this.parentName][this.Id] = this.refreshDatas
             this.chart.on('click', (params)=>{
                 const name = params.name
                 if (name[name.length-1] != '日') {
@@ -177,11 +181,11 @@ export default {
             tmpFilter.showType = 1
             tmpFilter.startDate = this.xKey.slice(0, 10)
             tmpFilter.endDate = this.xKey.slice(0, 10)
-            this.chartDatas(barOptions, 'bar-single', tmpFilter, () => {tmpChart.setOption(barOptions)})
+            this.chartDatas(barOptions, this.type_ + '-single', tmpFilter, () => {tmpChart.setOption(barOptions)})
             // tmpChart = null
         },
         refreshDatas() {
-            this.chartDatas(barOptions, 'bar', this.filter, this.reRender)
+            this.chartDatas(barOptions, this.type_, this.filter, this.reRender)
         },
         reRender() {
             // this.chart.resize()

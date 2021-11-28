@@ -1,5 +1,5 @@
 <template>
-  <div :style="{height:height, width:width}" />
+  <div :id="Id" :style="{height:height, width:width}" />
 </template>
 
 <script>
@@ -50,6 +50,10 @@ let pieOptions = {
 
 export default {
     props: {
+        Id: {
+            type: String,
+            required: true
+        },
         width: {
             type: String,
             default: '100%'
@@ -81,11 +85,11 @@ export default {
     methods: {
         initChart() {
             this.destroy()
-            this.chart = this.$echarts.init(this.$el)
+            this.chart = this.$echarts.init(document.getElementById(this.Id))
             // 外部托管
             if (this.chartDatas) {
                 this.chartDatas(pieOptions, this.type_, this.filter, this.reRender)
-                this.$store.state.flushQueue[this.parentName].unshift(this.refreshDatas)
+                this.$store.state.flushQueue[this.parentName][this.Id] = this.refreshDatas
             } else {
                 // 缓存托管
                 this.$store.state.cacheChart[this.cacheChartKey] = {

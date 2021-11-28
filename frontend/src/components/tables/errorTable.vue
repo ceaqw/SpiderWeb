@@ -26,6 +26,10 @@ import { topError } from '@/service/datas/localChart'
  
 export default {
     props: {
+        Id: {
+            type: String,
+            required: true
+        },
         parentName: {type: String},
         tableDatas: {
             type: Function
@@ -59,7 +63,7 @@ export default {
         },
         initChart() {
             this.tableDatas(this.tableData, this.filter, this.cacheData)
-            this.$store.state.flushQueue[this.parentName].unshift(this.refreshDatas)
+            this.$store.state.flushQueue[this.parentName][this.Id] = this.refreshDatas
         },
         refreshDatas() {
             this.tableDatas(this.tableData, this.filter, this.cacheData)

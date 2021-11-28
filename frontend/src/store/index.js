@@ -16,7 +16,7 @@ export default createStore({
             roles: [],
             FilterSharing: true,
             projectList: {},
-            flushQueue: {dashboard: [], project: [], kpi: [], fail: []},
+            flushQueue: {dashboard: {}, project: {}, kpi: {}, fail: {}},
             count: 1,
             pageTaskQueue: {},
             cacheChart: {},

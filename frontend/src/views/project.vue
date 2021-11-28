@@ -3,8 +3,8 @@
         <Filter :filter="filterForm" parentName="project"/> 
         <ProjectChart 
             :filter="filterForm" 
-            v-for="item, index in paginationData.data" 
-            :key="index"
+            v-for="item in paginationData.data" 
+            :key="item"
             :project="item"
         />
         <el-pagination background layout="prev, pager, next" :total="paginationData.totalNumber" :page-size="paginationData.pageSize" @current-change="changePage">
@@ -36,21 +36,43 @@ export default {
         getFilterData()
     },
     mounted() {
-        console.log(this.$store.state.flushQueue['project'])
+        this.initPagation()
     },
     data() {
         return {
             filterForm: this.$store.state.FilterSharing ? this.$store.state.shareFilter : this.$store.state.projectFilter,
             paginationData: {
-                data: this.$store.state.projectList['all'].slice(0, pageSize),
-                totalNumber: this.$store.state.projectList['all'].length,
+                data: [],
+                totalNumber: 0,
                 pageSize: pageSize
             },
         }
     },
+    watch: {
+        // 监听平台变化
+        'filterForm.platForm': function () {
+            console.log(this.$store.state.flushQueue['project'])
+            this.$store.state.flushQueue['project'] = {}
+            this.paginationData.data = this.$store.state.projectList[this.filterForm.platForm].slice(0, pageSize)
+            this.paginationData.totalNumber = this.$store.state.projectList[this.filterForm.platForm].length
+        },
+        // 监听project变化
+        'filterForm.project': function () {
+            console.log(this.$store.state.flushQueue['project'])
+            if (this.filterForm.project != 'all') {
+                this.$store.state.flushQueue['project'] = {}
+                this.paginationData.data = [this.filterForm.project]
+                this.paginationData.totalNumber = 1
+            }
+        }
+    },
     methods: {
         changePage(page) {
-            this.paginationData.data = this.$store.state.projectList['all'].slice((page-1)*this.$conf.pageSize, page*this.$conf.pageSize)
+            this.paginationData.data = this.$store.state.projectList['all'].slice((page-1)*pageSize, page*pageSize)
+        },
+        initPagation() {
+            this.paginationData.data = this.$store.state.projectList[this.filterForm.platForm].slice(0, pageSize)
+            this.paginationData.totalNumber = this.$store.state.projectList[this.filterForm.platForm].length
         },
     }
 }

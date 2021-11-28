@@ -32,6 +32,9 @@ const chartApi = {
     topError: (data) => {
         return basePost('/topError', data)
     },
+    project: (data) => {
+        return basePost('/project', data)
+    },
 }
 
 export default chartApi

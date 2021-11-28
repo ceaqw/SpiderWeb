@@ -7,7 +7,6 @@ import baseConf from '@/conf/baseConf'
 import { ElMessage } from 'element-plus'
 
 function resetChartDatas(datas, type_, options, render) {
-    console.log(type_)
     const data = datas.pieDatas
     let pieDatas = [
         { 
@@ -22,14 +21,15 @@ function resetChartDatas(datas, type_, options, render) {
                 color: theme.color.danger
             },
         },
-        {
-            value: 0, name: 'undone',
-            itemStyle: {
-                color: theme.color.undone
-            },
-            }
+        // {
+        //     value: 0, name: 'undone',
+        //     itemStyle: {
+        //         color: theme.color.undone
+        //     },
+        // }
     ]
     for (const index in data) {
+        if (index == 2) break
         pieDatas[index].value = data[index]
     }
     options.series[0].radius = '75%'
@@ -39,7 +39,7 @@ function resetChartDatas(datas, type_, options, render) {
     },
     options.series[0].minAngle = baseConf.minAngle
     options.series[0].data = pieDatas
-    options.title.text = datas.title
+    options.title.text = 'analyse-job'
     // 异步渲染
     render()
 }
@@ -71,7 +71,7 @@ function getDataMiddleware(api, options, type_, filter, render) {
 const projectChartDatas = (options, type_, filter, render) => {
     let tmpFilter = Object.assign({}, filter)
     tmpFilter.project = type_.split('-')[2]
-    getDataMiddleware('all', options, type_, tmpFilter, render)
+    getDataMiddleware('project', options, type_, tmpFilter, render)
 }
 
 
