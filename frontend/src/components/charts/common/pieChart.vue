@@ -1,5 +1,12 @@
 <template>
-  <div :id="Id" :style="{height:height, width:width}" />
+    <div style="width: 100%;">
+        <div :id="Id" :style="{height:height, width:width}" />
+        <div>
+            <el-dialog :title="dialogTitle" v-model="dialogTableVisible" destroy-on-close @opened="renderDialog">
+                <div :id="'dialog-pieChart-' + Id" style="height:350px;width:100%;"/>
+            </el-dialog>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -69,11 +76,15 @@ export default {
         parentName: {type: String},
         chartDatas: {type: Function},
         cacheChartKey: {type: String},
-        filter: {type: Object}
+        filter: {type: Object},
+        dialog: {type: Function}
     },
     data() {
         return {
             chart: null,
+            dialogTitle: '',
+            dialogTableVisible: false,
+            clickParam: null,
         }
     },
     mounted() {
@@ -99,9 +110,18 @@ export default {
                 }
             }
             this.chart.on('click', (params)=>{
-                // 点击图标处理事件
                 console.log(params)
+                if (this.dialog) {
+                    this.clickParam = params
+                    this.dialogTableVisible = true
+                }
             })
+        },
+        renderDialog() {
+            if (this.dialog) {
+                let chartDom = document.getElementById('dialog-pieChart-' + this.Id)
+                this.dialog(chartDom, this.clickParam, this.filter)
+            }
         },
         refreshDatas() {
             this.chartDatas(pieOptions, this.type_, this.filter, this.reRender)
