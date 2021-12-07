@@ -23,7 +23,7 @@ let barOptions = {
     },
     tooltip: {
         trigger: 'item',
-        backgroundColor: 'rgba(255,255,255,0.8)'
+        backgroundColor: 'rgba(255,255,255,0.8)',
     },
     textStyle: {
         fontFamily: 'Microsoft YaHei',
@@ -39,7 +39,16 @@ let barOptions = {
         bottom: '7%',
         containLabel: true
     },
-    xAxis: [{type: 'category', data: []}],
+    xAxis: [
+        {
+            type: 'category', 
+            data: [],
+            splitArea: {
+                show: true,
+                interval: 0
+            }
+        }
+    ],
     yAxis: [{
         type: 'value',
         axisLabel: {

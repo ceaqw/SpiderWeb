@@ -133,15 +133,22 @@ func (m CrawlerStatOrm) GetAnalyseDatas(filter req.Filter) ([]map[string][]byte,
 			sum(finish_count) as success, 
 			sum(undo_count) as undone, 
 			sum(fail_count) as fail 
-			FROM job_monitor 
-			where platform = 'spider_raw'`
-	sql = fmt.Sprintf("%s and date >= '%s' and date <= '%s' ", sql, filter.StartDate, filter.EndDate)
+			FROM job_monitor jm
+			where 1`
+	sql = fmt.Sprintf("%s and jm.date >= '%s' and jm.date <= '%s' ", sql, filter.StartDate, filter.EndDate)
+	sql = fmt.Sprintf("%s and platform='spider_raw'", sql)
+	// if filter.PlatForm != "all" {
+	// 	sql = fmt.Sprintf("%s and platform='%s'", sql, filter.PlatForm)
+	// }
+	if filter.Project != "all" {
+		sql = fmt.Sprintf("%s and table_name='%s'", sql, filter.Project)
+	}
 	if filter.ShowType == 1 {
 		sql = fmt.Sprintf(sql, "concat(date, ' ', hour) as date,")
-		sql = fmt.Sprintf("%s group by date,hour ORDER BY date,hour", sql)
+		sql = fmt.Sprintf("%s group by jm.date, jm.hour ORDER BY jm.date, jm.hour", sql)
 	} else if filter.ShowType == 0 {
 		sql = fmt.Sprintf(sql, "concat(date, '日') as date,")
-		sql = fmt.Sprintf("%s group by date ORDER BY date", sql)
+		sql = fmt.Sprintf("%s group by jm.date ORDER BY jm.date", sql)
 	}
 	result, err := m.Query(sql)
 	return result, err
