@@ -106,12 +106,17 @@ func (m CrawlerStatOrm) GetAllDatas(filter req.Filter) ([]map[string][]byte, err
 		sql = fmt.Sprintf("%s and cs.project = '%s'", sql, filter.Project)
 	}
 
-	// 时间特殊处理
-	req.FilterVerify(&filter)
 	sql = fmt.Sprintf("%s and cs.date >= '%s' and cs.date <= '%s' ", sql, filter.StartDate, filter.EndDate)
 	// [天， 小时]
 	if filter.ShowType == 0 {
-		sql = fmt.Sprintf("%s group by cs.date order by cs.date", sql)
+		dateSelect := "(cs.`hour` = 23"
+		toDay := time.Now().Format("2006-01-02")
+		if filter.EndDate >= toDay {
+			dateSelect = fmt.Sprintf("%s or (cs.`date` = '%s' and cs.hour = %d))", dateSelect, toDay, time.Now().Hour()-1)
+		} else {
+			dateSelect = fmt.Sprintf("%s)", dateSelect)
+		}
+		sql = fmt.Sprintf("%s and %s group by cs.date order by cs.date", sql, dateSelect)
 		sql = fmt.Sprintf(sql, "concat(cs.date, '日') as date ")
 	} else if filter.ShowType == 1 {
 		sql = fmt.Sprintf("%s group by cs.date, cs.hour order by cs.date, cs.hour", sql)
@@ -130,8 +135,6 @@ func (m CrawlerStatOrm) GetAnalyseDatas(filter req.Filter) ([]map[string][]byte,
 			sum(fail_count) as fail 
 			FROM job_monitor 
 			where platform = 'spider_raw'`
-	// 添加筛选条件
-	req.FilterVerify(&filter)
 	sql = fmt.Sprintf("%s and date >= '%s' and date <= '%s' ", sql, filter.StartDate, filter.EndDate)
 	if filter.ShowType == 1 {
 		sql = fmt.Sprintf(sql, "concat(date, ' ', hour) as date,")

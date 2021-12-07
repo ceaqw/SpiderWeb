@@ -62,9 +62,9 @@ let barOptions = {
             emphasis: {
                 focus: 'series'
             },
-            // itemStyle: {
-            //     color: '#5470C6'
-            // },
+            itemStyle: {
+                color: '#73C0DE'
+            },
             data: []
         },
         {
@@ -74,9 +74,9 @@ let barOptions = {
             emphasis: {
                 focus: 'series'
             },
-            // itemStyle: {
-            //     color: '#EE6666'
-            // },
+            itemStyle: {
+                color: '#EE6666'
+            },
             data: []
         },
         {
@@ -86,9 +86,9 @@ let barOptions = {
             emphasis: {
                 focus: 'series'
             },
-            // itemStyle: {
-            //     color: '#91CC75'
-            // },
+            itemStyle: {
+                color: '#91CC75'
+            },
             data: []
         },
         {
@@ -97,9 +97,9 @@ let barOptions = {
             emphasis: {
                 focus: 'series'
             },
-            // itemStyle: {
-            //     color: '#12B8C5'
-            // },
+            itemStyle: {
+                color: '#5470C6'
+            },
             data: []
         },
         {
@@ -108,9 +108,9 @@ let barOptions = {
             emphasis: {
                 focus: 'series'
             },
-            // itemStyle: {
-            //     color: '#FAC858'
-            // },
+            itemStyle: {
+                color: '#FAC858'
+            },
             data: []
         }
     ]

@@ -1,3 +1,8 @@
+/*
+ * @Date: 2021-11-29 09:13:10
+ * @LastEditTime: 2021-12-07 10:37:22
+ * @Author: ceaqw
+ */
 package v1
 
 import (
@@ -7,13 +12,14 @@ import (
 	"SpiderWeb/services"
 	"SpiderWeb/services/resp"
 	"fmt"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 type ChartData struct {
-	models.CrawlerStatOrm
 	response.CrawlerStat
+	models.CrawlerStatOrm
 	services.CrawlerStatService
 }
 
@@ -25,9 +31,14 @@ func (a ChartData) AllChartData(c *gin.Context) {
 		filter.Project = "all"
 	}
 	if err := c.BindJSON(&filter); err == nil {
+		// 时间特殊处理
+		req.FilterVerify(&filter)
 		result, err := a.GetAllDatas(filter)
+		if filter.ShowType == 1 && filter.EndDate == time.Now().Format("2006-01-02") && (filter.PlatForm == "all" || filter.Project == "all") {
+			result = result[:len(result)-1]
+		}
 		if err == nil {
-			response := a.PackChartDatas(result)
+			response := a.PackChartDatasByCrawler(result, filter)
 			response["title"] = filter.PlatForm + "_" + filter.Project
 			c.JSON(200, resp.Success(response))
 		} else {
@@ -41,9 +52,10 @@ func (a ChartData) AllChartData(c *gin.Context) {
 func (a ChartData) AnalyseDatas(c *gin.Context) {
 	filter := req.Filter{}
 	if err := c.BindJSON(&filter); err == nil {
+		req.FilterVerify(&filter)
 		result, err := a.GetAnalyseDatas(filter)
 		if err == nil {
-			response := a.PackChartDatas(result)
+			response := a.PackChartDatasByAnalyse(result)
 			response["title"] = filter.PlatForm + "_" + filter.Project
 			c.JSON(200, resp.Success(response))
 		} else {
@@ -77,7 +89,7 @@ func (a ChartData) ProjectDatas(c *gin.Context) {
 	if err := c.BindJSON(&filter); err == nil {
 		result, err := a.GetAnalyseDatas(filter)
 		if err == nil {
-			response := a.PackChartDatas(result)
+			response := a.PackChartDatasByAnalyse(result)
 			c.JSON(200, resp.Success(response))
 		} else {
 			resp.Error(c, "查询出错")
