@@ -1,3 +1,8 @@
+/*
+ * @Date: 2021-11-16 09:08:27
+ * @LastEditTime: 2021-12-09 14:56:26
+ * @Author: ceaqw
+ */
 package models
 
 type Role struct {
@@ -10,7 +15,7 @@ func (Role) TableName() string {
 }
 
 type RoleOrm struct {
-	BaseDB
+	MainDbHand
 }
 
 func (RoleOrm) GetRoles() []Role {

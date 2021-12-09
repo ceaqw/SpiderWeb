@@ -8,48 +8,6 @@ import (
 	"time"
 )
 
-type CrawlerInformation struct {
-	Id          uint64 `xorm:"pk autoincr" json:"id"`
-	Project     string `xorm:"varchar(255) not null" json:"project"`
-	Platform    string `xorm:"varchar(45) not null" json:"platform"`
-	ScriptId    uint64 `xorm:"not null" json:"script_id"`
-	Ip          string `xorm:"varchar(45) not null" json:"ip"`
-	Comment     string `xorm:"text" json:"comment"`
-	Server      uint8  `xorm:"not null" json:"server"`
-	CriticalKpi string `xorm:"varchar(200)" json:"critical_kpi"`
-	BindTable   string `xorm:"varchar(200)" json:"bind_table"`
-	DelFlag     uint8  `json:"del_flag"`
-}
-
-func (CrawlerInformation) TableName() string {
-	return "crawler_information"
-}
-
-type CrawlerInformationOrm struct {
-	BaseDB
-	CrawlerInformation
-}
-
-type Project struct {
-	Id        int    `xorm:"int(10) notnull pk autoincr 'id'" json:"id"`                        //
-	Name      string `xorm:"varchar(45) unique notnull 'name'" json:"name"`                     //
-	FullName  string `xorm:"varchar(255) notnull 'full_name'" json:"full_name"`                 //
-	Priority  int    `xorm:"int(10) notnull default 0 'priority'" json:"priority"`              //
-	TaskTable string `xorm:"varchar(45) notnull default 'task' 'task_table'" json:"task_table"` //
-	Status    int    `xorm:"tinyint(3) notnull default 0 'status'" json:"status"`               // 0: normal; 1: deleted
-	Lua       string `xorm:"varchar(255) default NULL 'lua'" json:"lua"`                        // LUA SCRIPT ID
-	Script    string `xorm:"varchar(255) default NULL 'script'" json:"script"`                  // insert/do script
-}
-
-func (t *Project) TableName() string {
-	return "project"
-}
-
-type ProjectOrm struct {
-	BaseDB
-	Project
-}
-
 type CrawlerStat struct {
 	Project string    `xorm:"pk varchar(200) notnull 'project'" json:"project"`          //
 	Date    time.Time `xorm:"pk index(date_hour) date notnull 'date'" json:"date"`       //
@@ -66,10 +24,7 @@ func (CrawlerStat) TableName() string {
 }
 
 type CrawlerStatOrm struct {
-	BaseDB
-	Project
-	CrawlerStat
-	CrawlerInformation
+	MainDbHand
 	ArrayUtil utils.Array
 }
 
@@ -126,63 +81,25 @@ func (m CrawlerStatOrm) GetAllDatas(filter req.Filter) ([]map[string][]byte, err
 	return result, err
 }
 
-func (m CrawlerStatOrm) GetAnalyseDatas(filter req.Filter) ([]map[string][]byte, error) {
+func (m CrawlerStatOrm) GetCrawlerStatByProject(projectList [][]byte, cols string, filter req.Filter) ([]map[string][]byte, error) {
 	sql := `select 
 			%s
-			sum(all_count) as total, 
-			sum(finish_count) as success, 
-			sum(undo_count) as undone, 
-			sum(fail_count) as fail 
-			FROM job_monitor jm
-			where 1`
-	sql = fmt.Sprintf("%s and jm.date >= '%s' and jm.date <= '%s' ", sql, filter.StartDate, filter.EndDate)
-	sql = fmt.Sprintf("%s and platform='spider_raw'", sql)
-	// if filter.PlatForm != "all" {
-	// 	sql = fmt.Sprintf("%s and platform='%s'", sql, filter.PlatForm)
-	// }
-	if filter.Project != "all" {
-		sql = fmt.Sprintf("%s and table_name='%s'", sql, filter.Project)
-	}
-	if filter.ShowType == 1 {
-		sql = fmt.Sprintf(sql, "concat(date, ' ', hour) as date,")
-		sql = fmt.Sprintf("%s group by jm.date, jm.hour ORDER BY jm.date, jm.hour", sql)
-	} else if filter.ShowType == 0 {
-		sql = fmt.Sprintf(sql, "concat(date, '日') as date,")
-		sql = fmt.Sprintf("%s group by jm.date ORDER BY jm.date", sql)
-	}
-	result, err := m.Query(sql)
-	return result, err
-}
-
-func (m CrawlerStatOrm) GetPRojectInfo(filter req.Filter, cols string) ([]map[string][]byte, error) {
-	sql := `select 
-			%s
-			from crawler_information ci 
-			left join project p on ci.project = p.name 
-			where ci.del_flag = 0`
-	sql = fmt.Sprintf(sql, cols)
-	if filter.PlatForm != "all" {
-		sql = fmt.Sprintf("%s and ci.platform = '%s'", sql, filter.PlatForm)
-	}
-	if filter.Project != "all" {
-		sql = fmt.Sprintf("%s and ci.project = '%s'", sql, filter.Project)
-	}
-	projectInfo, err := m.Query(sql)
-	return projectInfo, err
-}
-
-func (m CrawlerStatOrm) GetCrawlerInfoByProject(projectList [][]byte, cols string, filter req.Filter) ([]map[string][]byte, error) {
-	sql := `select 
-			%s
-			from crawler_stat
+			from crawler_stat cs
 			where project in ('%s')`
 	sql = fmt.Sprintf(sql, cols, m.ArrayUtil.Join(projectList, "','"))
 	sql = fmt.Sprintf("%s and date >= '%s' and date <= '%s'", sql, filter.StartDate, filter.EndDate)
 	result := make([]map[string][]byte, 0)
 	if filter.ShowType == 0 {
-		sql = fmt.Sprintf("%s group by project,date", sql)
+		dateSelect := "(cs.`hour` = 23"
+		toDay := time.Now().Format("2006-01-02")
+		if filter.EndDate >= toDay {
+			dateSelect = fmt.Sprintf("%s or (cs.`date` = '%s' and cs.hour = %d))", dateSelect, toDay, time.Now().Hour()-1)
+		} else {
+			dateSelect = fmt.Sprintf("%s)", dateSelect)
+		}
+		sql = fmt.Sprintf("%s and %s group by cs.project, cs.date", sql, dateSelect)
 	} else if filter.ShowType == 1 {
-		sql = fmt.Sprintf("%s group by project,date,hour", sql)
+		sql = fmt.Sprintf("%s group by cs.project,cs.date,cs.hour", sql)
 	} else {
 		return result, errors.New("invalid showType")
 	}

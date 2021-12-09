@@ -1,3 +1,8 @@
+/*
+ * @Date: 2021-11-16 09:08:27
+ * @LastEditTime: 2021-12-09 14:57:06
+ * @Author: ceaqw
+ */
 package models
 
 import (
@@ -33,7 +38,7 @@ type User struct {
 }
 
 type UserOrm struct {
-	BaseDB
+	MainDbHand
 }
 
 func (User) TableName() string {

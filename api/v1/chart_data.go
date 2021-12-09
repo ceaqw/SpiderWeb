@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-11-29 09:13:10
- * @LastEditTime: 2021-12-07 10:37:22
+ * @LastEditTime: 2021-12-09 11:12:05
  * @Author: ceaqw
  */
 package v1
@@ -56,7 +56,7 @@ func (a ChartData) AnalyseDatas(c *gin.Context) {
 		result, err := a.GetAnalyseDatas(filter)
 		if err == nil {
 			response := a.PackChartDatasByAnalyse(result)
-			response["title"] = filter.PlatForm + "_" + filter.Project
+			response["title"] = "spider_raw:" + filter.PlatForm + "_" + filter.Project
 			c.JSON(200, resp.Success(response))
 		} else {
 			resp.Error(c, "查询出错")

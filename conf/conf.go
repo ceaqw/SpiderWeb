@@ -1,6 +1,7 @@
 package conf
 
 import (
+	"fmt"
 	"os"
 	"time"
 
@@ -62,13 +63,13 @@ func GetApiVersion() string {
 	return viper.GetString("service.api_version")
 }
 
-func GetMainDbCfg() (mainDbCfg MainDbCfg) {
-	mainDbCfg.UserName = viper.GetString("models.main_db.username")
-	mainDbCfg.Password = viper.GetString("models.main_db.password")
-	mainDbCfg.Database = viper.GetString("models.main_db.database")
-	mainDbCfg.Host = viper.GetString("models.main_db.host")
-	mainDbCfg.Port = viper.GetString("models.main_db.port")
-	mainDbCfg.Driver = viper.GetString("models.main_db.driver")
+func GetDbCfgByName(dbName string) (mainDbCfg MainDbCfg) {
+	mainDbCfg.UserName = viper.GetString(fmt.Sprintf("models.%s.username", dbName))
+	mainDbCfg.Password = viper.GetString(fmt.Sprintf("models.%s.password", dbName))
+	mainDbCfg.Database = viper.GetString(fmt.Sprintf("models.%s.database", dbName))
+	mainDbCfg.Host = viper.GetString(fmt.Sprintf("models.%s.host", dbName))
+	mainDbCfg.Port = viper.GetString(fmt.Sprintf("models.%s.port", dbName))
+	mainDbCfg.Driver = viper.GetString(fmt.Sprintf("models.%s.driver", dbName))
 	return mainDbCfg
 }
 

@@ -1,20 +1,28 @@
+/*
+ * @Date: 2021-11-22 09:49:48
+ * @LastEditTime: 2021-12-09 18:12:17
+ * @Author: ceaqw
+ */
 package services
 
 import (
 	"SpiderWeb/models"
 	"SpiderWeb/models/req"
+	"SpiderWeb/modules/utils"
 	"strconv"
 )
 
 type CrawlerStatService struct {
-	models.CrawlerStatOrm
+	CrawlerStatOrm models.CrawlerStatOrm
+	ProjectOrm     models.ProjectOrm
+	ArrayUtil      utils.Array
 }
 
 func (s CrawlerStatService) GetTopError(filter req.Filter) (map[string]map[string]interface{}, int, error) {
 	req.FilterVerify(&filter)
 	result := make(map[string]map[string]interface{})
 	// 先获取平台项目信息
-	projectInfo, err := s.GetPRojectInfo(
+	projectInfo, err := s.ProjectOrm.GetPRojectInfo(
 		filter,
 		`ci.platform as platform, 
 		ci.project as project, 
@@ -25,7 +33,8 @@ func (s CrawlerStatService) GetTopError(filter req.Filter) (map[string]map[strin
 	}
 	// 根据获取的项目列表获取任务进度
 	projectList := s.ArrayUtil.GetColumnByKey(projectInfo, "project")
-	crawerInfo, err := s.GetCrawlerInfoByProject(projectList, "project, sum(fail) as fail, sum(undone) as undone, sum(success) as success", filter)
+	filter.ShowType = 0
+	crawerInfo, err := s.CrawlerStatOrm.GetCrawlerStatByProject(projectList, "project, sum(fail) as fail, sum(undone) as undone, sum(success) as success", filter)
 	if err != nil {
 		return nil, 0, err
 	}

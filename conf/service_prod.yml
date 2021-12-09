@@ -14,7 +14,7 @@ models:
     dial_timeout: 100
     read_timeout: 100
     write_timeout: 100
-  main_db:
+  maindb:
     host: 127.0.0.1
     port: 3306
     username: ceaqw

@@ -25,11 +25,6 @@ let barOptions = {
         trigger: 'item',
         backgroundColor: 'rgba(255,255,255,0.8)',
     },
-    textStyle: {
-        fontFamily: 'Microsoft YaHei',
-        fontStyle: 'normal',
-        fontWeight: 'normal'
-    },
     legend: {
         top: 'bottom'
     },

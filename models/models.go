@@ -1,3 +1,8 @@
+/*
+ * @Date: 2021-11-16 09:08:27
+ * @LastEditTime: 2021-12-09 15:01:20
+ * @Author: ceaqw
+ */
 package models
 
 import (
@@ -12,11 +17,19 @@ var (
 	MainSqlDb, Db, SpiderDb, DbInternet, DbCn, DbWeb *xorm.Engine
 )
 
-type BaseDB struct {
+type MainDbHand struct {
+}
+
+type SpiderDbHand struct {
 }
 
 func init() {
-	mainSqlDbCfg := conf.GetMainDbCfg()
+	InitMainDb()
+	InitSpiderDb()
+}
+
+func InitMainDb() {
+	mainSqlDbCfg := conf.GetDbCfgByName("maindb")
 	jdbc := fmt.Sprintf(
 		"%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		mainSqlDbCfg.UserName, mainSqlDbCfg.Password, mainSqlDbCfg.Host, mainSqlDbCfg.Port, mainSqlDbCfg.Database,
@@ -25,31 +38,49 @@ func init() {
 	MainSqlDb, err = xorm.NewEngine(mainSqlDbCfg.Driver, jdbc)
 
 	if err != nil {
-		panic(fmt.Sprintf("db error: %#v\n", err.Error()))
+		panic(fmt.Sprintf("maindb error: %#v\n", err.Error()))
 	}
 	err = MainSqlDb.Ping()
 	if err != nil {
-		panic(fmt.Sprintf("db connect error: %#v\n", err.Error()))
+		panic(fmt.Sprintf("maindb connect error: %#v\n", err.Error()))
 	}
 	// MainSqlDb.ShowSQL(true)
-	// err = MainSqlDb.Sync(
+	// err = Main	SqlDb.Sync(
 	// 	new(Role),
 	// 	new(User),
 	// 	new(CrawlerInformation),
 	// 	new(CrawlerStat),
 	// 	new(Project),
 	// )
+	// if err != nil {
+	// 	panic(fmt.Sprintf("maindb sync error: %#v\n", err.Error()))
+	// }
+}
+
+func InitSpiderDb() {
+	spiderDbCfg := conf.GetDbCfgByName("spiderdb")
+	jdbc := fmt.Sprintf(
+		"%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
+		spiderDbCfg.UserName, spiderDbCfg.Password, spiderDbCfg.Host, spiderDbCfg.Port, spiderDbCfg.Database,
+	)
+	var err error
+	SpiderDb, err = xorm.NewEngine(spiderDbCfg.Driver, jdbc)
+
 	if err != nil {
-		panic(fmt.Sprintf("db sync error: %#v\n", err.Error()))
+		panic(fmt.Sprintf("spiderdb error: %#v\n", err.Error()))
+	}
+	err = SpiderDb.Ping()
+	if err != nil {
+		panic(fmt.Sprintf("spiderdb connect error: %#v\n", err.Error()))
 	}
 }
 
-func (BaseDB) Query(sql string) ([]map[string][]byte, error) {
+func (MainDbHand) Query(sql string) ([]map[string][]byte, error) {
 	results, err := MainSqlDb.Query(sql)
 	return results, err
 }
 
-func (BaseDB) Excute(sql string, arg ...interface{}) error {
+func (MainDbHand) Excute(sql string, arg ...interface{}) error {
 	_, err := MainSqlDb.Exec(sql)
 	return err
 }
