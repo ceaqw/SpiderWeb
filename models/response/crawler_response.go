@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-11-16 09:08:27
- * @LastEditTime: 2021-12-07 12:46:25
+ * @LastEditTime: 2021-12-09 09:35:05
  * @Author: ceaqw
  */
 package response
@@ -8,6 +8,7 @@ package response
 import (
 	"SpiderWeb/models/req"
 	"strconv"
+	"strings"
 )
 
 type CrawlerStat struct {
@@ -25,30 +26,35 @@ func (m CrawlerStat) PackChartDatasByCrawler(result []map[string][]byte, filter 
 		retry, _ = strconv.Atoi(string(item["retry"]))
 		undone, _ = strconv.Atoi(string(item["undone"]))
 		total, _ = strconv.Atoi(string(item["total"]))
-		if filter.ShowType == 1 {
+		date := string(item["date"])
+		if filter.ShowType == 1 && strings.Split(date, " ")[1] != "0" {
 			sub["success"] = success - successCom
 			sub["fail"] = fail - failCom
 			sub["undone"] = undone
 			sub["retry"] = retry - retryCom
 			sub["total"] = total - totalCom
-			retryCom = retry
-			successCom = success
-			failCom = fail
-			undoneCom = undone
-			totalCom = total
 		} else {
 			sub["success"] = success
 			sub["fail"] = fail
 			sub["undone"] = undone
 			sub["retry"] = retry
 			sub["total"] = total
+		}
+
+		if filter.ShowType == 1 {
+			retryCom = retry
+			successCom = success
+			failCom = fail
+			undoneCom = undone
+			totalCom = total
+		} else {
 			retryCom = retryCom + retry
 			successCom = successCom + success
 			failCom = failCom + fail
 			undoneCom = undoneCom + undone
 			totalCom = totalCom + total
 		}
-		sub["date"] = string(item["date"])
+		sub["date"] = date
 		barDatas = append(barDatas, sub)
 	}
 	response["pieDatas"] = []int{successCom, failCom, undoneCom}
