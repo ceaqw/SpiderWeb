@@ -1,6 +1,6 @@
 /*
- * @Date: 2021-11-16 09:08:27
- * @LastEditTime: 2021-12-10 16:22:44
+ * @Date: 2021-12-10 16:10:16
+ * @LastEditTime: 2021-12-10 17:12:00
  * @Author: ceaqw
  */
 import { get } from '@/utils/request'
@@ -16,10 +16,16 @@ const baseGet = (router, data) => {
     return get(preUrl + router, data)
 }
 
-const utilsApi = {
+const projectApi = {
     projectList: (data) => {
         return baseGet('/project/projectList', data)
     },
+    getProjectInfos: (data) => {
+        return baseGet('/project/projectInfos', data)
+    },
+    getAllPlatformAndProjectMap: (data) => {
+        return baseGet('/project/allPlatformAndProjectMap', data)
+    }
 }
 
-export default utilsApi
+export default projectApi

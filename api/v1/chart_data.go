@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-11-29 09:13:10
- * @LastEditTime: 2021-12-09 11:12:05
+ * @LastEditTime: 2021-12-10 14:39:16
  * @Author: ceaqw
  */
 package v1
@@ -20,6 +20,7 @@ import (
 type ChartData struct {
 	response.CrawlerStat
 	models.CrawlerStatOrm
+	models.JobMonitorOrm
 	services.CrawlerStatService
 }
 
@@ -53,7 +54,7 @@ func (a ChartData) AnalyseDatas(c *gin.Context) {
 	filter := req.Filter{}
 	if err := c.BindJSON(&filter); err == nil {
 		req.FilterVerify(&filter)
-		result, err := a.GetAnalyseDatas(filter)
+		result, err := a.GetDoDatas(filter)
 		if err == nil {
 			response := a.PackChartDatasByAnalyse(result)
 			response["title"] = "spider_raw:" + filter.PlatForm + "_" + filter.Project
@@ -87,7 +88,7 @@ func (a ChartData) TopErrorDatas(c *gin.Context) {
 func (a ChartData) ProjectDatas(c *gin.Context) {
 	filter := req.Filter{}
 	if err := c.BindJSON(&filter); err == nil {
-		result, err := a.GetAnalyseDatas(filter)
+		result, err := a.GetDoDatas(filter)
 		if err == nil {
 			response := a.PackChartDatasByAnalyse(result)
 			c.JSON(200, resp.Success(response))

@@ -1,3 +1,8 @@
+/*
+ * @Date: 2021-11-29 09:13:10
+ * @LastEditTime: 2021-12-10 17:07:49
+ * @Author: ceaqw
+ */
 // 全局共享变量储存模块
 
 import baseConf from '@/conf/baseConf'
@@ -16,6 +21,7 @@ export default createStore({
             roles: [],
             FilterSharing: true,
             projectList: {},
+            allPlatformAndProjectMap: {},
             flushQueue: {dashboard: {}, project: {}, kpi: {}, fail: {}},
             count: 1,
             pageTaskQueue: {},

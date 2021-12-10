@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-11-22 09:49:48
- * @LastEditTime: 2021-12-09 18:12:17
+ * @LastEditTime: 2021-12-10 16:41:22
  * @Author: ceaqw
  */
 package services
@@ -22,11 +22,11 @@ func (s CrawlerStatService) GetTopError(filter req.Filter) (map[string]map[strin
 	req.FilterVerify(&filter)
 	result := make(map[string]map[string]interface{})
 	// 先获取平台项目信息
-	projectInfo, err := s.ProjectOrm.GetPRojectInfo(
+	projectInfo, err := s.ProjectOrm.GetProjectInfo(
 		filter,
-		`ci.platform as platform, 
-		ci.project as project, 
-		p.full_name as full_name`,
+		"ci.platform as platform",
+		"ci.project as project",
+		"p.full_name as full_name",
 	)
 	if err != nil {
 		return nil, 0, err

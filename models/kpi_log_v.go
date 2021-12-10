@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-12-09 14:26:24
- * @LastEditTime: 2021-12-09 17:16:31
+ * @LastEditTime: 2021-12-10 12:39:18
  * @Author: ceaqw
  */
 package models
@@ -8,6 +8,7 @@ package models
 import (
 	"SpiderWeb/models/req"
 	"fmt"
+	"strings"
 )
 
 // type KpiLog struct {
@@ -27,13 +28,20 @@ func (t KpiLogOrm) CriticalKpiDataByProjectAndP(filter req.Filter, cols string, 
 	filterStr = fmt.Sprintf("%s and date >='%s' and date<='%s'", filterStr, filter.StartDate, filter.EndDate)
 
 	// 添加project&p过滤信息
-	filterStr = fmt.Sprintf("%s and (")
-	// for project, ps := range projects {
-	// 	projectStr := fmt.Sprintf("(project=%s", project)
-	// 	for _, p := range ps {
-
-	// 	}
-	// }
+	projectFilters := make([]string, 0)
+	for project, ps := range projects {
+		projectStr := fmt.Sprintf("(project=%s and %s)", project, "%s")
+		if len(ps) > 0 {
+			pInStr := fmt.Sprintf("p in (%s)", strings.Join(ps, ","))
+			projectStr = fmt.Sprintf(projectStr, pInStr)
+		} else {
+			projectStr = fmt.Sprintf(projectStr, "1")
+		}
+		projectFilters = append(projectFilters, projectStr)
+	}
+	if len(projectFilters) > 0 {
+		filterStr = fmt.Sprintf("%s and %s", filterStr, fmt.Sprintf("(%s)", strings.Join(projectFilters, ",")))
+	}
 	sql = fmt.Sprintf(sql, filterStr)
 	return SpiderDb.Query(sql)
 }

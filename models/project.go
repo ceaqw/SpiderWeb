@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-12-09 14:01:13
- * @LastEditTime: 2021-12-09 14:57:13
+ * @LastEditTime: 2021-12-10 16:41:00
  * @Author: ceaqw
  */
 package models
@@ -8,6 +8,7 @@ package models
 import (
 	"SpiderWeb/models/req"
 	"fmt"
+	"strings"
 )
 
 type Project struct {
@@ -30,13 +31,13 @@ type ProjectOrm struct {
 	Project
 }
 
-func (m ProjectOrm) GetPRojectInfo(filter req.Filter, cols string) ([]map[string][]byte, error) {
+func (m ProjectOrm) GetProjectInfo(filter req.Filter, cols ...string) ([]map[string][]byte, error) {
 	sql := `select 
 			%s
 			from crawler_information ci 
 			left join project p on ci.project = p.name 
 			where ci.del_flag = 0`
-	sql = fmt.Sprintf(sql, cols)
+	sql = fmt.Sprintf(sql, strings.Join(cols, ","))
 	if filter.PlatForm != "all" {
 		sql = fmt.Sprintf("%s and ci.platform = '%s'", sql, filter.PlatForm)
 	}

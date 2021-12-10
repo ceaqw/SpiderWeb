@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-11-16 09:08:27
- * @LastEditTime: 2021-12-09 15:01:20
+ * @LastEditTime: 2021-12-10 15:32:47
  * @Author: ceaqw
  */
 package models
@@ -25,7 +25,7 @@ type SpiderDbHand struct {
 
 func init() {
 	InitMainDb()
-	InitSpiderDb()
+	// InitSpiderDb()
 }
 
 func InitMainDb() {
