@@ -2,9 +2,9 @@
 
 const theme = {
     color: {
-        success: '#6290c8',
-        danger: '#1d3461',
-        undone: '#829cbc',
+        success: '#5470C6',
+        fail: '#EE6666',
+        undone: '#FAC858',
         black: '#1E1E1E',
     }
 }

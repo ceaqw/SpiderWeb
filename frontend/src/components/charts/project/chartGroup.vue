@@ -1,3 +1,8 @@
+<!--
+ * @Date: 2021-11-29 09:13:10
+ * @LastEditTime: 2021-12-14 16:36:41
+ * @Author: ceaqw
+-->
 <template>
     <div id="charts-project-chartGroup">
         <div class="row">
@@ -52,7 +57,7 @@ export default {
         PieChart,
     },
     mounted() {
-        console.log(this.project)
+        // console.log(this.project)
     },
     data() {
         return {

@@ -104,6 +104,13 @@ export default {
             if (type == 'rate') {
                 this.filterForm.dateRangeType = index
                 this.$store.state.shareFilter.dateRangeType = index
+                if (index < this.$conf.showTypeLimitIndex) {
+                    ElMessage({
+                        message: '时间跨度较大，自动转天为单位',
+                        type: 'warning'
+                    })
+                    this.filterForm.showType = 0
+                }
                 this.search()
             } else if (type == 'showType') {
                 this.filterForm.showType = index
@@ -134,18 +141,26 @@ export default {
         },
         freshFilterData() {
             this.platFormList = Object.keys(this.$store.state.projectList)
-            this.projectList = this.$store.state.projectList[this.filterForm.platForm]
+            if (this.filterForm.platForm == 'all') this.projectList = ['all']
+            else this.projectList = this.$store.state.projectList[this.filterForm.platForm]
         },
         verifyDataRange() {
+            let illegal = false
             if (this.filterForm.startDate && this.filterForm.endDate) {
                 if ((new Date(this.filterForm.endDate) - new Date(this.filterForm.startDate))/(24*3600*1000) > this.$conf.showTypeLimitCount) {
-                    ElMessage({
-                        message: '时间跨度较大，已禁止小时单位',
-                        type: 'warning'
-                    })
-                    this.filterForm.dateRangeType = 0
-                    this.$store.state.shareFilter.showType = 0
+                    illegal = true
                 }
+            }
+            if (this.filterForm.dateRangeType < this.$conf.showTypeLimitIndex) {
+                illegal = true
+            }
+            if (illegal) {
+                ElMessage({
+                    message: '时间跨度较大，已禁止小时单位',
+                    type: 'warning'
+                })
+                this.filterForm.showType = 0
+                this.$store.state.shareFilter.showType = 0
             }
         }
     }

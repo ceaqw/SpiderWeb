@@ -1,4 +1,4 @@
-import theme from '@/conf/theme'
+import theme from '../../conf/theme'
 import chartApi from '@/api/chart'
 import store from '@/store'
 import baseConf from '@/conf/baseConf'
@@ -19,7 +19,7 @@ function resetChartDatas(datas, type_, options, render) {
             { 
                 value: 0, name: 'fail',
                 itemStyle: {
-                    color: theme.color.danger
+                    color: theme.color.fail
                 },
             },
             {

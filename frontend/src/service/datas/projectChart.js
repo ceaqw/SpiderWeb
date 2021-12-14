@@ -1,7 +1,12 @@
+/*
+ * @Date: 2021-11-29 09:13:10
+ * @LastEditTime: 2021-12-14 15:59:21
+ * @Author: ceaqw
+ */
 // project 页面 图表组数据处理模块
 
 import theme from '@/conf/theme'
-import chartApi from '@/api/chart'
+import chartApi from '../../api/chart'
 import store from '@/store'
 import baseConf from '@/conf/baseConf'
 import { ElMessage } from 'element-plus'
@@ -18,7 +23,7 @@ function resetChartDatas(datas, type_, options, render) {
         { 
             value: 0, name: 'fail',
             itemStyle: {
-                color: theme.color.danger
+                color: theme.color.fail
             },
         },
         // {

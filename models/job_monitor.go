@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-12-09 14:09:51
- * @LastEditTime: 2021-12-10 14:15:22
+ * @LastEditTime: 2021-12-14 15:52:57
  * @Author: ceaqw
  */
 package models
@@ -66,13 +66,15 @@ func (m JobMonitorOrm) GetDoDatas(filter req.Filter) ([]map[string][]byte, error
 			FROM %s
 			where 1`
 	sql = fmt.Sprintf("%s and platform='spider_raw'", sql)
-	if filter.Project != "all" {
-		sql = fmt.Sprintf("%s and table_name='%s'", sql, filter.Project)
-	}
 	if filter.ShowType == 1 {
 		sql = fmt.Sprintf(sql, "concat(date, ' ', hour) as date,", m.TableName())
 	} else if filter.ShowType == 0 {
 		sql = fmt.Sprintf(sql, "concat(date, '日') as date,", m.TableName())
+	}
+	if filter.Project != "all" {
+		sql = fmt.Sprintf("%s and table_name='%s'", sql, filter.Project)
+	} else if filter.PlatForm != "all" {
+		sql = fmt.Sprintf("%s and table_name like '%s%%'", sql, filter.PlatForm)
 	}
 	sql = fmt.Sprintf("%s %s", sql, m.WarpperSql(filter))
 	return m.Query(sql)

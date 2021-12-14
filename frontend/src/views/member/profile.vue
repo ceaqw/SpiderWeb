@@ -113,3 +113,10 @@ export default {
     }
 }
 </script>
+
+<style>
+.member-profile .el-form-item {
+    width: 60%;
+    text-align: left;
+}
+</style>

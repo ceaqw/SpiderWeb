@@ -1,3 +1,8 @@
+/*
+ * @Date: 2021-11-22 09:49:48
+ * @LastEditTime: 2021-12-14 14:55:06
+ * @Author: ceaqw
+ */
 // 基本配置
 
 const baseConf = {
@@ -13,7 +18,7 @@ const baseConf = {
         showType: 0
     },
     showTypeLimitIndex: 1,
-    showTypeLimitCount: 7,
+    showTypeLimitCount: 3,
     minAngle: 15,
 }
 

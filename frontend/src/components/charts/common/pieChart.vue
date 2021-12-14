@@ -110,7 +110,7 @@ export default {
                 }
             }
             this.chart.on('click', (params)=>{
-                console.log(params)
+                // console.log(params)
                 if (this.dialog) {
                     this.clickParam = params
                     this.dialogTableVisible = true
