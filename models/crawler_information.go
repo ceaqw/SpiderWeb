@@ -1,9 +1,13 @@
 /*
  * @Date: 2021-12-09 14:00:10
- * @LastEditTime: 2021-12-09 14:57:21
+ * @LastEditTime: 2021-12-14 13:34:25
  * @Author: ceaqw
  */
 package models
+
+import (
+	"SpiderWeb/models/response"
+)
 
 type CrawlerInformation struct {
 	Id          uint64 `xorm:"pk autoincr" json:"id"`
@@ -25,4 +29,24 @@ func (CrawlerInformation) TableName() string {
 type CrawlerInformationOrm struct {
 	MainDbHand
 	CrawlerInformation
+}
+
+func (m CrawlerInformationOrm) Insert(crawlerInformations ...CrawlerInformation) (int64, error) {
+	infoList := make([]interface{}, 0)
+	for _, crawlerInformation := range crawlerInformations {
+		crawlerInformation.DelFlag = 0
+		infoList = append(infoList, crawlerInformation)
+	}
+	return MainSqlDb.Insert(infoList...)
+}
+
+func (m CrawlerInformationOrm) Update(crawlerInformation CrawlerInformation) (int64, error) {
+	crawlerInformation.DelFlag = 0
+	return MainSqlDb.Id(crawlerInformation.Id).Update(crawlerInformation)
+}
+
+func (m CrawlerInformationOrm) GetProjectInfos(offset int, limit int, query string, args ...interface{}) (int64, []response.CrawlerInformation, error) {
+	result := make([]response.CrawlerInformation, 0)
+	total, err := MainSqlDb.Where(query, args...).Limit(limit, offset).FindAndCount(&result)
+	return total, result, err
 }

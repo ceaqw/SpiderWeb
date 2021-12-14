@@ -63,12 +63,13 @@ axios.interceptors.response.use(
         } else if (code === 500) {
             ElMessage({
                 message: msg,
-                type: 'error'
+                type: 'error',
+                customClass:'zZindex'
             })
             return msg
         } else if (code !== 200) {
             ElNotification.error({
-                title: msg
+                title: msg,
             })
             return 'error'
         } else {
@@ -88,7 +89,8 @@ axios.interceptors.response.use(
         ElMessage({
             message: message,
             type: 'error',
-            duration: 5 * 1000
+            duration: 5 * 1000,
+            customClass:'zZindex'
         })
         return error 
     }

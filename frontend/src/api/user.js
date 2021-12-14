@@ -1,3 +1,8 @@
+/*
+ * @Date: 2021-11-16 09:08:27
+ * @LastEditTime: 2021-12-14 14:03:27
+ * @Author: ceaqw
+ */
 import { post, get } from '@/utils/request'
 import baseConf from '@/conf/baseConf'
 
@@ -32,6 +37,9 @@ const userApi = {
     },
     register: (data) => {
         return basePost('/register', data)
+    },
+    update: (data) => {
+        return basePost('/update', data)
     },
     validator: (data) => {
         return baseGet('/validator/' + data.type, data)

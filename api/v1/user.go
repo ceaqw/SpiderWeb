@@ -133,7 +133,32 @@ func (h User) Register(c *gin.Context) {
 			}
 		}
 	} else {
-		c.JSON(200, resp.ErrorResp(500, "参数错误"))
+		resp.ParamError(c)
+	}
+}
+
+func (h User) Update(c *gin.Context) {
+	user := req.UserUpdate{}
+	if c.BindJSON(&user) == nil {
+		cols := []string{"name", "email", "mobile", "wechat"}
+		userInfo := models.User{
+			Name:   user.Name,
+			Email:  user.Email,
+			Mobile: user.Mobile,
+			Wechat: user.Wechat,
+		}
+		if user.Password != "" {
+			userInfo.Password = string(gotool.BcryptUtils.Generate(user.Password))
+			cols = append(cols, "password")
+		}
+		_, err := h.userModel.UpdateInfo(user.Mid, userInfo, cols...)
+		if err == nil {
+			resp.OK(c, "ok")
+		} else {
+			resp.Error(c, "fail")
+		}
+	} else {
+		resp.ParamError(c)
 	}
 }
 

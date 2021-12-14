@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-11-22 09:49:48
- * @LastEditTime: 2021-12-10 16:24:29
+ * @LastEditTime: 2021-12-14 14:09:01
  * @Author: ceaqw
  */
 package router
@@ -27,7 +27,6 @@ func Init() *gin.Engine {
 		initUserRouter(baseRouter)
 		initProjectRouter(baseRouter)
 		initTrendRouter(baseRouter)
-		initMemberRouter(baseRouter)
 		initChartRouter(baseRouter)
 	}
 	return router

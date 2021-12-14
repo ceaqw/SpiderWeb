@@ -1,6 +1,6 @@
 // 用户相关服务模块
 import router from '@/route'
-import userApi from '@/api/user'
+import userApi from '../api/user'
 import { setToken } from '@/utils/auth'
 import { setByKey, getByKey } from '@/utils/cookie'
 import { removeByKey } from '@/utils/cookie'
@@ -100,6 +100,14 @@ const userService = {
             }
         }).catch((err) => {
             data.loading = false
+            console.log(err)
+        })
+    },
+    update: (data) => {
+        userApi.update(data).then((result) => {
+            if (result.msg == "ok") ElMessage({message: '更新成功', type: 'success'})
+            else ElMessage({message: '更新失败', type: 'error'})
+        }).catch((err) => {
             console.log(err)
         })
     },

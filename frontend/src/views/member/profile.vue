@@ -24,8 +24,8 @@
                         ></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-                        <el-button @click="resetForm('ruleForm')">重置</el-button>
+                        <el-button type="primary" @click="submit">提交</el-button>
+                        <el-button @click="resetForm('userInfo')">重置</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -99,6 +99,16 @@ export default {
     methods: {
         getUserInfo() {
             userService.getUserInfo({user: this.userInfo.name}, this.userInfo)
+        },
+        resetForm(formName) {
+            this.$refs[formName].resetFields()
+        },
+        submit() {
+            this.$refs.userInfo.validate((valid) => {
+                if (valid) {
+                    userService.update(this.userInfo)
+                }
+            })
         }
     }
 }
