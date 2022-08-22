@@ -80,10 +80,10 @@ function getDataMiddleware(api, options, type_, filter, render) {
                 resetChartDatas(result.data, chart.type_, chart.options, chart.render)
             }
             store.state.pageTaskQueue[api] = null
-            ElMessage({
-                message: api + '-同步完成',
-                type: 'success'
-            })
+            // ElMessage({
+            //     message: api + '-同步完成',
+            //     type: 'success'
+            // })
         }).catch((err)=> {
             console.log(err)
         })
@@ -110,10 +110,10 @@ const topErrorDatas = (options, filter, render) => {
             topError(render[0])
         }
         options.totalNumber = result.data.count
-        ElMessage({
-            message: 'topError' + '-同步完成',
-            type: 'success'
-        })
+        // ElMessage({
+        //     message: 'topError' + '-同步完成',
+        //     type: 'success'
+        // })
     }).catch((err)=> {
         console.log(err)
     })

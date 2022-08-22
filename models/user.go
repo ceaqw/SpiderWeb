@@ -30,9 +30,9 @@ type User struct {
 	Modify         time.Time `json:"modify"`
 	EffectiveTime  time.Time `json:"effectiveTime"`
 	ExpireTime     time.Time `json:"expireTime"`
-	DelFlag        uint8     `xorm:"tinyint default 0" json:"delFlag"`
-	LastLoginTime  time.Time `json:"lastLoginTime"`
-	LoginTimes     uint64    `xorm:"default 0" json:"loginTimes"`
+	DelFlag        uint8     `xorm:"tinyint default 0" json:"del_flag"`
+	LastLoginTime  time.Time `json:"last_login_time"`
+	LoginTimes     uint64    `xorm:"default 0" json:"login_times"`
 	Inviter        uint64    `json:"inviter"`
 	Role           uint8     `xorm:"default 2" json:"role"`
 }

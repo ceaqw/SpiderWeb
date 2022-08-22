@@ -63,10 +63,10 @@ function getDataMiddleware(api, options, type_, filter, render) {
                 resetChartDatas(result.data, chart.type_, chart.options, chart.render)
             }
             store.state.pageTaskQueue[filter.project] = null
-            ElMessage({
-                message: filter.project + '-同步完成',
-                type: 'success'
-            })
+            // ElMessage({
+            //     message: filter.project + '-同步完成',
+            //     type: 'success'
+            // })
         }).catch((err)=> {
             console.log(err)
         })
