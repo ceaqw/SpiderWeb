@@ -25,7 +25,7 @@ type SpiderDbHand struct {
 
 func init() {
 	InitMainDb()
-	// InitSpiderDb()
+	InitSpiderDb()
 }
 
 func InitMainDb() {

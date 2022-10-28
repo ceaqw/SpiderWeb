@@ -19,7 +19,7 @@ type KpiLogOrm struct {
 	SpiderDbHand
 }
 
-func (t KpiLogOrm) CriticalKpiDataByProjectAndP(filter req.Filter, cols string, projects map[string][]string) ([]map[string][]byte, error) {
+func (t KpiLogOrm) GetCriticalKpiDataByProjectAndP(filter req.Filter, projects map[string][]string) ([]map[string][]byte, error) {
 	filter.StartDate = fmt.Sprintf("%s 00:00:00", filter.StartDate)
 	filter.EndDate = fmt.Sprintf("%s 23:59:59", filter.EndDate)
 

@@ -16,14 +16,19 @@ type Filter struct {
 func FilterVerify(filter *Filter) {
 	// 时间特殊处理
 	baseLayout := "2006-01-02"
+	dateRangeCount := []int{-7, -3}
+	// 昨天数据
+	if filter.DateRangeType == 2 {
+		filter.StartDate = time.Now().AddDate(0, 0, -1).Format(baseLayout)
+		filter.EndDate = filter.StartDate
+	}
 	// 没有开始时间
 	if filter.StartDate == "" {
 		endDate := time.Now()
 		if filter.EndDate != "" {
 			endDate, _ = time.Parse(baseLayout, filter.EndDate)
 		}
-		dateRangeCount := []int{-7, -3, -1}
-		if filter.DateRangeType < 3 {
+		if filter.DateRangeType < 2 {
 			filter.StartDate = endDate.AddDate(0, 0, dateRangeCount[filter.DateRangeType]).Format(baseLayout)
 		} else {
 			filter.StartDate = time.Now().Format(baseLayout)
@@ -31,9 +36,8 @@ func FilterVerify(filter *Filter) {
 	}
 	// 没有结束时间
 	if filter.EndDate == "" {
-		dateRangeCount := []int{7, 3, 1}
 		startDate, _ := time.Parse(baseLayout, filter.StartDate)
-		if filter.DateRangeType < 3 {
+		if filter.DateRangeType < 2 {
 			filter.EndDate = startDate.AddDate(0, 0, dateRangeCount[filter.DateRangeType]).Format(baseLayout)
 		} else {
 			filter.EndDate = startDate.Format(baseLayout)

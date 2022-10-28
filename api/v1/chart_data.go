@@ -21,6 +21,7 @@ type ChartData struct {
 	response.CrawlerStat
 	models.CrawlerStatOrm
 	models.JobMonitorOrm
+	models.KpiLogOrm
 	services.CrawlerStatService
 }
 
@@ -36,11 +37,14 @@ func (a ChartData) AllChartData(c *gin.Context) {
 		req.FilterVerify(&filter)
 		result, err := a.GetAllDatas(filter)
 		if filter.ShowType == 1 && filter.EndDate == time.Now().Format("2006-01-02") && (filter.PlatForm == "all" || filter.Project == "all") {
-			result = result[:len(result)-1]
+			if len(result) > 0 {
+				result = result[:len(result)-1]
+			}
 		}
 		if err == nil {
 			response := a.PackChartDatasByCrawler(result, filter)
-			response["title"] = filter.PlatForm + "_" + filter.Project
+			// response["title"] = filter.PlatForm + "_" + filter.Project
+			response["title"] = filter.Project
 			c.JSON(200, resp.Success(response))
 		} else {
 			resp.Error(c, "查询出错")
@@ -57,7 +61,8 @@ func (a ChartData) AnalyseDatas(c *gin.Context) {
 		result, err := a.GetDoDatas(filter)
 		if err == nil {
 			response := a.PackChartDatasByAnalyse(result)
-			response["title"] = "spider_raw:" + filter.PlatForm + "_" + filter.Project
+			// response["title"] = "spider_raw:" + filter.PlatForm + "_" + filter.Project
+			response["title"] = "spider_raw:" + filter.Project
 			c.JSON(200, resp.Success(response))
 		} else {
 			resp.Error(c, "查询出错")
@@ -88,6 +93,22 @@ func (a ChartData) TopErrorDatas(c *gin.Context) {
 func (a ChartData) ProjectDatas(c *gin.Context) {
 	filter := req.Filter{}
 	if err := c.BindJSON(&filter); err == nil {
+		result, err := a.GetDoDatas(filter)
+		if err == nil {
+			response := a.PackChartDatasByAnalyse(result)
+			c.JSON(200, resp.Success(response))
+		} else {
+			resp.Error(c, "查询出错")
+		}
+	} else {
+		c.JSON(200, resp.ErrorResp(400, "参数错误"))
+	}
+}
+
+func (a ChartData) KpiDatas(c *gin.Context) {
+	filter := req.Filter{}
+	if err := c.BindJSON(&filter); err == nil {
+		req.FilterVerify(&filter)
 		result, err := a.GetDoDatas(filter)
 		if err == nil {
 			response := a.PackChartDatasByAnalyse(result)

@@ -1,0 +1,106 @@
+nohup: ignoring input
+Loading settings from ./fresh.conf
+[32m13:6:57 runner      |[0m InitFolders
+[32m13:6:57 runner      |[0m mkdir ./test
+[32m13:6:57 runner      |[0m mkdir ./test: file exists
+[35m13:6:57 watcher     |[0m Watching .
+[35m13:6:57 watcher     |[0m Watching api
+[35m13:6:57 watcher     |[0m Watching api/v1
+[35m13:6:57 watcher     |[0m Watching conf
+[35m13:6:57 watcher     |[0m Ignoring frontend
+[35m13:6:57 watcher     |[0m Watching log
+[35m13:6:57 watcher     |[0m Watching middleware
+[35m13:6:57 watcher     |[0m Watching middleware/jwt
+[35m13:6:57 watcher     |[0m Watching middleware/logger
+[35m13:6:57 watcher     |[0m Watching models
+[35m13:6:57 watcher     |[0m Watching models/req
+[35m13:6:57 watcher     |[0m Watching models/response
+[35m13:6:57 watcher     |[0m Watching modules
+[35m13:6:57 watcher     |[0m Watching modules/redis_helper
+[35m13:6:57 watcher     |[0m Watching modules/utils
+[35m13:6:57 watcher     |[0m Watching router
+[35m13:6:57 watcher     |[0m Watching services
+[35m13:6:57 watcher     |[0m Watching services/resp
+[36m13:6:57 main        |[0m Waiting (loop 1)...
+[36m13:6:57 main        |[0m receiving first event /
+[36m13:6:57 main        |[0m sleeping for 600 milliseconds
+[36m13:6:57 main        |[0m flushing events
+[36m13:6:57 main        |[0m Started! (53 Goroutines)
+[36m13:6:57 main        |[0m remove test/runner-build-errors.log: no such file or directory
+[33m13:6:57 build       |[0m Building...
+[32m13:6:59 runner      |[0m Running...
+[36m13:6:59 main        |[0m --------------------
+[36m13:6:59 main        |[0m Waiting (loop 2)...
+[m13:6:59 app         |[0m 2022/10/25 13:06:59 init ...
+[m13:6:59 app         |[0m [xorm] [info]  2022/10/25 13:06:59.068738 PING DATABASE mysql
+[m13:6:59 app         |[0m [GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[m13:6:59 app         |[0m [GIN-debug] POST   /api/v1/user/login        --> SpiderWeb/api/v1.User.Login-fm (2 handlers)
+[GIN-debug] POST   /api/v1/user/logout       --> SpiderWeb/api/v1.User.LoginOut-fm (2 handlers)
+[GIN-debug] POST   /api/v1/user/userList     --> SpiderWeb/api/v1.User.UserList-fm (2 handlers)
+[GIN-debug] GET    /api/v1/user/user         --> SpiderWeb/api/v1.User.GetUserInfo-fm (2 handlers)
+[GIN-debug] POST   /api/v1/user/option       --> SpiderWeb/api/v1.User.Option-fm (2 handlers)
+[GIN-debug] POST   /api/v1/user/getRoles     --> SpiderWeb/api/v1.User.GetRoles-fm (2 handlers)
+[GIN-debug] POST   /api/v1/user/register     --> SpiderWeb/api/v1.User.Register-fm (2 handlers)
+[GIN-debug] POST   /api/v1/user/update       --> SpiderWeb/api/v1.User.Update-fm (2 handlers)
+[GIN-debug] GET    /api/v1/user/validator/:type --> SpiderWeb/api/v1.User.Validator-fm (2 handlers)
+[GIN-debug] GET    /api/v1/project/projectList --> SpiderWeb/api/v1.Project.ProjectList-fm (2 handlers)
+[m13:6:59 app         |[0m [GIN-debug] GET    /api/v1/project/projectInfos --> SpiderWeb/api/v1.Project.GetProjectInfos-fm (2 handlers)
+[GIN-debug] GET    /api/v1/project/allPlatformAndProjectMap --> SpiderWeb/api/v1.Project.GetAllPlatformAndProjectMap-fm (2 handlers)
+[GIN-debug] POST   /api/v1/project/createProject --> SpiderWeb/api/v1.Project.CreateProject-fm (2 handlers)
+[GIN-debug] GET    /api/v1/trend/kpi/list    --> SpiderWeb/api/v1.Kpi.List-fm (2 handlers)
+[GIN-debug] GET    /api/v1/trend/fail/list   --> SpiderWeb/api/v1.Fail.List-fm (2 handlers)
+[GIN-debug] POST   /api/v1/chart/all         --> SpiderWeb/api/v1.ChartData.AllChartData-fm (2 handlers)
+[GIN-debug] POST   /api/v1/chart/all/:platform --> SpiderWeb/api/v1.ChartData.AllChartData-fm (2 handlers)
+[GIN-debug] POST   /api/v1/chart/analyse     --> SpiderWeb/api/v1.ChartData.AnalyseDatas-fm (2 handlers)
+[GIN-debug] POST   /api/v1/chart/topError    --> SpiderWeb/api/v1.ChartData.TopErrorDatas-fm (2 handlers)
+[GIN-debug] POST   /api/v1/chart/project     --> SpiderWeb/api/v1.ChartData.ProjectDatas-fm (2 handlers)
+[m13:6:59 app         |[0m [GIN-debug] Listening and serving HTTP on 0.0.0.0:8000
+[m9:17:18 app         |[0m [mysql] 2022/10/26 09:17:18 packets.go:123: closing bad idle connection: EOF
+[mysql] 2022/10/26 09:17:18 packets.go:123: closing bad idle connection: EOF
+[m9:28:13 app         |[0m [mysql] 2022/10/27 09:28:13 packets.go:123: closing bad idle connection: EOF
+[mysql] 2022/10/27 09:28:13 packets.go:123: closing bad idle connection: EOF
+[m9:13:57 app         |[0m [mysql] 2022/10/28 09:13:57 packets.go:123: closing bad idle connection: EOF
+[mysql] 2022/10/28 09:13:57 packets.go:123: closing bad idle connection: EOF
+[35m14:55:13 watcher     |[0m sending event "api/v1/chart_data.go": MODIFY
+[35m14:55:13 watcher     |[0m sending event "api/v1/chart_data.go": MODIFY
+[36m14:55:13 main        |[0m receiving first event "api/v1/chart_data.go": MODIFY
+[36m14:55:13 main        |[0m sleeping for 600 milliseconds
+[36m14:55:13 main        |[0m flushing events
+[36m14:55:13 main        |[0m receiving event "api/v1/chart_data.go": MODIFY
+[36m14:55:13 main        |[0m Started! (56 Goroutines)
+[36m14:55:13 main        |[0m remove test/runner-build-errors.log: no such file or directory
+[33m14:55:13 build       |[0m Building...
+[32m14:55:16 runner      |[0m Running...
+[32m14:55:16 runner      |[0m Killing PID 3572
+[36m14:55:16 main        |[0m --------------------
+[36m14:55:16 main        |[0m Waiting (loop 3)...
+[m14:55:16 app         |[0m 2022/10/28 14:55:16 init ...
+[m14:55:16 app         |[0m [xorm] [info]  2022/10/28 14:55:16.535251 PING DATABASE mysql
+[m14:55:17 app         |[0m [GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[m14:55:17 app         |[0m [GIN-debug] POST   /api/v1/user/login        --> SpiderWeb/api/v1.User.Login-fm (2 handlers)
+[m14:55:17 app         |[0m [GIN-debug] POST   /api/v1/user/logout       --> SpiderWeb/api/v1.User.LoginOut-fm (2 handlers)
+[GIN-debug] POST   /api/v1/user/userList     --> SpiderWeb/api/v1.User.UserList-fm (2 handlers)
+[GIN-debug] GET    /api/v1/user/user         --> SpiderWeb/api/v1.User.GetUserInfo-fm (2 handlers)
+[GIN-debug] POST   /api/v1/user/option       --> SpiderWeb/api/v1.User.Option-fm (2 handlers)
+[GIN-debug] POST   /api/v1/user/getRoles     --> SpiderWeb/api/v1.User.GetRoles-fm (2 handlers)
+[GIN-debug] POST   /api/v1/user/register     --> SpiderWeb/api/v1.User.Register-fm (2 handlers)
+[GIN-debug] POST   /api/v1/user/update       --> SpiderWeb/api/v1.User.Update-fm (2 handlers)
+[GIN-debug] GET    /api/v1/user/validator/:type --> SpiderWeb/api/v1.User.Validator-fm (2 handlers)
+[GIN-debug] GET    /api/v1/project/projectList --> SpiderWeb/api/v1.Project.ProjectList-fm (2 handlers)
+[GIN-debug] GET    /api/v1/project/projectInfos --> SpiderWeb/api/v1.Project.GetProjectInfos-fm (2 handlers)
+[GIN-debug] GET    /api/v1/project/allPlatformAndProjectMap --> SpiderWeb/api/v1.Project.GetAllPlatformAndProjectMap-fm (2 handlers)
+[GIN-debug] POST   /api/v1/project/createProject --> SpiderWeb/api/v1.Project.CreateProject-fm (2 handlers)
+[GIN-debug] GET    /api/v1/trend/kpi/list    --> SpiderWeb/api/v1.Kpi.List-fm (2 handlers)
+[GIN-debug] GET    /api/v1/trend/fail/list   --> SpiderWeb/api/v1.Fail.List-fm (2 handlers)
+[GIN-debug] POST   /api/v1/chart/all         --> SpiderWeb/api/v1.ChartData.AllChartData-fm (2 handlers)
+[GIN-debug] POST   /api/v1/chart/all/:platform --> SpiderWeb/api/v1.ChartData.AllChartData-fm (2 handlers)
+[GIN-debug] POST   /api/v1/chart/analyse     --> SpiderWeb/api/v1.ChartData.AnalyseDatas-fm (2 handlers)
+[GIN-debug] POST   /api/v1/chart/topError    --> SpiderWeb/api/v1.ChartData.TopErrorDatas-fm (2 handlers)
+[GIN-debug] POST   /api/v1/chart/project     --> SpiderWeb/api/v1.ChartData.ProjectDatas-fm (2 handlers)
+[GIN-debug] Listening and serving HTTP on 0.0.0.0:8000

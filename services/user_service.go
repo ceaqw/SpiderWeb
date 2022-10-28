@@ -22,6 +22,7 @@ func (s UserService) GetUserByUserName(name string) *models.User {
 
 func (s UserService) Login(name string, password string) (bool, string, *models.User) {
 	user := s.GetUserByUserName(name)
+	// fmt.Println(user)
 	if user == nil || !gotool.BcryptUtils.CompareHash(user.Password, password) {
 		return false, "用户名或密码错误", user
 	}

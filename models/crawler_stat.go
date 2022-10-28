@@ -28,13 +28,13 @@ type CrawlerStatOrm struct {
 	ArrayUtil utils.Array
 }
 
-func (m CrawlerInformationOrm) GetProjectListWithPlatform(offset ...int) ([]map[string][]byte, int, error) {
+func (m CrawlerInformationOrm) GetProjectListWithPlatform(platform ...string) ([]map[string][]byte, int, error) {
 	var count int64
-	sql := "select platform, project from crawler_information where del_flag <> 1 order by platform, project"
-	if len(offset) == 1 {
-		sql = fmt.Sprintf("%s and limit %d", sql, offset[0])
-	} else if len(offset) > 1 {
-		sql = fmt.Sprintf("%s and limit %d, %d", sql, offset[0], offset[1])
+	sql := "select platform, project from crawler_information where del_flag <> 1 %s order by platform, project"
+	if len(platform) > 0 {
+		sql = fmt.Sprintf(sql, fmt.Sprintf(" and platform in (%s) ", ))
+	} else {
+		sql = fmt.Sprintf(sql, " and 1 ")
 	}
 	count, _ = MainSqlDb.Where("del_flag <> 1").Count(new(CrawlerInformation))
 	result, err := m.Query(sql)

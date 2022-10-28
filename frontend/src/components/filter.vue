@@ -77,7 +77,7 @@ export default {
     },
     data () {
         return {
-            rateSelect: ['7天', '3天', '2天', '当天'],
+            rateSelect: ['7天', '3天', '昨天', '当天'],
             showTypeSelect: ['天', '小时'],
             filterForm: this.filter,
             platFormList: ['all'],
@@ -90,12 +90,12 @@ export default {
     watch: {
         'filterForm.startDate': {
             handler () {
-                this.verifyDataRange()
+                this.verifyDataRange('startDate')
             }
         },
         'filterForm.endDate': {
             handler () {
-                this.verifyDataRange()
+                this.verifyDataRange('endDate')
             }
         }
     },
@@ -144,8 +144,18 @@ export default {
             if (this.filterForm.platForm == 'all') this.projectList = ['all']
             else this.projectList = this.$store.state.projectList[this.filterForm.platForm]
         },
-        verifyDataRange() {
+        verifyDataRange(label) {
             let illegal = false
+            // 自动矫正时间
+            if (label === 'startDate') {
+                if (!this.filterForm.endDate || this.filterForm.startDate > this.filterForm.endDate) {
+                    this.filterForm.endDate = this.filterForm.startDate
+                }
+            } else if (label === 'endDate') {
+                if (!this.filterForm.startDate || this.filterForm.endDate < this.filterForm.startDate) {
+                    this.filterForm.startDate = this.filterForm.endDate
+                }
+            }
             if (this.filterForm.startDate && this.filterForm.endDate) {
                 if ((new Date(this.filterForm.endDate) - new Date(this.filterForm.startDate))/(24*3600*1000) > this.$conf.showTypeLimitCount) {
                     illegal = true
