@@ -19,7 +19,7 @@ var (
 	ClientMode string
 )
 
-func init() {
+func _init() {
 	redisCfg := conf.GetRedisCfg()
 	if redisCfg.ClusterMode == true {
 		// RedisCluster = NewRedisClusterHelper(redisCfg)
@@ -84,4 +84,16 @@ func (h RedisHelper) RemoveRedisToken(user string) error {
 		_, err = redisClient.Del(user).Result()
 	}
 	return err
+}
+
+func (h RedisHelper) GetTokenFromRedisByName(user string) (string, error) {
+	if ClientMode == "cluster" {
+		redisClient := Redis.(*redis.ClusterClient)
+		val, err := redisClient.Get(user).Result()
+		return val, err
+	} else {
+		redisClient := Redis.(*redis.Client)
+		val, err := redisClient.Get(user).Result()
+		return val, err
+	}
 }
