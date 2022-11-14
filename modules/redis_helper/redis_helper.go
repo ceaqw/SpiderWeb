@@ -46,7 +46,6 @@ func NewRedisHelper(redisCfg conf.RedisCfg) *redis.Client {
 	}
 	return client
 }
-
 func NewRedisClusterHelper(redisCfg conf.RedisCfg) *redis.ClusterClient {
 	clusterClient := redis.NewClusterClient(&redis.ClusterOptions{
 		Addrs:    redisCfg.Addrs,
@@ -84,4 +83,16 @@ func (h RedisHelper) RemoveRedisToken(user string) error {
 		_, err = redisClient.Del(user).Result()
 	}
 	return err
+}
+
+func (h RedisHelper) GetTokenFromRedisByName(user string) (string, error) {
+	if ClientMode == "cluster" {
+		redisClient := Redis.(*redis.ClusterClient)
+		val, err := redisClient.Get(user).Result()
+		return val, err
+	} else {
+		redisClient := Redis.(*redis.Client)
+		val, err := redisClient.Get(user).Result()
+		return val, err
+	}
 }

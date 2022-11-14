@@ -4,7 +4,9 @@ import (
 	"SpiderWeb/conf"
 	"SpiderWeb/models"
 	"SpiderWeb/models/response"
+	"SpiderWeb/modules/redis_helper"
 	"errors"
+	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -45,6 +47,28 @@ func JWTAuth() gin.HandlerFunc {
 			c.JSON(http.StatusOK, gin.H{
 				"status": 401,
 				"msg":    err.Error(),
+			})
+			c.Abort()
+			return
+		}
+		//验证redis中是否有token
+		userName := claims.UserInfo.Name
+		redisHelper := redis_helper.RedisHelper{}
+		redisToken, err := redisHelper.GetTokenFromRedisByName(userName)
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"status": 401,
+				"msg":    err.Error(),
+			})
+			c.Abort()
+			return
+		}
+		if redisToken != s[1] {
+			fmt.Println(token)
+			fmt.Println(redisToken)
+			c.JSON(http.StatusOK, gin.H{
+				"status": 401,
+				"msg":    "无效的token",
 			})
 			c.Abort()
 			return
